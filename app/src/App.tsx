@@ -22,6 +22,51 @@ import { initializeData } from '@/data/initialData';
 import { cn } from '@/lib/utils';
 import type { Route } from '@/types';
 
+// === GLOBAL MATHJAX LOADER ===
+// Load MathJax globally so LaTeX works on all pages
+function useMathJax() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Skip if already loaded or loading
+    if ((window as any).MathJax?.startup?.ready) return;
+    if (document.getElementById('mathjax-script')) return;
+
+    // Configure MathJax before loading
+    (window as any).MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true,
+      },
+      svg: {
+        fontCache: 'global',
+      },
+      startup: {
+        pageReady: () => {
+          return (window as any).MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    script.async = true;
+    script.id = 'mathjax-script';
+    
+    script.onload = () => {
+      console.log('MathJax loaded successfully');
+    };
+    
+    script.onerror = () => {
+      console.error('Failed to load MathJax');
+    };
+    
+    document.head.appendChild(script);
+  }, []);
+}
+
 // === LOADING SCREEN ===
 function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -71,6 +116,9 @@ function LoadingScreen() {
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const { state, router } = useRouter();
+  
+  // Load MathJax globally for all pages
+  useMathJax();
   
   // Data hooks
   const { courses, addCourse, updateCourse, removeCourse } = useCourses();

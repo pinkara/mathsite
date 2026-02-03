@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Course, Problem, Formula, Book, MonthlyStats } from '@/types';
+import { deleteFileLocal } from '@/lib/fileStorage';
 
 // === CLÉS DE STOCKAGE ===
 const STORAGE_KEYS = {
@@ -23,7 +24,36 @@ function loadFromStorage<T>(key: string, defaultValue: T): T {
 
 function saveToStorage<T>(key: string, data: T): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(key, JSON.stringify(data));
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (err: any) {
+    // Handle quota exceeded gracefully
+    if (err && (err.name === 'QuotaExceededError' || err.code === 22 || err.number === -2147024882)) {
+      console.warn('LocalStorage quota exceeded when saving', key);
+
+      // If BOOKS grew too large (likely due to storing data URLs), sanitize large fields and retry
+      if (key === STORAGE_KEYS.BOOKS) {
+        try {
+          const arr = Array.isArray(data) ? (data as any[]) : [];
+          const sanitized = arr.map(b => ({
+            ...b,
+            pdfUrl: b.pdfUrl && typeof b.pdfUrl === 'string' && b.pdfUrl.startsWith('data:') ? '' : b.pdfUrl,
+            coverImage: b.coverImage && typeof b.coverImage === 'string' && b.coverImage.startsWith('data:') ? '' : b.coverImage,
+          }));
+          localStorage.setItem(key, JSON.stringify(sanitized));
+          console.warn('Saved sanitized books to localStorage (removed inline data URIs).');
+          return;
+        } catch (e) {
+          console.error('Failed to save sanitized books to localStorage', e);
+        }
+      }
+
+      // As a fallback, try to free up space by removing the BOOKS key then rethrow
+      try { localStorage.removeItem(STORAGE_KEYS.BOOKS); } catch (e) {}
+    }
+    // Re-throw so upstream can observe the failure if necessary
+    throw err;
+  }
 }
 
 // === HOOK POUR LES COURS ===
@@ -178,7 +208,13 @@ export function useLibrary() {
 
   useEffect(() => {
     const loaded = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
-    setBooks(loaded);
+    // Remove any stale blob: URLs saved previously (they don't survive page reloads)
+    const sanitized = (loaded || []).map(b => ({
+      ...b,
+      coverImage: b.coverImage && b.coverImage.startsWith('blob:') ? '' : b.coverImage,
+      pdfUrl: b.pdfUrl && b.pdfUrl.startsWith('blob:') ? '' : b.pdfUrl,
+    }));
+    setBooks(sanitized);
     setIsLoaded(true);
   }, []);
 
@@ -189,11 +225,13 @@ export function useLibrary() {
   }, [books, isLoaded]);
 
   const addBook = useCallback((book: Omit<Book, 'id' | 'uploadDate'>) => {
+    console.debug('useLibrary.addBook called with:', book);
     const newBook: Book = {
       ...book,
       id: `b${Date.now()}`,
       uploadDate: new Date().toISOString().split('T')[0],
     };
+    console.debug('useLibrary.addBook saving newBook:', newBook);
     setBooks(prev => [...prev, newBook]);
     return newBook;
   }, []);
@@ -202,9 +240,20 @@ export function useLibrary() {
     setBooks(prev => prev.map(b => b.id === id ? { ...b, ...updates } : b));
   }, []);
 
-  const removeBook = useCallback((id: string) => {
+  const removeBook = useCallback(async (id: string) => {
+    // Trouver le livre pour récupérer les URLs des fichiers locaux
+    const bookToRemove = books.find(b => b.id === id);
+    if (bookToRemove) {
+      // Supprimer les fichiers locaux s'ils existent
+      if (bookToRemove.pdfUrl?.startsWith('indexeddb://')) {
+        await deleteFileLocal(bookToRemove.pdfUrl);
+      }
+      if (bookToRemove.coverImage?.startsWith('indexeddb://')) {
+        await deleteFileLocal(bookToRemove.coverImage);
+      }
+    }
     setBooks(prev => prev.filter(b => b.id !== id));
-  }, []);
+  }, [books]);
 
   return { books, addBook, updateBook, removeBook, isLoaded };
 }

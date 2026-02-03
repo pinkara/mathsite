@@ -28,15 +28,28 @@ export function MathRenderer({ content, className = '' }: MathRendererProps) {
         },
       };
       
+      script.onload = () => {
+        // Run typeset on load for any content already rendered
+        if (containerRef.current && (window as any).MathJax?.typesetPromise) {
+          (window as any).MathJax.typesetPromise([containerRef.current]).catch(console.error);
+        }
+      };
       document.head.appendChild(script);
     }
   }, []);
 
   useEffect(() => {
-    // Typeset les formules après le rendu
-    if (containerRef.current && (window as any).MathJax?.typesetPromise) {
-      (window as any).MathJax.typesetPromise([containerRef.current]);
-    }
+    // Typeset les formules après le rendu; retry a few times if MathJax not yet loaded
+    let tries = 0;
+    const tryTypeset = () => {
+      if (containerRef.current && (window as any).MathJax?.typesetPromise) {
+        (window as any).MathJax.typesetPromise([containerRef.current]).catch(console.error);
+      } else if (tries < 5) {
+        tries += 1;
+        setTimeout(tryTypeset, 300);
+      }
+    };
+    tryTypeset();
   }, [content]);
 
   return (

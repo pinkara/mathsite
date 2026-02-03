@@ -236,11 +236,11 @@ export async function deleteBookFromDB(id: string) {
 export async function uploadImage(file: File, folder: string): Promise<string | null> {
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
-  const filePath = `${folder}/${fileName}`;
+  const filePath = `public/${folder}/${fileName}`;
   
   const { error: uploadError } = await supabase.storage
     .from('images')
-    .upload(filePath, file);
+    .upload(filePath, file, { cacheControl: '3600', upsert: false, contentType: file.type, metadata: { size: String(file.size) } });
   
   if (uploadError) {
     console.error('Error uploading image:', uploadError);
@@ -250,18 +250,18 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
   const { data: { publicUrl } } = supabase.storage
     .from('images')
     .getPublicUrl(filePath);
-  
+  console.debug('uploadImage:', { filePath, publicUrl });
   return publicUrl;
-}
+} 
 
 export async function uploadPDF(file: File): Promise<string | null> {
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
-  const filePath = `pdfs/${fileName}`;
+  const filePath = `public/pdfs/${fileName}`;
   
   const { error: uploadError } = await supabase.storage
     .from('documents')
-    .upload(filePath, file);
+    .upload(filePath, file, { cacheControl: '3600', upsert: false, contentType: file.type, metadata: { size: String(file.size) } });
   
   if (uploadError) {
     console.error('Error uploading PDF:', uploadError);
@@ -271,6 +271,6 @@ export async function uploadPDF(file: File): Promise<string | null> {
   const { data: { publicUrl } } = supabase.storage
     .from('documents')
     .getPublicUrl(filePath);
-  
+  console.debug('uploadPDF:', { filePath, publicUrl });
   return publicUrl;
 }

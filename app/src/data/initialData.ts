@@ -6,7 +6,7 @@ export const initialCourses: Course[] = [
   {
     id: 'c1',
     type: 'course',
-    title: 'Les Suites Numériques',
+    title: 'Complex Analysis: Suites Numériques',
     category: 'Analyse',
     level: 'Term',
     date: '2024-01-15',
@@ -20,7 +20,7 @@ export const initialCourses: Course[] = [
       <p>Une suite est géométrique si chaque terme se déduit du précédent en multipliant par une constante appelée raison $q$.</p>
       $$u_{n+1} = u_n \\times q$$
     `,
-    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    image: 'https://lh5.googleusercontent.com/proxy/JtppaEuon4s0PzO1edghauPNJaO6x5VwP1k1eNNJJXD_c12LwhTMWoMYh-eqoVyn3-sJ7_625r_dUIPG-A',
     categoryColor: '#f0f9ff',
     categoryTextColor: '#0284c7',
   },
