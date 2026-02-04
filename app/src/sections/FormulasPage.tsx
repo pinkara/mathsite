@@ -29,13 +29,28 @@ function FormulaMath({ tex }: { tex: string }) {
 
 interface FormulasPageProps {
   formulas: Formula[];
+  highlightFormula?: string;
 }
 
-export function FormulasPage({ formulas }: FormulasPageProps) {
+export function FormulasPage({ formulas, highlightFormula }: FormulasPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const formulaRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Scroll vers la formule mise en évidence
+  useEffect(() => {
+    if (highlightFormula && formulaRefs.current[highlightFormula]) {
+      // Petit délai pour laisser le rendu se faire
+      setTimeout(() => {
+        const element = formulaRefs.current[highlightFormula];
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [highlightFormula, formulas]);
 
   // Extraire les catégories uniques
   const categories = useMemo(() => {
@@ -205,7 +220,11 @@ export function FormulasPage({ formulas }: FormulasPageProps) {
                 {categoryFormulas.map(formula => (
                   <div 
                     key={formula.id}
-                    className="p-4 md:p-6 hover:bg-gray-50 transition-colors"
+                    ref={el => { formulaRefs.current[formula.code] = el; }}
+                    className={cn(
+                      'p-4 md:p-6 hover:bg-gray-50 transition-all scroll-mt-24',
+                      highlightFormula === formula.code && 'bg-amber-50 ring-2 ring-amber-400 ring-inset animate-pulse'
+                    )}
                   >
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
                       {/* Left: Formula Info */}

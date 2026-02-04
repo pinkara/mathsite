@@ -4,7 +4,8 @@ import {
   Puzzle, 
   Calculator, 
   Star,
-  TrendingUp
+  TrendingUp,
+  Terminal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Course, Problem, Formula } from '@/types';
@@ -55,7 +56,7 @@ interface SidebarProps {
   courses: Course[];
   problems: Problem[];
   formulas: Formula[];
-  onNavigate: (route: 'article', params: { type: 'course' | 'problem'; id: string }) => void;
+  onNavigate: (route: string, params?: any) => void;
 }
 
 export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProps) {
@@ -232,6 +233,22 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
             </p>
           </div>
         )}
+
+        {/* IDE Quick Access */}
+        <div 
+          className="p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 cursor-pointer hover:border-indigo-400 hover:shadow-sm transition-all"
+          onClick={() => onNavigate('ide')}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <Terminal className="w-5 h-5 text-indigo-600" />
+            </div>
+            <div>
+              <h4 className="font-medium text-indigo-900 text-sm">IDE en ligne</h4>
+              <p className="text-xs text-indigo-600">Python & JavaScript</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Derniers cours ajoutés */}

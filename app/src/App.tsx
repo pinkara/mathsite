@@ -8,6 +8,7 @@ import { CoursesPage } from '@/sections/CoursesPage';
 import { ProblemsPage } from '@/sections/ProblemsPage';
 import { FormulasPage } from '@/sections/FormulasPage';
 import { LibraryPage } from '@/sections/LibraryPage';
+import { IDEPage } from '@/sections/IDEPage';
 import { ArticlePage } from '@/sections/ArticlePage';
 import { AdminPage } from '@/sections/AdminPage';
 import { useRouter } from '@/hooks/useRouter';
@@ -219,6 +220,7 @@ function App() {
         return (
           <FormulasPage
             formulas={formulas}
+            highlightFormula={state.params?.highlightFormula as string | undefined}
           />
         );
       
@@ -233,6 +235,9 @@ function App() {
             />
           </LibraryPassword>
         );
+
+      case 'ide':
+        return <IDEPage />;
       
       case 'article':
         if (state.params?.type && state.params?.id) {

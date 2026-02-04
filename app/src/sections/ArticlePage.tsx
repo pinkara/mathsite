@@ -283,7 +283,7 @@ export function ArticlePage({
                               return (
                                 <button
                                   key={code}
-                                  onClick={() => onNavigate('formulas')}
+                                  onClick={() => onNavigate('formulas', { highlightFormula: code })}
                                   className="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors"
                                 >
                                   {code}

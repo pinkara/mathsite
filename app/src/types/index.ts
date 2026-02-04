@@ -133,6 +133,7 @@ export type Route =
   | 'problems' 
   | 'formulas' 
   | 'library' 
+  | 'ide'
   | 'admin' 
   | 'article';
 
@@ -141,5 +142,6 @@ export interface RouterState {
   params?: {
     type?: 'course' | 'problem';
     id?: string;
+    highlightFormula?: string;
   };
 }

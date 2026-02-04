@@ -10,7 +10,8 @@ import {
   Calculator, 
   Library, 
   Lock,
-  ChevronRight
+  ChevronRight,
+  Terminal
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +40,7 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
     { route: 'problems' as Route, label: 'Problèmes', icon: Puzzle },
     { route: 'formulas' as Route, label: 'Formules', icon: Calculator },
     { route: 'library' as Route, label: 'Librairie', icon: Library },
+    { route: 'ide' as Route, label: 'IDE', icon: Terminal },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
