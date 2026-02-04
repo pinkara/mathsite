@@ -5,10 +5,21 @@ import type { Course, Problem, Formula, Book } from '@/types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+// Debug logs (visible dans la console du navigateur)
+console.log('=== SUPABASE CONFIG DEBUG ===');
+console.log('URL defined:', !!SUPABASE_URL);
+console.log('URL value:', SUPABASE_URL ? SUPABASE_URL.substring(0, 30) + '...' : 'EMPTY');
+console.log('Key defined:', !!SUPABASE_ANON_KEY);
+console.log('Key length:', SUPABASE_ANON_KEY.length);
+console.log('Key starts with:', SUPABASE_ANON_KEY ? SUPABASE_ANON_KEY.substring(0, 20) + '...' : 'EMPTY');
+
 // Vérifier si la configuration est valide
 const isValidConfig = SUPABASE_URL && SUPABASE_ANON_KEY && 
   SUPABASE_URL.startsWith('https://') && 
-  SUPABASE_ANON_KEY.length > 10;
+  SUPABASE_ANON_KEY.length > 50;
+
+console.log('Config is valid:', isValidConfig);
+console.log('=============================');
 
 // Client Supabase (null si configuration invalide)
 export const supabase = isValidConfig ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
