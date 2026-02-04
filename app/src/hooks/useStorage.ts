@@ -88,20 +88,16 @@ export function useCourses() {
           const data = await fetchCourses();
           console.log('Courses from Supabase:', data?.length || 0);
           
-          if (data && data.length > 0) {
-            // Supabase a des données → on les utilise
-            setCourses(data);
-            saveToStorage(STORAGE_KEYS.COURSES, data);
-          } else {
-            // Supabase est vide → on initialise avec les données par défaut
-            console.log('Supabase empty, initializing with default data...');
-            const { initialCourses } = await import('@/data/initialData');
-            setCourses(initialCourses);
-            
-            // Synchroniser les données initiales avec Supabase
-            for (const course of initialCourses) {
-              await addCourseToDB(course);
-            }
+          if (data) {
+            // Normaliser les données pour ajouter les champs manquants avec valeurs par défaut
+            const normalizedData = data.map(course => ({
+              ...course,
+              image: course.image || '',
+              categoryColor: course.categoryColor || '#f0f9ff',
+              categoryTextColor: course.categoryTextColor || '#0284c7'
+            }));
+            setCourses(normalizedData);
+            saveToStorage(STORAGE_KEYS.COURSES, normalizedData);
           }
         } catch (error) {
           console.error('Error loading courses from Supabase:', error);
@@ -212,17 +208,9 @@ export function useProblems() {
           const data = await fetchProblems();
           console.log('Problems from Supabase:', data?.length || 0);
           
-          if (data && data.length > 0) {
+          if (data) {
             setProblems(data);
             saveToStorage(STORAGE_KEYS.PROBLEMS, data);
-          } else {
-            console.log('Supabase empty, initializing with default data...');
-            const { initialProblems } = await import('@/data/initialData');
-            setProblems(initialProblems);
-            
-            for (const problem of initialProblems) {
-              await addProblemToDB(problem);
-            }
           }
         } catch (error) {
           console.error('Error loading problems from Supabase:', error);
@@ -321,17 +309,9 @@ export function useFormulas() {
           const data = await fetchFormulas();
           console.log('Formulas from Supabase:', data?.length || 0);
           
-          if (data && data.length > 0) {
+          if (data) {
             setFormulas(data);
             saveToStorage(STORAGE_KEYS.FORMULAS, data);
-          } else {
-            console.log('Supabase empty, initializing with default data...');
-            const { initialFormulas } = await import('@/data/initialData');
-            setFormulas(initialFormulas);
-            
-            for (const formula of initialFormulas) {
-              await addFormulaToDB(formula);
-            }
           }
         } catch (error) {
           console.error('Error loading formulas from Supabase:', error);
@@ -443,17 +423,16 @@ export function useLibrary() {
           const data = await fetchBooks();
           console.log('Books from Supabase:', data?.length || 0);
           
-          if (data && data.length > 0) {
-            setBooks(data);
-            saveToStorage(STORAGE_KEYS.BOOKS, data);
-          } else {
-            console.log('Supabase empty, initializing with default data...');
-            const { initialBooks } = await import('@/data/initialData');
-            setBooks(initialBooks);
-            
-            for (const book of initialBooks) {
-              await addBookToDB(book);
-            }
+          if (data) {
+            // Normaliser les données pour ajouter les champs manquants avec valeurs par défaut
+            const normalizedData = data.map(book => ({
+              ...book,
+              uploadDate: book.uploadDate || book.created_at?.split('T')[0] || '2024-01-01',
+              pdfUrl: book.pdfUrl || '',
+              coverImage: book.coverImage || ''
+            }));
+            setBooks(normalizedData);
+            saveToStorage(STORAGE_KEYS.BOOKS, normalizedData);
           }
         } catch (error) {
           console.error('Error loading books from Supabase:', error);

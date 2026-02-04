@@ -105,6 +105,7 @@ export interface Book {
   pdfUrl?: string;
   coverImage?: string;
   uploadDate: string;
+  created_at?: string; // Champ auto-généré par Supabase
 }
 
 // === STATISTIQUES ===
