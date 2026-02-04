@@ -1,15 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Course, Problem, Formula, Book } from '@/types';
 
-// Configuration Supabase - Remplacez par vos propres valeurs
+// Configuration Supabase
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-// Client Supabase
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Vérifier si la configuration est valide
+const isValidConfig = SUPABASE_URL && SUPABASE_ANON_KEY && 
+  SUPABASE_URL.startsWith('https://') && 
+  SUPABASE_ANON_KEY.length > 10;
+
+// Client Supabase (null si configuration invalide)
+export const supabase = isValidConfig ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 // === COURSES ===
 export async function fetchCourses(): Promise<Course[]> {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping fetchCourses');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('courses')
     .select('*')
@@ -24,6 +34,11 @@ export async function fetchCourses(): Promise<Course[]> {
 }
 
 export async function addCourseToDB(course: Omit<Course, 'id'>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping addCourseToDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('courses')
     .insert([course])
@@ -39,6 +54,11 @@ export async function addCourseToDB(course: Omit<Course, 'id'>) {
 }
 
 export async function updateCourseInDB(id: string, updates: Partial<Course>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping updateCourseInDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('courses')
     .update(updates)
@@ -55,6 +75,11 @@ export async function updateCourseInDB(id: string, updates: Partial<Course>) {
 }
 
 export async function deleteCourseFromDB(id: string) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping deleteCourseFromDB');
+    return false;
+  }
+  
   const { error } = await supabase
     .from('courses')
     .delete()
@@ -70,6 +95,11 @@ export async function deleteCourseFromDB(id: string) {
 
 // === PROBLEMS ===
 export async function fetchProblems(): Promise<Problem[]> {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping fetchProblems');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('problems')
     .select('*')
@@ -84,6 +114,11 @@ export async function fetchProblems(): Promise<Problem[]> {
 }
 
 export async function addProblemToDB(problem: Omit<Problem, 'id'>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping addProblemToDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('problems')
     .insert([problem])
@@ -99,6 +134,11 @@ export async function addProblemToDB(problem: Omit<Problem, 'id'>) {
 }
 
 export async function updateProblemInDB(id: string, updates: Partial<Problem>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping updateProblemInDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('problems')
     .update(updates)
@@ -115,6 +155,11 @@ export async function updateProblemInDB(id: string, updates: Partial<Problem>) {
 }
 
 export async function deleteProblemFromDB(id: string) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping deleteProblemFromDB');
+    return false;
+  }
+  
   const { error } = await supabase
     .from('problems')
     .delete()
@@ -130,6 +175,11 @@ export async function deleteProblemFromDB(id: string) {
 
 // === FORMULAS ===
 export async function fetchFormulas(): Promise<Formula[]> {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping fetchFormulas');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('formulas')
     .select('*')
@@ -144,6 +194,11 @@ export async function fetchFormulas(): Promise<Formula[]> {
 }
 
 export async function addFormulaToDB(formula: Omit<Formula, 'id'>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping addFormulaToDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('formulas')
     .insert([formula])
@@ -159,6 +214,11 @@ export async function addFormulaToDB(formula: Omit<Formula, 'id'>) {
 }
 
 export async function updateFormulaInDB(id: string, updates: Partial<Formula>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping updateFormulaInDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('formulas')
     .update(updates)
@@ -175,6 +235,11 @@ export async function updateFormulaInDB(id: string, updates: Partial<Formula>) {
 }
 
 export async function deleteFormulaFromDB(id: string) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping deleteFormulaFromDB');
+    return false;
+  }
+  
   const { error } = await supabase
     .from('formulas')
     .delete()
@@ -190,6 +255,11 @@ export async function deleteFormulaFromDB(id: string) {
 
 // === BOOKS ===
 export async function fetchBooks(): Promise<Book[]> {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping fetchBooks');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('books')
     .select('*')
@@ -204,6 +274,11 @@ export async function fetchBooks(): Promise<Book[]> {
 }
 
 export async function addBookToDB(book: Omit<Book, 'id'>) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping addBookToDB');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('books')
     .insert([book])
@@ -219,6 +294,11 @@ export async function addBookToDB(book: Omit<Book, 'id'>) {
 }
 
 export async function deleteBookFromDB(id: string) {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping deleteBookFromDB');
+    return false;
+  }
+  
   const { error } = await supabase
     .from('books')
     .delete()
@@ -234,6 +314,11 @@ export async function deleteBookFromDB(id: string) {
 
 // === FILE STORAGE ===
 export async function uploadImage(file: File, folder: string): Promise<string | null> {
+  if (!supabase) {
+    console.warn('Supabase not configured, cannot upload image');
+    return null;
+  }
+  
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
   const filePath = `public/${folder}/${fileName}`;
@@ -255,6 +340,11 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
 } 
 
 export async function uploadPDF(file: File): Promise<string | null> {
+  if (!supabase) {
+    console.warn('Supabase not configured, cannot upload PDF');
+    return null;
+  }
+  
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
   const filePath = `public/pdfs/${fileName}`;

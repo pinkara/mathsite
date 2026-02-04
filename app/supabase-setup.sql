@@ -67,97 +67,36 @@ CREATE TABLE IF NOT EXISTS books (
 );
 
 -- ============================================
--- 2. CONFIGURATION DES POLITIQUES RLS (Row Level Security)
+-- 2. DÉSACTIVER RLS (SOLUTION SIMPLE)
 -- ============================================
+-- Option A: Désactiver complètement RLS (accès public total)
+-- C'est la solution la plus simple pour une application publique
 
--- Activer RLS sur toutes les tables
-ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE problems ENABLE ROW LEVEL SECURITY;
-ALTER TABLE formulas ENABLE ROW LEVEL SECURITY;
-ALTER TABLE books ENABLE ROW LEVEL SECURITY;
-
--- Politique pour les cours : lecture publique, écriture authentifiée
-CREATE POLICY "Allow public read access on courses" ON courses
-  FOR SELECT USING (true);
-
-CREATE POLICY "Allow authenticated insert on courses" ON courses
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow authenticated update on courses" ON courses
-  FOR UPDATE USING (true);
-
-CREATE POLICY "Allow authenticated delete on courses" ON courses
-  FOR DELETE USING (true);
-
--- Politique pour les problèmes : lecture publique, écriture authentifiée
-CREATE POLICY "Allow public read access on problems" ON problems
-  FOR SELECT USING (true);
-
-CREATE POLICY "Allow authenticated insert on problems" ON problems
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow authenticated update on problems" ON problems
-  FOR UPDATE USING (true);
-
-CREATE POLICY "Allow authenticated delete on problems" ON problems
-  FOR DELETE USING (true);
-
--- Politique pour les formules : lecture publique, écriture authentifiée
-CREATE POLICY "Allow public read access on formulas" ON formulas
-  FOR SELECT USING (true);
-
-CREATE POLICY "Allow authenticated insert on formulas" ON formulas
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow authenticated update on formulas" ON formulas
-  FOR UPDATE USING (true);
-
-CREATE POLICY "Allow authenticated delete on formulas" ON formulas
-  FOR DELETE USING (true);
-
--- Politique pour les livres : lecture publique, écriture authentifiée
-CREATE POLICY "Allow public read access on books" ON books
-  FOR SELECT USING (true);
-
-CREATE POLICY "Allow authenticated insert on books" ON books
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow authenticated update on books" ON books
-  FOR UPDATE USING (true);
-
-CREATE POLICY "Allow authenticated delete on books" ON books
-  FOR DELETE USING (true);
+ALTER TABLE courses DISABLE ROW LEVEL SECURITY;
+ALTER TABLE problems DISABLE ROW LEVEL SECURITY;
+ALTER TABLE formulas DISABLE ROW LEVEL SECURITY;
+ALTER TABLE books DISABLE ROW LEVEL SECURITY;
 
 -- ============================================
--- 3. CONFIGURATION DU STORAGE (BUCKETS)
+-- 3. AUTORISATIONS POUR LA CLÉ ANONYME
 -- ============================================
+-- Permettre toutes les opérations avec la clé anonyme
 
--- Créer les buckets pour le stockage de fichiers
--- Note: Ces commandes doivent être exécutées via l'API Supabase ou le dashboard
+-- Cours
+GRANT ALL ON courses TO anon;
+GRANT ALL ON courses TO authenticated;
 
-/*
-Dans le dashboard Supabase, allez dans Storage et créez ces buckets:
+-- Problèmes
+GRANT ALL ON problems TO anon;
+GRANT ALL ON problems TO authenticated;
 
-1. Bucket "images" - pour les images des cours et problèmes
-   - Public: OUI
-   - Allowed MIME types: image/*
-   - File size limit: 10MB
+-- Formules
+GRANT ALL ON formulas TO anon;
+GRANT ALL ON formulas TO authenticated;
 
-2. Bucket "documents" - pour les PDFs des livres
-   - Public: OUI
-   - Allowed MIME types: application/pdf
-   - File size limit: 50MB
-
-3. Bucket "covers" - pour les couvertures de livres
-   - Public: OUI
-   - Allowed MIME types: image/*
-   - File size limit: 10MB
-
-Politiques de storage à ajouter pour chaque bucket:
-- SELECT: Allow public access
-- INSERT: Allow authenticated users
-- DELETE: Allow authenticated users
-*/
+-- Livres
+GRANT ALL ON books TO anon;
+GRANT ALL ON books TO authenticated;
 
 -- ============================================
 -- 4. INDEX POUR LES PERFORMANCES
@@ -179,3 +118,12 @@ CREATE INDEX IF NOT EXISTS idx_formulas_created_at ON formulas(created_at);
 CREATE INDEX IF NOT EXISTS idx_books_level ON books(level);
 CREATE INDEX IF NOT EXISTS idx_books_category ON books(category);
 CREATE INDEX IF NOT EXISTS idx_books_created_at ON books(created_at);
+
+-- ============================================
+-- 5. ACTIVER LA RÉPLICATION POUR LES ABONNEMENTS (OPTIONNEL)
+-- ============================================
+
+alter publication supabase_realtime add table courses;
+alter publication supabase_realtime add table problems;
+alter publication supabase_realtime add table formulas;
+alter publication supabase_realtime add table books;

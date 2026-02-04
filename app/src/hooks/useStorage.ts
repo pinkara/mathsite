@@ -71,7 +71,7 @@ function saveToStorage<T>(key: string, data: T): void {
 
 // === VÉRIFIER SI SUPABASE EST CONFIGURÉ ===
 const isSupabaseConfigured = () => {
-  return !!(supabase && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
+  return !!supabase;
 };
 
 // === HOOK POUR LES COURS (AVEC SUPABASE) ===
