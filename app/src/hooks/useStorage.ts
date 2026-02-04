@@ -74,46 +74,47 @@ const isSupabaseConfigured = () => {
   return !!supabase;
 };
 
-// === HOOK POUR LES COURS (AVEC SUPABASE) ===
+// === HOOK POUR LES COURS (SUPABASE PRIORITAIRE) ===
 export function useCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Charger depuis Supabase au démarrage
+  // Charger depuis Supabase en PRIORITÉ
   useEffect(() => {
     const loadCourses = async () => {
-      
-      // D'abord, charger depuis le cache local pour affichage rapide
-      const cached = loadFromStorage<Course[]>(STORAGE_KEYS.COURSES, []);
-      if (cached.length > 0) {
-        setCourses(cached);
-      }
-      
-      // Ensuite, charger depuis Supabase
       if (isSupabaseConfigured()) {
         try {
+          console.log('Loading courses from Supabase...');
           const data = await fetchCourses();
+          console.log('Courses from Supabase:', data?.length || 0);
+          
           if (data && data.length > 0) {
+            // Supabase a des données → on les utilise
             setCourses(data);
             saveToStorage(STORAGE_KEYS.COURSES, data);
-          } else if (cached.length === 0) {
-            // Si aucune donnée dans Supabase et pas de cache, initialiser avec les données par défaut
+          } else {
+            // Supabase est vide → on initialise avec les données par défaut
+            console.log('Supabase empty, initializing with default data...');
             const { initialCourses } = await import('@/data/initialData');
             setCourses(initialCourses);
-            saveToStorage(STORAGE_KEYS.COURSES, initialCourses);
             
-            // Synchroniser avec Supabase
+            // Synchroniser les données initiales avec Supabase
             for (const course of initialCourses) {
               await addCourseToDB(course);
             }
           }
         } catch (error) {
           console.error('Error loading courses from Supabase:', error);
-          // En cas d'erreur, utiliser le cache
+          // En cas d'erreur → fallback sur le cache local
+          const cached = loadFromStorage<Course[]>(STORAGE_KEYS.COURSES, []);
           setCourses(cached);
         }
+      } else {
+        // Mode hors ligne → utiliser le cache local
+        console.log('Supabase not configured, using local cache');
+        const cached = loadFromStorage<Course[]>(STORAGE_KEYS.COURSES, []);
+        setCourses(cached);
       }
-      
       setIsLoaded(true);
     };
     
@@ -128,15 +129,14 @@ export function useCourses() {
       date: new Date().toISOString().split('T')[0],
     };
     
-    // Ajouter à Supabase si configuré
+    // Ajouter d'abord à Supabase si configuré
     if (isSupabaseConfigured()) {
       const dbCourse = await addCourseToDB(newCourse);
       if (dbCourse) {
-        setCourses(prev => {
-          const updated = [...prev, dbCourse];
-          saveToStorage(STORAGE_KEYS.COURSES, updated);
-          return updated;
-        });
+        // Recharger depuis Supabase pour avoir les données à jour
+        const freshData = await fetchCourses();
+        setCourses(freshData);
+        saveToStorage(STORAGE_KEYS.COURSES, freshData);
         return dbCourse;
       }
     }
@@ -151,17 +151,14 @@ export function useCourses() {
   }, []);
 
   const updateCourse = useCallback(async (id: string, updates: Partial<Course>) => {
-    // Mettre à jour dans Supabase si configuré
+    // Mettre à jour dans Supabase d'abord
     if (isSupabaseConfigured()) {
-      const dbCourse = await updateCourseInDB(id, updates);
-      if (dbCourse) {
-        setCourses(prev => {
-          const updated = prev.map(c => c.id === id ? dbCourse : c);
-          saveToStorage(STORAGE_KEYS.COURSES, updated);
-          return updated;
-        });
-        return;
-      }
+      await updateCourseInDB(id, updates);
+      // Recharger depuis Supabase
+      const freshData = await fetchCourses();
+      setCourses(freshData);
+      saveToStorage(STORAGE_KEYS.COURSES, freshData);
+      return;
     }
     
     // Fallback: mise à jour locale
@@ -173,17 +170,14 @@ export function useCourses() {
   }, []);
 
   const removeCourse = useCallback(async (id: string) => {
-    // Supprimer de Supabase si configuré
+    // Supprimer de Supabase d'abord
     if (isSupabaseConfigured()) {
-      const success = await deleteCourseFromDB(id);
-      if (success) {
-        setCourses(prev => {
-          const updated = prev.filter(c => c.id !== id);
-          saveToStorage(STORAGE_KEYS.COURSES, updated);
-          return updated;
-        });
-        return;
-      }
+      await deleteCourseFromDB(id);
+      // Recharger depuis Supabase
+      const freshData = await fetchCourses();
+      setCourses(freshData);
+      saveToStorage(STORAGE_KEYS.COURSES, freshData);
+      return;
     }
     
     // Fallback: suppression locale
@@ -201,29 +195,26 @@ export function useCourses() {
   return { courses, addCourse, updateCourse, removeCourse, getCourseById, isLoaded };
 }
 
-// === HOOK POUR LES PROBLÈMES (AVEC SUPABASE) ===
+// === HOOK POUR LES PROBLÈMES (SUPABASE PRIORITAIRE) ===
 export function useProblems() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const loadProblems = async () => {
-      
-      const cached = loadFromStorage<Problem[]>(STORAGE_KEYS.PROBLEMS, []);
-      if (cached.length > 0) {
-        setProblems(cached);
-      }
-      
       if (isSupabaseConfigured()) {
         try {
+          console.log('Loading problems from Supabase...');
           const data = await fetchProblems();
+          console.log('Problems from Supabase:', data?.length || 0);
+          
           if (data && data.length > 0) {
             setProblems(data);
             saveToStorage(STORAGE_KEYS.PROBLEMS, data);
-          } else if (cached.length === 0) {
+          } else {
+            console.log('Supabase empty, initializing with default data...');
             const { initialProblems } = await import('@/data/initialData');
             setProblems(initialProblems);
-            saveToStorage(STORAGE_KEYS.PROBLEMS, initialProblems);
             
             for (const problem of initialProblems) {
               await addProblemToDB(problem);
@@ -231,10 +222,14 @@ export function useProblems() {
           }
         } catch (error) {
           console.error('Error loading problems from Supabase:', error);
+          const cached = loadFromStorage<Problem[]>(STORAGE_KEYS.PROBLEMS, []);
           setProblems(cached);
         }
+      } else {
+        console.log('Supabase not configured, using local cache');
+        const cached = loadFromStorage<Problem[]>(STORAGE_KEYS.PROBLEMS, []);
+        setProblems(cached);
       }
-      
       setIsLoaded(true);
     };
     
@@ -252,11 +247,9 @@ export function useProblems() {
     if (isSupabaseConfigured()) {
       const dbProblem = await addProblemToDB(newProblem);
       if (dbProblem) {
-        setProblems(prev => {
-          const updated = [...prev, dbProblem];
-          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
-          return updated;
-        });
+        const freshData = await fetchProblems();
+        setProblems(freshData);
+        saveToStorage(STORAGE_KEYS.PROBLEMS, freshData);
         return dbProblem;
       }
     }
@@ -271,15 +264,11 @@ export function useProblems() {
 
   const updateProblem = useCallback(async (id: string, updates: Partial<Problem>) => {
     if (isSupabaseConfigured()) {
-      const dbProblem = await updateProblemInDB(id, updates);
-      if (dbProblem) {
-        setProblems(prev => {
-          const updated = prev.map(p => p.id === id ? dbProblem : p);
-          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
-          return updated;
-        });
-        return;
-      }
+      await updateProblemInDB(id, updates);
+      const freshData = await fetchProblems();
+      setProblems(freshData);
+      saveToStorage(STORAGE_KEYS.PROBLEMS, freshData);
+      return;
     }
     
     setProblems(prev => {
@@ -291,15 +280,11 @@ export function useProblems() {
 
   const removeProblem = useCallback(async (id: string) => {
     if (isSupabaseConfigured()) {
-      const success = await deleteProblemFromDB(id);
-      if (success) {
-        setProblems(prev => {
-          const updated = prev.filter(p => p.id !== id);
-          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
-          return updated;
-        });
-        return;
-      }
+      await deleteProblemFromDB(id);
+      const freshData = await fetchProblems();
+      setProblems(freshData);
+      saveToStorage(STORAGE_KEYS.PROBLEMS, freshData);
+      return;
     }
     
     setProblems(prev => {
@@ -316,29 +301,26 @@ export function useProblems() {
   return { problems, addProblem, updateProblem, removeProblem, getProblemById, isLoaded };
 }
 
-// === HOOK POUR LES FORMULES (AVEC SUPABASE) ===
+// === HOOK POUR LES FORMULES (SUPABASE PRIORITAIRE) ===
 export function useFormulas() {
   const [formulas, setFormulas] = useState<Formula[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const loadFormulas = async () => {
-      
-      const cached = loadFromStorage<Formula[]>(STORAGE_KEYS.FORMULAS, []);
-      if (cached.length > 0) {
-        setFormulas(cached);
-      }
-      
       if (isSupabaseConfigured()) {
         try {
+          console.log('Loading formulas from Supabase...');
           const data = await fetchFormulas();
+          console.log('Formulas from Supabase:', data?.length || 0);
+          
           if (data && data.length > 0) {
             setFormulas(data);
             saveToStorage(STORAGE_KEYS.FORMULAS, data);
-          } else if (cached.length === 0) {
+          } else {
+            console.log('Supabase empty, initializing with default data...');
             const { initialFormulas } = await import('@/data/initialData');
             setFormulas(initialFormulas);
-            saveToStorage(STORAGE_KEYS.FORMULAS, initialFormulas);
             
             for (const formula of initialFormulas) {
               await addFormulaToDB(formula);
@@ -346,10 +328,14 @@ export function useFormulas() {
           }
         } catch (error) {
           console.error('Error loading formulas from Supabase:', error);
+          const cached = loadFromStorage<Formula[]>(STORAGE_KEYS.FORMULAS, []);
           setFormulas(cached);
         }
+      } else {
+        console.log('Supabase not configured, using local cache');
+        const cached = loadFromStorage<Formula[]>(STORAGE_KEYS.FORMULAS, []);
+        setFormulas(cached);
       }
-      
       setIsLoaded(true);
     };
     
@@ -365,11 +351,9 @@ export function useFormulas() {
     if (isSupabaseConfigured()) {
       const dbFormula = await addFormulaToDB(newFormula);
       if (dbFormula) {
-        setFormulas(prev => {
-          const updated = [...prev, dbFormula];
-          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
-          return updated;
-        });
+        const freshData = await fetchFormulas();
+        setFormulas(freshData);
+        saveToStorage(STORAGE_KEYS.FORMULAS, freshData);
         return dbFormula;
       }
     }
@@ -384,15 +368,11 @@ export function useFormulas() {
 
   const updateFormula = useCallback(async (id: string, updates: Partial<Formula>) => {
     if (isSupabaseConfigured()) {
-      const dbFormula = await updateFormulaInDB(id, updates);
-      if (dbFormula) {
-        setFormulas(prev => {
-          const updated = prev.map(f => f.id === id ? dbFormula : f);
-          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
-          return updated;
-        });
-        return;
-      }
+      await updateFormulaInDB(id, updates);
+      const freshData = await fetchFormulas();
+      setFormulas(freshData);
+      saveToStorage(STORAGE_KEYS.FORMULAS, freshData);
+      return;
     }
     
     setFormulas(prev => {
@@ -404,15 +384,11 @@ export function useFormulas() {
 
   const removeFormula = useCallback(async (id: string) => {
     if (isSupabaseConfigured()) {
-      const success = await deleteFormulaFromDB(id);
-      if (success) {
-        setFormulas(prev => {
-          const updated = prev.filter(f => f.id !== id);
-          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
-          return updated;
-        });
-        return;
-      }
+      await deleteFormulaFromDB(id);
+      const freshData = await fetchFormulas();
+      setFormulas(freshData);
+      saveToStorage(STORAGE_KEYS.FORMULAS, freshData);
+      return;
     }
     
     setFormulas(prev => {
@@ -447,37 +423,26 @@ export function useFormulas() {
   };
 }
 
-// === HOOK POUR LA LIBRAIRIE (AVEC SUPABASE) ===
-
-// === HOOK POUR LA LIBRAIRIE (AVEC SUPABASE) ===
+// === HOOK POUR LA LIBRAIRIE (SUPABASE PRIORITAIRE) ===
 export function useLibrary() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const loadBooks = async () => {
-      
-      const cached = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
-      if (cached.length > 0) {
-        // Nettoyer les URLs blob: qui ne survivent pas au rechargement
-        const sanitized = cached.map(b => ({
-          ...b,
-          coverImage: b.coverImage && b.coverImage.startsWith('blob:') ? '' : b.coverImage,
-          pdfUrl: b.pdfUrl && b.pdfUrl.startsWith('blob:') ? '' : b.pdfUrl,
-        }));
-        setBooks(sanitized);
-      }
-      
       if (isSupabaseConfigured()) {
         try {
+          console.log('Loading books from Supabase...');
           const data = await fetchBooks();
+          console.log('Books from Supabase:', data?.length || 0);
+          
           if (data && data.length > 0) {
             setBooks(data);
             saveToStorage(STORAGE_KEYS.BOOKS, data);
-          } else if (cached.length === 0) {
+          } else {
+            console.log('Supabase empty, initializing with default data...');
             const { initialBooks } = await import('@/data/initialData');
             setBooks(initialBooks);
-            saveToStorage(STORAGE_KEYS.BOOKS, initialBooks);
             
             for (const book of initialBooks) {
               await addBookToDB(book);
@@ -485,10 +450,14 @@ export function useLibrary() {
           }
         } catch (error) {
           console.error('Error loading books from Supabase:', error);
+          const cached = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
           setBooks(cached);
         }
+      } else {
+        console.log('Supabase not configured, using local cache');
+        const cached = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
+        setBooks(cached);
       }
-      
       setIsLoaded(true);
     };
     
@@ -506,11 +475,9 @@ export function useLibrary() {
     if (isSupabaseConfigured()) {
       const dbBook = await addBookToDB(newBook);
       if (dbBook) {
-        setBooks(prev => {
-          const updated = [...prev, dbBook];
-          saveToStorage(STORAGE_KEYS.BOOKS, updated);
-          return updated;
-        });
+        const freshData = await fetchBooks();
+        setBooks(freshData);
+        saveToStorage(STORAGE_KEYS.BOOKS, freshData);
         return dbBook;
       }
     }
@@ -534,7 +501,6 @@ export function useLibrary() {
   const removeBook = useCallback(async (id: string) => {
     const bookToRemove = books.find(b => b.id === id);
     if (bookToRemove) {
-      // Supprimer les fichiers locaux s'ils existent
       if (bookToRemove.pdfUrl?.startsWith('indexeddb://')) {
         await deleteFileLocal(bookToRemove.pdfUrl);
       }
@@ -544,15 +510,11 @@ export function useLibrary() {
     }
     
     if (isSupabaseConfigured()) {
-      const success = await deleteBookFromDB(id);
-      if (success) {
-        setBooks(prev => {
-          const updated = prev.filter(b => b.id !== id);
-          saveToStorage(STORAGE_KEYS.BOOKS, updated);
-          return updated;
-        });
-        return;
-      }
+      await deleteBookFromDB(id);
+      const freshData = await fetchBooks();
+      setBooks(freshData);
+      saveToStorage(STORAGE_KEYS.BOOKS, freshData);
+      return;
     }
     
     setBooks(prev => {
