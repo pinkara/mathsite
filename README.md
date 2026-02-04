@@ -80,11 +80,6 @@ npm run dev
 npm run build
 ```
 
-## 🔑 Accès Admin
-
-- **URL** : `/admin` sur le site
-- **Mot de passe** : `mathunivers2024`
-
 ## 📝 License
 
 MIT License - Libre d'utilisation et de modification.
