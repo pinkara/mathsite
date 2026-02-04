@@ -167,7 +167,7 @@ export function ArticlePage({
         </div>
 
         {/* Problem Hints */}
-        {!isCourse && problem && problem.hints.length > 0 && (
+        {!isCourse && problem && problem.hints && problem.hints.length > 0 && (
           <div className="p-6 md:p-8 bg-gray-50 border-t border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
               <Lightbulb className="w-5 h-5 text-yellow-500" />

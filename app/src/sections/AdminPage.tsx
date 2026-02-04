@@ -551,7 +551,7 @@ function ProblemsManager({
       description: problem.description,
       content: problem.content,
       image: problem.image || '',
-      hints: problem.hints.map(h => ({ ...h, formulaRefs: h.formulaRefs || [] })),
+      hints: (problem.hints || []).map(h => ({ ...h, formulaRefs: h.formulaRefs || [] })),
     });
     setEditingId(problem.id);
     setIsAdding(true);
@@ -807,7 +807,7 @@ function ProblemsManager({
                 </div>
                 <h4 className="font-medium text-gray-800">{problem.title}</h4>
                 <p className="text-sm text-gray-600 line-clamp-1">{problem.description}</p>
-                {problem.hints.length > 0 && (
+                {problem.hints && problem.hints.length > 0 && (
                   <p className="text-xs text-gray-500 mt-1">
                     {problem.hints.length} indice{problem.hints.length > 1 ? 's' : ''}
                   </p>

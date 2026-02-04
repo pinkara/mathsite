@@ -217,7 +217,7 @@ export function ProblemsPage({ problems, onNavigate }: ProblemsPageProps) {
               </p>
 
               {/* Hints count */}
-              {problem.hints.length > 0 && (
+              {problem.hints && problem.hints.length > 0 && (
                 <div className="flex items-center gap-2 text-[10px] md:text-xs text-gray-500 mb-3">
                   <span className="bg-gray-100 px-2 py-1 rounded">
                     {problem.hints.length} indice{problem.hints.length > 1 ? 's' : ''}
