@@ -15,7 +15,8 @@ import {
   TrendingUp,
   Users,
   Eye,
-  BarChart3
+  BarChart3,
+  Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ import { cn } from '@/lib/utils';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
 import type { Course, Problem, Formula, Book, Level, MonthlyStats } from '@/types';
 import { LEVELS } from '@/types';
+import { uploadImage } from '@/lib/supabase';
 
 interface AdminPageProps {
   isAdmin: boolean;
@@ -296,11 +298,29 @@ function CoursesManager({
     setIsAdding(true);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setFormData(prev => ({ ...prev, image: url }));
+      setIsUploading(true);
+      try {
+        // Essayer d'uploader vers Supabase d'abord
+        const uploadedUrl = await uploadImage(file, 'courses');
+        if (uploadedUrl) {
+          setFormData(prev => ({ ...prev, image: uploadedUrl }));
+        } else {
+          // Fallback: utiliser une URL locale temporaire
+          const url = URL.createObjectURL(file);
+          setFormData(prev => ({ ...prev, image: url }));
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        const url = URL.createObjectURL(file);
+        setFormData(prev => ({ ...prev, image: url }));
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -358,9 +378,14 @@ function CoursesManager({
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   className="flex-1"
+                  disabled={isUploading}
                 >
-                  <Upload className="w-4 h-4 mr-2" />
-                  {formData.image ? 'Changer l\'image' : 'Ajouter une image'}
+                  {isUploading ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4 mr-2" />
+                  )}
+                  {isUploading ? 'Upload...' : formData.image ? 'Changer l\'image' : 'Ajouter une image'}
                 </Button>
               </div>
               {formData.image && (
@@ -475,6 +500,7 @@ function ProblemsManager({
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -555,11 +581,27 @@ function ProblemsManager({
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setFormData(prev => ({ ...prev, image: url }));
+      setIsUploading(true);
+      try {
+        // Essayer d'uploader vers Supabase d'abord
+        const uploadedUrl = await uploadImage(file, 'problems');
+        if (uploadedUrl) {
+          setFormData(prev => ({ ...prev, image: uploadedUrl }));
+        } else {
+          // Fallback: utiliser une URL locale temporaire
+          const url = URL.createObjectURL(file);
+          setFormData(prev => ({ ...prev, image: url }));
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        const url = URL.createObjectURL(file);
+        setFormData(prev => ({ ...prev, image: url }));
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -629,9 +671,14 @@ function ProblemsManager({
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   className="flex-1"
+                  disabled={isUploading}
                 >
-                  <Upload className="w-4 h-4 mr-2" />
-                  {formData.image ? 'Changer l\'image' : 'Ajouter une image'}
+                  {isUploading ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4 mr-2" />
+                  )}
+                  {isUploading ? 'Upload...' : formData.image ? 'Changer l\'image' : 'Ajouter une image'}
                 </Button>
               </div>
               {formData.image && (

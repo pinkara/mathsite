@@ -270,8 +270,8 @@ export function LibraryPage({
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const MAX_PDF_BYTES = 10 * 1024 * 1024; // 10 MB
-  const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+  const MAX_PDF_BYTES = 50 * 1024 * 1024; // 50 MB
+  const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10 MB
 
   // Formulaire pour ajouter un livre
   const [newBook, setNewBook] = useState({
@@ -430,7 +430,7 @@ export function LibraryPage({
     if (file) {
       if (file.size > MAX_PDF_BYTES) {
         const { toast } = await import("sonner");
-        toast.error("PDF trop volumineux. Taille max : 10 MB.");
+        toast.error("PDF trop volumineux. Taille max : 50 MB.");
         return;
       }
 
@@ -449,7 +449,7 @@ export function LibraryPage({
     if (file) {
       if (file.size > MAX_IMAGE_BYTES) {
         const { toast } = await import("sonner");
-        toast.error("Image trop volumineuse. Taille max : 5 MB.");
+        toast.error("Image trop volumineuse. Taille max : 10 MB.");
         return;
       }
 

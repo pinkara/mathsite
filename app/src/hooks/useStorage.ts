@@ -1,8 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Course, Problem, Formula, Book, MonthlyStats } from '@/types';
 import { deleteFileLocal } from '@/lib/fileStorage';
+import {
+  supabase,
+  fetchCourses,
+  fetchProblems,
+  fetchFormulas,
+  fetchBooks,
+  addCourseToDB,
+  addProblemToDB,
+  addFormulaToDB,
+  addBookToDB,
+  updateCourseInDB,
+  updateProblemInDB,
+  updateFormulaInDB,
+  deleteCourseFromDB,
+  deleteProblemFromDB,
+  deleteFormulaFromDB,
+  deleteBookFromDB,
+  uploadImage,
+  uploadPDF,
+} from '@/lib/supabase';
 
-// === CLÉS DE STOCKAGE ===
+// === CLÉS DE STOCKAGE LOCAL (CACHE) ===
 const STORAGE_KEYS = {
   COURSES: 'mathunivers_courses',
   PROBLEMS: 'mathunivers_problems',
@@ -15,7 +35,7 @@ const STORAGE_KEYS = {
   VOTES: 'mathunivers_votes',
 } as const;
 
-// === FONCTIONS UTILITAIRES ===
+// === FONCTIONS UTILITAIRES POUR LE CACHE LOCAL ===
 function loadFromStorage<T>(key: string, defaultValue: T): T {
   if (typeof window === 'undefined') return defaultValue;
   const data = localStorage.getItem(key);
@@ -27,11 +47,8 @@ function saveToStorage<T>(key: string, data: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch (err: any) {
-    // Handle quota exceeded gracefully
     if (err && (err.name === 'QuotaExceededError' || err.code === 22 || err.number === -2147024882)) {
       console.warn('LocalStorage quota exceeded when saving', key);
-
-      // If BOOKS grew too large (likely due to storing data URLs), sanitize large fields and retry
       if (key === STORAGE_KEYS.BOOKS) {
         try {
           const arr = Array.isArray(data) ? (data as any[]) : [];
@@ -41,55 +58,140 @@ function saveToStorage<T>(key: string, data: T): void {
             coverImage: b.coverImage && typeof b.coverImage === 'string' && b.coverImage.startsWith('data:') ? '' : b.coverImage,
           }));
           localStorage.setItem(key, JSON.stringify(sanitized));
-          console.warn('Saved sanitized books to localStorage (removed inline data URIs).');
           return;
         } catch (e) {
           console.error('Failed to save sanitized books to localStorage', e);
         }
       }
-
-      // As a fallback, try to free up space by removing the BOOKS key then rethrow
       try { localStorage.removeItem(STORAGE_KEYS.BOOKS); } catch (e) {}
     }
-    // Re-throw so upstream can observe the failure if necessary
     throw err;
   }
 }
 
-// === HOOK POUR LES COURS ===
+// === VÉRIFIER SI SUPABASE EST CONFIGURÉ ===
+const isSupabaseConfigured = () => {
+  return !!(supabase && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
+};
+
+// === HOOK POUR LES COURS (AVEC SUPABASE) ===
 export function useCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Charger depuis Supabase au démarrage
   useEffect(() => {
-    const loaded = loadFromStorage<Course[]>(STORAGE_KEYS.COURSES, []);
-    setCourses(loaded);
-    setIsLoaded(true);
+    const loadCourses = async () => {
+      
+      // D'abord, charger depuis le cache local pour affichage rapide
+      const cached = loadFromStorage<Course[]>(STORAGE_KEYS.COURSES, []);
+      if (cached.length > 0) {
+        setCourses(cached);
+      }
+      
+      // Ensuite, charger depuis Supabase
+      if (isSupabaseConfigured()) {
+        try {
+          const data = await fetchCourses();
+          if (data && data.length > 0) {
+            setCourses(data);
+            saveToStorage(STORAGE_KEYS.COURSES, data);
+          } else if (cached.length === 0) {
+            // Si aucune donnée dans Supabase et pas de cache, initialiser avec les données par défaut
+            const { initialCourses } = await import('@/data/initialData');
+            setCourses(initialCourses);
+            saveToStorage(STORAGE_KEYS.COURSES, initialCourses);
+            
+            // Synchroniser avec Supabase
+            for (const course of initialCourses) {
+              await addCourseToDB(course);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading courses from Supabase:', error);
+          // En cas d'erreur, utiliser le cache
+          setCourses(cached);
+        }
+      }
+      
+      setIsLoaded(true);
+    };
+    
+    loadCourses();
   }, []);
 
-  useEffect(() => {
-    if (isLoaded) {
-      saveToStorage(STORAGE_KEYS.COURSES, courses);
-    }
-  }, [courses, isLoaded]);
-
-  const addCourse = useCallback((course: Omit<Course, 'id' | 'type' | 'date'>) => {
+  const addCourse = useCallback(async (course: Omit<Course, 'id' | 'type' | 'date'>) => {
     const newCourse: Course = {
       ...course,
       id: `c${Date.now()}`,
       type: 'course',
       date: new Date().toISOString().split('T')[0],
     };
-    setCourses(prev => [...prev, newCourse]);
+    
+    // Ajouter à Supabase si configuré
+    if (isSupabaseConfigured()) {
+      const dbCourse = await addCourseToDB(newCourse);
+      if (dbCourse) {
+        setCourses(prev => {
+          const updated = [...prev, dbCourse];
+          saveToStorage(STORAGE_KEYS.COURSES, updated);
+          return updated;
+        });
+        return dbCourse;
+      }
+    }
+    
+    // Fallback: stockage local uniquement
+    setCourses(prev => {
+      const updated = [...prev, newCourse];
+      saveToStorage(STORAGE_KEYS.COURSES, updated);
+      return updated;
+    });
     return newCourse;
   }, []);
 
-  const updateCourse = useCallback((id: string, updates: Partial<Course>) => {
-    setCourses(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c));
+  const updateCourse = useCallback(async (id: string, updates: Partial<Course>) => {
+    // Mettre à jour dans Supabase si configuré
+    if (isSupabaseConfigured()) {
+      const dbCourse = await updateCourseInDB(id, updates);
+      if (dbCourse) {
+        setCourses(prev => {
+          const updated = prev.map(c => c.id === id ? dbCourse : c);
+          saveToStorage(STORAGE_KEYS.COURSES, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    // Fallback: mise à jour locale
+    setCourses(prev => {
+      const updated = prev.map(c => c.id === id ? { ...c, ...updates } : c);
+      saveToStorage(STORAGE_KEYS.COURSES, updated);
+      return updated;
+    });
   }, []);
 
-  const removeCourse = useCallback((id: string) => {
-    setCourses(prev => prev.filter(c => c.id !== id));
+  const removeCourse = useCallback(async (id: string) => {
+    // Supprimer de Supabase si configuré
+    if (isSupabaseConfigured()) {
+      const success = await deleteCourseFromDB(id);
+      if (success) {
+        setCourses(prev => {
+          const updated = prev.filter(c => c.id !== id);
+          saveToStorage(STORAGE_KEYS.COURSES, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    // Fallback: suppression locale
+    setCourses(prev => {
+      const updated = prev.filter(c => c.id !== id);
+      saveToStorage(STORAGE_KEYS.COURSES, updated);
+      return updated;
+    });
   }, []);
 
   const getCourseById = useCallback((id: string) => {
@@ -99,40 +201,112 @@ export function useCourses() {
   return { courses, addCourse, updateCourse, removeCourse, getCourseById, isLoaded };
 }
 
-// === HOOK POUR LES PROBLÈMES ===
+// === HOOK POUR LES PROBLÈMES (AVEC SUPABASE) ===
 export function useProblems() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loaded = loadFromStorage<Problem[]>(STORAGE_KEYS.PROBLEMS, []);
-    setProblems(loaded);
-    setIsLoaded(true);
+    const loadProblems = async () => {
+      
+      const cached = loadFromStorage<Problem[]>(STORAGE_KEYS.PROBLEMS, []);
+      if (cached.length > 0) {
+        setProblems(cached);
+      }
+      
+      if (isSupabaseConfigured()) {
+        try {
+          const data = await fetchProblems();
+          if (data && data.length > 0) {
+            setProblems(data);
+            saveToStorage(STORAGE_KEYS.PROBLEMS, data);
+          } else if (cached.length === 0) {
+            const { initialProblems } = await import('@/data/initialData');
+            setProblems(initialProblems);
+            saveToStorage(STORAGE_KEYS.PROBLEMS, initialProblems);
+            
+            for (const problem of initialProblems) {
+              await addProblemToDB(problem);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading problems from Supabase:', error);
+          setProblems(cached);
+        }
+      }
+      
+      setIsLoaded(true);
+    };
+    
+    loadProblems();
   }, []);
 
-  useEffect(() => {
-    if (isLoaded) {
-      saveToStorage(STORAGE_KEYS.PROBLEMS, problems);
-    }
-  }, [problems, isLoaded]);
-
-  const addProblem = useCallback((problem: Omit<Problem, 'id' | 'type' | 'date'>) => {
+  const addProblem = useCallback(async (problem: Omit<Problem, 'id' | 'type' | 'date'>) => {
     const newProblem: Problem = {
       ...problem,
       id: `p${Date.now()}`,
       type: 'problem',
       date: new Date().toISOString().split('T')[0],
     };
-    setProblems(prev => [...prev, newProblem]);
+    
+    if (isSupabaseConfigured()) {
+      const dbProblem = await addProblemToDB(newProblem);
+      if (dbProblem) {
+        setProblems(prev => {
+          const updated = [...prev, dbProblem];
+          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+          return updated;
+        });
+        return dbProblem;
+      }
+    }
+    
+    setProblems(prev => {
+      const updated = [...prev, newProblem];
+      saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+      return updated;
+    });
     return newProblem;
   }, []);
 
-  const updateProblem = useCallback((id: string, updates: Partial<Problem>) => {
-    setProblems(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
+  const updateProblem = useCallback(async (id: string, updates: Partial<Problem>) => {
+    if (isSupabaseConfigured()) {
+      const dbProblem = await updateProblemInDB(id, updates);
+      if (dbProblem) {
+        setProblems(prev => {
+          const updated = prev.map(p => p.id === id ? dbProblem : p);
+          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    setProblems(prev => {
+      const updated = prev.map(p => p.id === id ? { ...p, ...updates } : p);
+      saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+      return updated;
+    });
   }, []);
 
-  const removeProblem = useCallback((id: string) => {
-    setProblems(prev => prev.filter(p => p.id !== id));
+  const removeProblem = useCallback(async (id: string) => {
+    if (isSupabaseConfigured()) {
+      const success = await deleteProblemFromDB(id);
+      if (success) {
+        setProblems(prev => {
+          const updated = prev.filter(p => p.id !== id);
+          saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    setProblems(prev => {
+      const updated = prev.filter(p => p.id !== id);
+      saveToStorage(STORAGE_KEYS.PROBLEMS, updated);
+      return updated;
+    });
   }, []);
 
   const getProblemById = useCallback((id: string) => {
@@ -142,38 +316,110 @@ export function useProblems() {
   return { problems, addProblem, updateProblem, removeProblem, getProblemById, isLoaded };
 }
 
-// === HOOK POUR LES FORMULES ===
+// === HOOK POUR LES FORMULES (AVEC SUPABASE) ===
 export function useFormulas() {
   const [formulas, setFormulas] = useState<Formula[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loaded = loadFromStorage<Formula[]>(STORAGE_KEYS.FORMULAS, []);
-    setFormulas(loaded);
-    setIsLoaded(true);
+    const loadFormulas = async () => {
+      
+      const cached = loadFromStorage<Formula[]>(STORAGE_KEYS.FORMULAS, []);
+      if (cached.length > 0) {
+        setFormulas(cached);
+      }
+      
+      if (isSupabaseConfigured()) {
+        try {
+          const data = await fetchFormulas();
+          if (data && data.length > 0) {
+            setFormulas(data);
+            saveToStorage(STORAGE_KEYS.FORMULAS, data);
+          } else if (cached.length === 0) {
+            const { initialFormulas } = await import('@/data/initialData');
+            setFormulas(initialFormulas);
+            saveToStorage(STORAGE_KEYS.FORMULAS, initialFormulas);
+            
+            for (const formula of initialFormulas) {
+              await addFormulaToDB(formula);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading formulas from Supabase:', error);
+          setFormulas(cached);
+        }
+      }
+      
+      setIsLoaded(true);
+    };
+    
+    loadFormulas();
   }, []);
 
-  useEffect(() => {
-    if (isLoaded) {
-      saveToStorage(STORAGE_KEYS.FORMULAS, formulas);
-    }
-  }, [formulas, isLoaded]);
-
-  const addFormula = useCallback((formula: Omit<Formula, 'id'>) => {
+  const addFormula = useCallback(async (formula: Omit<Formula, 'id'>) => {
     const newFormula: Formula = {
       ...formula,
       id: `f${Date.now()}`,
     };
-    setFormulas(prev => [...prev, newFormula]);
+    
+    if (isSupabaseConfigured()) {
+      const dbFormula = await addFormulaToDB(newFormula);
+      if (dbFormula) {
+        setFormulas(prev => {
+          const updated = [...prev, dbFormula];
+          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+          return updated;
+        });
+        return dbFormula;
+      }
+    }
+    
+    setFormulas(prev => {
+      const updated = [...prev, newFormula];
+      saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+      return updated;
+    });
     return newFormula;
   }, []);
 
-  const updateFormula = useCallback((id: string, updates: Partial<Formula>) => {
-    setFormulas(prev => prev.map(f => f.id === id ? { ...f, ...updates } : f));
+  const updateFormula = useCallback(async (id: string, updates: Partial<Formula>) => {
+    if (isSupabaseConfigured()) {
+      const dbFormula = await updateFormulaInDB(id, updates);
+      if (dbFormula) {
+        setFormulas(prev => {
+          const updated = prev.map(f => f.id === id ? dbFormula : f);
+          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    setFormulas(prev => {
+      const updated = prev.map(f => f.id === id ? { ...f, ...updates } : f);
+      saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+      return updated;
+    });
   }, []);
 
-  const removeFormula = useCallback((id: string) => {
-    setFormulas(prev => prev.filter(f => f.id !== id));
+  const removeFormula = useCallback(async (id: string) => {
+    if (isSupabaseConfigured()) {
+      const success = await deleteFormulaFromDB(id);
+      if (success) {
+        setFormulas(prev => {
+          const updated = prev.filter(f => f.id !== id);
+          saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    setFormulas(prev => {
+      const updated = prev.filter(f => f.id !== id);
+      saveToStorage(STORAGE_KEYS.FORMULAS, updated);
+      return updated;
+    });
   }, []);
 
   const getFormulaById = useCallback((id: string) => {
@@ -201,47 +447,91 @@ export function useFormulas() {
   };
 }
 
-// === HOOK POUR LA LIBRAIRIE ===
+// === HOOK POUR LA LIBRAIRIE (AVEC SUPABASE) ===
+
+// === HOOK POUR LA LIBRAIRIE (AVEC SUPABASE) ===
 export function useLibrary() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loaded = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
-    // Remove any stale blob: URLs saved previously (they don't survive page reloads)
-    const sanitized = (loaded || []).map(b => ({
-      ...b,
-      coverImage: b.coverImage && b.coverImage.startsWith('blob:') ? '' : b.coverImage,
-      pdfUrl: b.pdfUrl && b.pdfUrl.startsWith('blob:') ? '' : b.pdfUrl,
-    }));
-    setBooks(sanitized);
-    setIsLoaded(true);
+    const loadBooks = async () => {
+      
+      const cached = loadFromStorage<Book[]>(STORAGE_KEYS.BOOKS, []);
+      if (cached.length > 0) {
+        // Nettoyer les URLs blob: qui ne survivent pas au rechargement
+        const sanitized = cached.map(b => ({
+          ...b,
+          coverImage: b.coverImage && b.coverImage.startsWith('blob:') ? '' : b.coverImage,
+          pdfUrl: b.pdfUrl && b.pdfUrl.startsWith('blob:') ? '' : b.pdfUrl,
+        }));
+        setBooks(sanitized);
+      }
+      
+      if (isSupabaseConfigured()) {
+        try {
+          const data = await fetchBooks();
+          if (data && data.length > 0) {
+            setBooks(data);
+            saveToStorage(STORAGE_KEYS.BOOKS, data);
+          } else if (cached.length === 0) {
+            const { initialBooks } = await import('@/data/initialData');
+            setBooks(initialBooks);
+            saveToStorage(STORAGE_KEYS.BOOKS, initialBooks);
+            
+            for (const book of initialBooks) {
+              await addBookToDB(book);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading books from Supabase:', error);
+          setBooks(cached);
+        }
+      }
+      
+      setIsLoaded(true);
+    };
+    
+    loadBooks();
   }, []);
 
-  useEffect(() => {
-    if (isLoaded) {
-      saveToStorage(STORAGE_KEYS.BOOKS, books);
-    }
-  }, [books, isLoaded]);
-
-  const addBook = useCallback((book: Omit<Book, 'id' | 'uploadDate'>) => {
+  const addBook = useCallback(async (book: Omit<Book, 'id' | 'uploadDate'>) => {
     console.debug('useLibrary.addBook called with:', book);
     const newBook: Book = {
       ...book,
       id: `b${Date.now()}`,
       uploadDate: new Date().toISOString().split('T')[0],
     };
-    console.debug('useLibrary.addBook saving newBook:', newBook);
-    setBooks(prev => [...prev, newBook]);
+    
+    if (isSupabaseConfigured()) {
+      const dbBook = await addBookToDB(newBook);
+      if (dbBook) {
+        setBooks(prev => {
+          const updated = [...prev, dbBook];
+          saveToStorage(STORAGE_KEYS.BOOKS, updated);
+          return updated;
+        });
+        return dbBook;
+      }
+    }
+    
+    setBooks(prev => {
+      const updated = [...prev, newBook];
+      saveToStorage(STORAGE_KEYS.BOOKS, updated);
+      return updated;
+    });
     return newBook;
   }, []);
 
-  const updateBook = useCallback((id: string, updates: Partial<Book>) => {
-    setBooks(prev => prev.map(b => b.id === id ? { ...b, ...updates } : b));
+  const updateBook = useCallback(async (id: string, updates: Partial<Book>) => {
+    setBooks(prev => {
+      const updated = prev.map(b => b.id === id ? { ...b, ...updates } : b);
+      saveToStorage(STORAGE_KEYS.BOOKS, updated);
+      return updated;
+    });
   }, []);
 
   const removeBook = useCallback(async (id: string) => {
-    // Trouver le livre pour récupérer les URLs des fichiers locaux
     const bookToRemove = books.find(b => b.id === id);
     if (bookToRemove) {
       // Supprimer les fichiers locaux s'ils existent
@@ -252,7 +542,24 @@ export function useLibrary() {
         await deleteFileLocal(bookToRemove.coverImage);
       }
     }
-    setBooks(prev => prev.filter(b => b.id !== id));
+    
+    if (isSupabaseConfigured()) {
+      const success = await deleteBookFromDB(id);
+      if (success) {
+        setBooks(prev => {
+          const updated = prev.filter(b => b.id !== id);
+          saveToStorage(STORAGE_KEYS.BOOKS, updated);
+          return updated;
+        });
+        return;
+      }
+    }
+    
+    setBooks(prev => {
+      const updated = prev.filter(b => b.id !== id);
+      saveToStorage(STORAGE_KEYS.BOOKS, updated);
+      return updated;
+    });
   }, [books]);
 
   return { books, addBook, updateBook, removeBook, isLoaded };
@@ -268,7 +575,6 @@ export function useAdmin() {
   }, []);
 
   const login = useCallback((password: string): boolean => {
-    // Mot de passe admin (à changer en production)
     const ADMIN_PASSWORD = 'mathunivers2024';
     if (password === ADMIN_PASSWORD) {
       setIsAdmin(true);
@@ -368,3 +674,6 @@ export function useVotes() {
 
   return { getVote, setVote };
 }
+
+// === FONCTIONS D'UPLOAD DE FICHIERS ===
+export { uploadImage, uploadPDF };

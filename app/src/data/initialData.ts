@@ -248,15 +248,10 @@ export const initialBooks: Book[] = [
 ];
 
 // === FONCTION D'INITIALISATION ===
+// Note: Les données sont maintenant chargées depuis Supabase
+// Cette fonction est conservée pour compatibilité mais ne fait plus rien
 export function initializeData() {
-  // Vérifier si les données sont déjà initialisées
-  const isInitialized = localStorage.getItem('mathunivers_initialized');
-  if (isInitialized) return;
-
-  // Initialiser les données
-  localStorage.setItem('mathunivers_courses', JSON.stringify(initialCourses));
-  localStorage.setItem('mathunivers_problems', JSON.stringify(initialProblems));
-  localStorage.setItem('mathunivers_formulas', JSON.stringify(initialFormulas));
-  localStorage.setItem('mathunivers_books', JSON.stringify(initialBooks));
-  localStorage.setItem('mathunivers_initialized', 'true');
+  // Les données sont maintenant gérées par les hooks useStorage
+  // qui chargent depuis Supabase (ou localStorage comme fallback)
+  console.log('MathUnivers: Data will be loaded from Supabase or local cache');
 }
