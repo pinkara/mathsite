@@ -50,6 +50,8 @@ export async function addCourseToDB(course: Omit<Course, 'id'>) {
     return null;
   }
   
+  console.log('Adding course to Supabase:', course);
+  
   const { data, error } = await supabase
     .from('courses')
     .insert([course])
@@ -58,6 +60,7 @@ export async function addCourseToDB(course: Omit<Course, 'id'>) {
   
   if (error) {
     console.error('Error adding course:', error);
+    console.error('Course data that failed:', JSON.stringify(course, null, 2));
     return null;
   }
   
@@ -290,6 +293,8 @@ export async function addBookToDB(book: Omit<Book, 'id'>) {
     return null;
   }
   
+  console.log('Adding book to Supabase:', book);
+  
   const { data, error } = await supabase
     .from('books')
     .insert([book])
@@ -298,6 +303,7 @@ export async function addBookToDB(book: Omit<Book, 'id'>) {
   
   if (error) {
     console.error('Error adding book:', error);
+    console.error('Book data that failed:', JSON.stringify(book, null, 2));
     return null;
   }
   

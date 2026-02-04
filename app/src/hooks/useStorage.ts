@@ -127,6 +127,10 @@ export function useCourses() {
       id: `c${Date.now()}`,
       type: 'course',
       date: new Date().toISOString().split('T')[0],
+      // Assurer que les champs optionnels ne sont pas undefined
+      image: course.image || '',
+      categoryColor: course.categoryColor || '#f0f9ff',
+      categoryTextColor: course.categoryTextColor || '#0284c7',
     };
     
     // Ajouter d'abord à Supabase si configuré
@@ -242,6 +246,9 @@ export function useProblems() {
       id: `p${Date.now()}`,
       type: 'problem',
       date: new Date().toISOString().split('T')[0],
+      // Assurer que les champs optionnels ne sont pas undefined
+      image: problem.image || '',
+      hints: problem.hints || [],
     };
     
     if (isSupabaseConfigured()) {
@@ -470,6 +477,10 @@ export function useLibrary() {
       ...book,
       id: `b${Date.now()}`,
       uploadDate: new Date().toISOString().split('T')[0],
+      // Assurer que les champs optionnels ne sont pas undefined
+      description: book.description || '',
+      pdfUrl: book.pdfUrl || '',
+      coverImage: book.coverImage || '',
     };
     
     if (isSupabaseConfigured()) {
