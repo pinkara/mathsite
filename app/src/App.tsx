@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
+import { PWAInstall } from '@/components/PWAInstall';
 import { HomePage } from '@/sections/HomePage';
 import { CoursesPage } from '@/sections/CoursesPage';
 import { ProblemsPage } from '@/sections/ProblemsPage';
@@ -350,6 +351,9 @@ function App() {
           </p>
         </div>
       </footer>
+
+      {/* PWA Install Banner */}
+      <PWAInstall />
     </div>
   );
 }

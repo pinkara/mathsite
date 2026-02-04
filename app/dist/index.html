@@ -3,10 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="L'encyclopédie mathématique collaborative - Cours, problèmes et formules pour tous les niveaux" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="MathUnivers" />
+    
+    <!-- Favicon et icônes -->
     <link rel="icon" type="image/svg+xml" href="/mathsite/favicon.svg" />
+    <link rel="alternate icon" href="/mathsite/favicon.ico" />
+    <link rel="apple-touch-icon" href="/mathsite/icon-192x192.png" />
+    
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="/mathsite/manifest.json" />
+    
     <title>MathUnivers</title>
-    <script type="module" crossorigin src="/mathsite/assets/index-DGPpokXu.js"></script>
-    <link rel="stylesheet" crossorigin href="/mathsite/assets/index-BWrnpHev.css">
+    
+    <!-- Enregistrement du Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('[PWA] Service Worker enregistré:', registration.scope);
+            })
+            .catch((error) => {
+              console.error('[PWA] Erreur Service Worker:', error);
+            });
+        });
+      }
+    </script>
+    <script type="module" crossorigin src="/mathsite/assets/index-CY-Adwys.js"></script>
+    <link rel="stylesheet" crossorigin href="/mathsite/assets/index-DIc577z6.css">
   </head>
   <body>
     <div id="root"></div>
