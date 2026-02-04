@@ -112,10 +112,46 @@ function LoadingScreen() {
   );
 }
 
+// === WARNING BANNER FOR MISSING SUPABASE ===
+function SupabaseWarning() {
+  const [show, setShow] = useState(true);
+  
+  if (!show) return null;
+  
+  return (
+    <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span className="text-sm text-amber-800">
+            <strong>Mode local activé</strong> — Les données ne sont pas partagées entre appareils. 
+            <a href="SUPABASE_FIX.md" className="underline ml-1 hover:text-amber-900">Configurer Supabase</a>
+          </span>
+        </div>
+        <button onClick={() => setShow(false)} className="text-amber-600 hover:text-amber-800">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// === CHECK IF SUPABASE IS CONFIGURED ===
+const isSupabaseConfigured = () => {
+  const url = import.meta.env.VITE_SUPABASE_URL;
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  return url && key && url.startsWith('https://') && key.length > 20;
+};
+
 // === MAIN APP ===
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const { state, router } = useRouter();
+  const showSupabaseWarning = !isSupabaseConfigured();
   
   // Load MathJax globally for all pages
   useMathJax();
@@ -245,6 +281,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      {showSupabaseWarning && <SupabaseWarning />}
+      
       <Header 
         currentRoute={state.route}
         onNavigate={handleNavigate}
