@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { 
-  Calendar, 
   BookOpen, 
   Puzzle, 
   Calculator, 
@@ -92,61 +91,99 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
         </div>
       </div>
 
-      {/* Contenu du Jour */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-4 md:p-5">
-        <h3 className="font-bold text-blue-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide border-b border-blue-200 pb-2 flex items-center gap-2">
-          <Calendar className="w-3 h-3 md:w-4 md:h-4" />
-          Contenu du Jour
+      {/* À la une aujourd'hui */}
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-200 p-4 md:p-5">
+        <h3 className="font-bold text-amber-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide border-b border-amber-200 pb-2 flex items-center gap-2">
+          <Star className="w-3 h-3 md:w-4 md:h-4" />
+          À la une aujourd'hui
         </h3>
 
         {/* Cours du jour */}
         {dailyContent.course && (
           <div 
-            className="mb-3 md:mb-4 p-2 md:p-3 bg-white rounded-lg border border-blue-100 cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all"
+            className="mb-3 md:mb-4 bg-white rounded-lg border border-blue-100 cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all overflow-hidden"
             onClick={() => onNavigate('article', { type: 'course', id: dailyContent.course!.id })}
           >
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase flex items-center gap-1">
-                <BookOpen className="w-3 h-3" />
-                Cours du jour
-              </span>
-              <span className="text-blue-400 text-xs">→</span>
+            {/* Image du cours */}
+            {dailyContent.course.image ? (
+              <div className="h-24 overflow-hidden">
+                <img
+                  src={dailyContent.course.image}
+                  alt={dailyContent.course.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="h-16 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+                <BookOpen className="w-8 h-8 text-blue-300" />
+              </div>
+            )}
+            <div className="p-2 md:p-3">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase flex items-center gap-1">
+                  <BookOpen className="w-3 h-3" />
+                  Cours à la une
+                </span>
+                <span className="text-blue-400 text-xs">→</span>
+              </div>
+              <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
+                {dailyContent.course.title}
+              </h4>
+              <p className="text-[10px] md:text-xs text-gray-500 line-clamp-2 mt-1">
+                {dailyContent.course.description}
+              </p>
             </div>
-            <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-              {dailyContent.course.title}
-            </h4>
-            <p className="text-[10px] md:text-xs text-gray-500 line-clamp-2 mt-1">
-              {dailyContent.course.description}
-            </p>
           </div>
         )}
 
         {/* Problème du jour */}
         {dailyContent.problem && (
           <div 
-            className="mb-3 md:mb-4 p-2 md:p-3 bg-white rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 hover:shadow-sm transition-all"
+            className="mb-3 md:mb-4 bg-white rounded-lg border border-orange-100 cursor-pointer hover:border-orange-300 hover:shadow-sm transition-all overflow-hidden"
             onClick={() => onNavigate('article', { type: 'problem', id: dailyContent.problem!.id })}
           >
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] md:text-xs font-semibold text-orange-600 uppercase flex items-center gap-1">
-                <Puzzle className="w-3 h-3" />
-                Défi du jour
-              </span>
-              <span className="text-orange-400 text-xs">→</span>
-            </div>
-            <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-              {dailyContent.problem.title}
-            </h4>
-            <div className="flex items-center gap-2 mt-1">
-              <span className={cn(
-                'text-[10px] px-1.5 py-0.5 rounded-full',
-                dailyContent.problem.difficulty === 'Facile' && 'bg-green-100 text-green-700',
-                dailyContent.problem.difficulty === 'Moyen' && 'bg-yellow-100 text-yellow-700',
-                dailyContent.problem.difficulty === 'Difficile' && 'bg-red-100 text-red-700',
-              )}>
-                {dailyContent.problem.difficulty}
-              </span>
-              <span className="text-[10px] text-gray-500">{dailyContent.problem.category}</span>
+            {/* Image du problème */}
+            {dailyContent.problem.image ? (
+              <div className="h-24 overflow-hidden">
+                <img
+                  src={dailyContent.problem.image}
+                  alt={dailyContent.problem.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="h-16 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                <Puzzle className="w-8 h-8 text-orange-300" />
+              </div>
+            )}
+            <div className="p-2 md:p-3">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] md:text-xs font-semibold text-orange-600 uppercase flex items-center gap-1">
+                  <Puzzle className="w-3 h-3" />
+                  Défi à la une
+                </span>
+                <span className="text-orange-400 text-xs">→</span>
+              </div>
+              <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
+                {dailyContent.problem.title}
+              </h4>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={cn(
+                  'text-[10px] px-1.5 py-0.5 rounded-full',
+                  dailyContent.problem.difficulty === 'Facile' && 'bg-green-100 text-green-700',
+                  dailyContent.problem.difficulty === 'Moyen' && 'bg-yellow-100 text-yellow-700',
+                  dailyContent.problem.difficulty === 'Difficile' && 'bg-red-100 text-red-700',
+                )}>
+                  {dailyContent.problem.difficulty}
+                </span>
+                <span className="text-[10px] text-gray-500">{dailyContent.problem.category}</span>
+              </div>
             </div>
           </div>
         )}
@@ -173,6 +210,107 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
           </div>
         )}
       </div>
+
+      {/* Derniers cours ajoutés */}
+      {courses.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm">
+          <h3 className="font-bold text-gray-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide border-b pb-2 flex items-center gap-2">
+            <BookOpen className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
+            Derniers cours ajoutés
+          </h3>
+          <div className="space-y-3">
+            {courses.slice(0, 3).map((course) => (
+              <div
+                key={course.id}
+                className="flex gap-3 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+                onClick={() => onNavigate('article', { type: 'course', id: course.id })}
+              >
+                {/* Miniature */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-blue-100">
+                  {course.image ? (
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <BookOpen className="w-6 h-6 text-blue-300" />
+                    </div>
+                  )}
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
+                    {course.title}
+                  </h4>
+                  <span className="text-[10px] text-blue-600">{course.category}</span>
+                  <p className="text-[10px] text-gray-500 line-clamp-1 mt-0.5">
+                    {course.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Derniers problèmes ajoutés */}
+      {problems.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm">
+          <h3 className="font-bold text-gray-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide border-b pb-2 flex items-center gap-2">
+            <Puzzle className="w-3 h-3 md:w-4 md:h-4 text-orange-600" />
+            Derniers problèmes ajoutés
+          </h3>
+          <div className="space-y-3">
+            {problems.slice(0, 3).map((problem) => (
+              <div
+                key={problem.id}
+                className="flex gap-3 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+                onClick={() => onNavigate('article', { type: 'problem', id: problem.id })}
+              >
+                {/* Miniature */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-orange-100">
+                  {problem.image ? (
+                    <img
+                      src={problem.image}
+                      alt={problem.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Puzzle className="w-6 h-6 text-orange-300" />
+                    </div>
+                  )}
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
+                    {problem.title}
+                  </h4>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <span className={cn(
+                      'text-[10px] px-1 py-0.5 rounded-full',
+                      problem.difficulty === 'Facile' && 'bg-green-100 text-green-700',
+                      problem.difficulty === 'Moyen' && 'bg-yellow-100 text-yellow-700',
+                      problem.difficulty === 'Difficile' && 'bg-red-100 text-red-700',
+                    )}>
+                      {problem.difficulty}
+                    </span>
+                    <span className="text-[10px] text-gray-400">{problem.category}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Statistiques */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm">

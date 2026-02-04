@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useMathJaxEffect } from '@/hooks/useMathJax';
 import { ArrowLeft, Heart, ChevronUp, ChevronDown, Lightbulb, Calculator, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,9 @@ export function ArticlePage({
 }: ArticlePageProps) {
   const [revealedHints, setRevealedHints] = useState<Set<string>>(new Set());
   const [vote, setVote] = useState<'up' | 'down' | null>(null);
+
+  // Forcer MathJax à re-parser après révélation d'indices ou vote
+  useMathJaxEffect([revealedHints, vote]);
 
   // Récupérer l'article
   const article = type === 'course' 

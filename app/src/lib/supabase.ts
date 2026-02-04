@@ -127,15 +127,35 @@ export async function fetchProblems(): Promise<Problem[]> {
     return [];
   }
   
-  return data || [];
+  // Normaliser les données pour s'assurer que tous les champs optionnels ont une valeur
+  return (data || []).map((problem: any) => ({
+    ...problem,
+    image: problem.image || '',
+    hints: problem.hints || [],
+    date: problem.date || problem.created_at?.split('T')[0] || '2024-01-01'
+  }));
 }
 
-export async function addProblemToDB(problem: Omit<Problem, 'id'>) {
+export async function addProblemToDB(problem: Omit<Problem, 'id'> & { id?: string }) {
   if (!supabase) return null;
+  
+  const problemData: Record<string, unknown> = {
+    title: problem.title,
+    category: problem.category,
+    level: problem.level,
+    difficulty: problem.difficulty,
+    description: problem.description,
+    content: problem.content,
+    image: problem.image || '',
+    hints: problem.hints || [],
+    date: problem.date || new Date().toISOString().split('T')[0]
+  };
+  
+  if (problem.id) problemData.id = problem.id;
   
   const { data, error } = await supabase
     .from('problems')
-    .insert([problem])
+    .upsert([problemData])
     .select()
     .single();
   

@@ -187,11 +187,31 @@ export function ProblemsPage({ problems, onNavigate }: ProblemsPageProps) {
           {filteredProblems.map(problem => (
             <div
               key={problem.id}
-              className="group bg-white rounded-xl border border-gray-200 p-4 md:p-5 hover:border-orange-300 hover:shadow-lg transition-all cursor-pointer"
+              className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-orange-300 hover:shadow-lg transition-all cursor-pointer"
               onClick={() => onNavigate('article', { type: 'problem', id: problem.id })}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-2 md:mb-3">
+              {/* Image - Responsive height */}
+              {problem.image ? (
+                <div className="h-40 sm:h-44 md:h-48 overflow-hidden">
+                  <img
+                    src={problem.image}
+                    alt={problem.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      // Fallback si l'image ne charge pas
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="h-40 sm:h-44 md:h-48 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                  <Puzzle className="w-12 h-12 md:w-16 md:h-16 text-orange-300" />
+                </div>
+              )}
+
+              <div className="p-4 md:p-5">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-2 md:mb-3">
                 <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
                   <LevelBadge level={problem.level} size="sm" />
                   <DifficultyBadge difficulty={problem.difficulty} size="sm" />
@@ -226,9 +246,10 @@ export function ProblemsPage({ problems, onNavigate }: ProblemsPageProps) {
               )}
 
               {/* Action */}
-              <div className="flex items-center text-orange-600 text-xs md:text-sm font-medium">
-                <span>Résoudre</span>
-                <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center text-orange-600 text-xs md:text-sm font-medium">
+                  <span>Résoudre</span>
+                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
           ))}

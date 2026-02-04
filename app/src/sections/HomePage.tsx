@@ -187,31 +187,50 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
           {/* Problème du jour */}
           {dailyContent.problem && (
             <div 
-              className="group bg-white rounded-xl border-2 border-orange-200 p-4 md:p-6 cursor-pointer hover:border-orange-400 hover:shadow-lg transition-all"
+              className="group bg-white rounded-xl border-2 border-orange-200 overflow-hidden cursor-pointer hover:border-orange-400 hover:shadow-lg transition-all"
               onClick={() => onNavigate('article', { type: 'problem', id: dailyContent.problem!.id })}
             >
-              <div className="flex items-center justify-between mb-3 md:mb-4">
-                <span className="bg-orange-600 text-white text-[10px] md:text-xs px-2 md:px-3 py-1 rounded-full font-medium flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  DÉFI DU JOUR
-                </span>
-                <LevelBadge level={dailyContent.problem.level} size="sm" />
-              </div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] md:text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
-                  {dailyContent.problem.category}
-                </span>
-                <DifficultyBadge difficulty={dailyContent.problem.difficulty} size="sm" />
-              </div>
-              <h3 className="text-base md:text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
-                <TitleWithFormula text={dailyContent.problem.title} />
-              </h3>
-              <p className="text-xs md:text-sm text-gray-600 line-clamp-2 mb-3 md:mb-4">
-                {dailyContent.problem.description}
-              </p>
-              <div className="flex items-center text-orange-600 text-xs md:text-sm font-medium">
-                <span>Relever le défi</span>
-                <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              {/* Image du problème */}
+              {dailyContent.problem.image ? (
+                <div className="h-32 md:h-40 overflow-hidden">
+                  <img 
+                    src={dailyContent.problem.image} 
+                    alt={dailyContent.problem.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="h-32 md:h-40 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                  <Puzzle className="w-16 h-16 text-orange-300" />
+                </div>
+              )}
+              <div className="p-4 md:p-6">
+                <div className="flex items-center justify-between mb-3 md:mb-4">
+                  <span className="bg-orange-600 text-white text-[10px] md:text-xs px-2 md:px-3 py-1 rounded-full font-medium flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    DÉFI DU JOUR
+                  </span>
+                  <LevelBadge level={dailyContent.problem.level} size="sm" />
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[10px] md:text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                    {dailyContent.problem.category}
+                  </span>
+                  <DifficultyBadge difficulty={dailyContent.problem.difficulty} size="sm" />
+                </div>
+                <h3 className="text-base md:text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
+                  <TitleWithFormula text={dailyContent.problem.title} />
+                </h3>
+                <p className="text-xs md:text-sm text-gray-600 line-clamp-2 mb-3 md:mb-4">
+                  {dailyContent.problem.description}
+                </p>
+                <div className="flex items-center text-orange-600 text-xs md:text-sm font-medium">
+                  <span>Relever le défi</span>
+                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
           )}
@@ -238,28 +257,47 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
             {recentCourses.map(course => (
               <div 
                 key={course.id}
-                className="group bg-white rounded-xl border border-gray-200 p-3 md:p-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all"
+                className="group bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-blue-300 hover:shadow-md transition-all"
                 onClick={() => onNavigate('article', { type: 'course', id: course.id })}
               >
-                <div className="flex items-start justify-between mb-2 md:mb-3">
-                  <LevelBadge level={course.level} size="sm" />
-                  <span className="text-[10px] md:text-xs text-gray-400">{course.date}</span>
+                {/* Image du cours */}
+                {course.image ? (
+                  <div className="h-32 md:h-36 overflow-hidden">
+                    <img 
+                      src={course.image} 
+                      alt={course.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="h-32 md:h-36 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+                    <BookOpen className="w-12 h-12 text-blue-300" />
+                  </div>
+                )}
+                <div className="p-3 md:p-4">
+                  <div className="flex items-start justify-between mb-2 md:mb-3">
+                    <LevelBadge level={course.level} size="sm" />
+                    <span className="text-[10px] md:text-xs text-gray-400">{course.date}</span>
+                  </div>
+                  <span 
+                    className="text-[10px] md:text-xs px-2 py-0.5 rounded-full mb-1 md:mb-2 inline-block"
+                    style={{ 
+                      backgroundColor: course.categoryColor || '#f0f9ff',
+                      color: course.categoryTextColor || '#0284c7'
+                    }}
+                  >
+                    {course.category}
+                  </span>
+                  <h3 className="text-sm md:text-base font-bold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <TitleWithFormula text={course.title} />
+                  </h3>
+                  <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
+                    {course.description}
+                  </p>
                 </div>
-                <span 
-                  className="text-[10px] md:text-xs px-2 py-0.5 rounded-full mb-1 md:mb-2 inline-block"
-                  style={{ 
-                    backgroundColor: course.categoryColor || '#f0f9ff',
-                    color: course.categoryTextColor || '#0284c7'
-                  }}
-                >
-                  {course.category}
-                </span>
-                <h3 className="text-sm md:text-base font-bold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
-                  <TitleWithFormula text={course.title} />
-                </h3>
-                <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
-                  {course.description}
-                </p>
               </div>
             ))}
           </div>
@@ -286,24 +324,43 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
             {recentProblems.map(problem => (
               <div 
                 key={problem.id}
-                className="group bg-white rounded-xl border border-gray-200 p-3 md:p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all"
+                className="group bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-orange-300 hover:shadow-md transition-all"
                 onClick={() => onNavigate('article', { type: 'problem', id: problem.id })}
               >
-                <div className="flex items-start justify-between mb-2 md:mb-3">
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <LevelBadge level={problem.level} size="sm" />
-                    <DifficultyBadge difficulty={problem.difficulty} size="sm" />
+                {/* Image du problème */}
+                {problem.image ? (
+                  <div className="h-32 md:h-36 overflow-hidden">
+                    <img 
+                      src={problem.image} 
+                      alt={problem.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
                   </div>
+                ) : (
+                  <div className="h-32 md:h-36 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                    <Puzzle className="w-12 h-12 text-orange-300" />
+                  </div>
+                )}
+                <div className="p-3 md:p-4">
+                  <div className="flex items-start justify-between mb-2 md:mb-3">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <LevelBadge level={problem.level} size="sm" />
+                      <DifficultyBadge difficulty={problem.difficulty} size="sm" />
+                    </div>
+                  </div>
+                  <span className="text-[10px] md:text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mb-1 md:mb-2 inline-block">
+                    {problem.category}
+                  </span>
+                  <h3 className="text-sm md:text-base font-bold text-gray-800 mb-1 group-hover:text-orange-600 transition-colors line-clamp-1">
+                    <TitleWithFormula text={problem.title} />
+                  </h3>
+                  <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
+                    {problem.description}
+                  </p>
                 </div>
-                <span className="text-[10px] md:text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mb-1 md:mb-2 inline-block">
-                  {problem.category}
-                </span>
-                <h3 className="text-sm md:text-base font-bold text-gray-800 mb-1 group-hover:text-orange-600 transition-colors line-clamp-1">
-                  <TitleWithFormula text={problem.title} />
-                </h3>
-                <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
-                  {problem.description}
-                </p>
               </div>
             ))}
           </div>
