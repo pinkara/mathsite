@@ -237,6 +237,7 @@ export function useProblems() {
       // Assurer que les champs optionnels ne sont pas undefined
       image: problem.image || '',
       hints: problem.hints || [],
+      solution: problem.solution || '',
     };
     
     if (isSupabaseConfigured()) {

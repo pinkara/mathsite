@@ -83,9 +83,19 @@ export async function addCourseToDB(course: Omit<Course, 'id'> & { id?: string }
 export async function updateCourseInDB(id: string, updates: Partial<Course>) {
   if (!supabase) return null;
   
-  const updateData: any = { ...updates };
-  if (updates.categoryColor) updateData.categorycolor = updates.categoryColor;
-  if (updates.categoryTextColor) updateData.categorytextcolor = updates.categoryTextColor;
+  // Mapper les champs camelCase vers snake_case pour Supabase
+  const updateData: any = {};
+  
+  if (updates.title !== undefined) updateData.title = updates.title;
+  if (updates.type !== undefined) updateData.type = updates.type;
+  if (updates.category !== undefined) updateData.category = updates.category;
+  if (updates.level !== undefined) updateData.level = updates.level;
+  if (updates.date !== undefined) updateData.date = updates.date;
+  if (updates.description !== undefined) updateData.description = updates.description;
+  if (updates.content !== undefined) updateData.content = updates.content;
+  if (updates.image !== undefined) updateData.image = updates.image;
+  if (updates.categoryColor !== undefined) updateData.categorycolor = updates.categoryColor;
+  if (updates.categoryTextColor !== undefined) updateData.categorytextcolor = updates.categoryTextColor;
 
   const { data, error } = await supabase
     .from('courses')
@@ -96,6 +106,7 @@ export async function updateCourseInDB(id: string, updates: Partial<Course>) {
   
   if (error) {
     console.error('Error updating course:', error.message);
+    console.error('Update data:', updateData);
     return null;
   }
   return data;
@@ -132,6 +143,7 @@ export async function fetchProblems(): Promise<Problem[]> {
     ...problem,
     image: problem.image || '',
     hints: problem.hints || [],
+    solution: problem.solution || '',
     date: problem.date || problem.created_at?.split('T')[0] || '2024-01-01'
   }));
 }
@@ -146,6 +158,7 @@ export async function addProblemToDB(problem: Omit<Problem, 'id'> & { id?: strin
     difficulty: problem.difficulty,
     description: problem.description,
     content: problem.content,
+    solution: problem.solution || '',
     image: problem.image || '',
     hints: problem.hints || [],
     date: problem.date || new Date().toISOString().split('T')[0]
@@ -169,15 +182,30 @@ export async function addProblemToDB(problem: Omit<Problem, 'id'> & { id?: strin
 export async function updateProblemInDB(id: string, updates: Partial<Problem>) {
   if (!supabase) return null;
   
+  // Mapper les champs camelCase vers snake_case pour Supabase
+  const updateData: any = {};
+  
+  if (updates.title !== undefined) updateData.title = updates.title;
+  if (updates.category !== undefined) updateData.category = updates.category;
+  if (updates.level !== undefined) updateData.level = updates.level;
+  if (updates.difficulty !== undefined) updateData.difficulty = updates.difficulty;
+  if (updates.description !== undefined) updateData.description = updates.description;
+  if (updates.content !== undefined) updateData.content = updates.content;
+  if (updates.solution !== undefined) updateData.solution = updates.solution;
+  if (updates.image !== undefined) updateData.image = updates.image;
+  if (updates.hints !== undefined) updateData.hints = updates.hints;
+  if (updates.date !== undefined) updateData.date = updates.date;
+
   const { data, error } = await supabase
     .from('problems')
-    .update(updates)
+    .update(updateData)
     .eq('id', id)
     .select()
     .single();
   
   if (error) {
     console.error('Error updating problem:', error.message);
+    console.error('Update data:', updateData);
     return null;
   }
   return data;

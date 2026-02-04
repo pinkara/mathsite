@@ -90,6 +90,7 @@ export interface Problem {
   description: string;
   content: string;
   hints: ProblemHint[];
+  solution?: string; // Solution détaillée du problème
   image?: string;
   date?: string;
 }

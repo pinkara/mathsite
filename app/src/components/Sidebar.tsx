@@ -28,6 +28,29 @@ function InlineFormula({ tex, className = '' }: { tex: string; className?: strin
   );
 }
 
+// === TITLE WITH FORMULA COMPONENT ===
+function TitleWithFormula({ text, className = '' }: { text: string; className?: string }) {
+  const containerRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current && (window as any).MathJax?.typesetPromise) {
+      (window as any).MathJax.typesetPromise([containerRef.current]);
+    }
+  }, [text]);
+
+  const hasLatex = text.includes('$');
+  
+  if (!hasLatex) {
+    return <span className={className}>{text}</span>;
+  }
+
+  return (
+    <span ref={containerRef} className={className}>
+      {text}
+    </span>
+  );
+}
+
 interface SidebarProps {
   courses: Course[];
   problems: Problem[];
@@ -130,7 +153,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
                 <span className="text-blue-400 text-xs">→</span>
               </div>
               <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-                {dailyContent.course.title}
+                <TitleWithFormula text={dailyContent.course.title} />
               </h4>
               <p className="text-[10px] md:text-xs text-gray-500 line-clamp-2 mt-1">
                 {dailyContent.course.description}
@@ -171,7 +194,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
                 <span className="text-orange-400 text-xs">→</span>
               </div>
               <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-                {dailyContent.problem.title}
+                <TitleWithFormula text={dailyContent.problem.title} />
               </h4>
               <div className="flex items-center gap-2 mt-1">
                 <span className={cn(
@@ -245,7 +268,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-                    {course.title}
+                    <TitleWithFormula text={course.title} />
                   </h4>
                   <span className="text-[10px] text-blue-600">{course.category}</span>
                   <p className="text-[10px] text-gray-500 line-clamp-1 mt-0.5">
@@ -292,7 +315,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-gray-800 text-xs md:text-sm line-clamp-1">
-                    {problem.title}
+                    <TitleWithFormula text={problem.title} />
                   </h4>
                   <div className="flex items-center gap-1 mt-0.5">
                     <span className={cn(

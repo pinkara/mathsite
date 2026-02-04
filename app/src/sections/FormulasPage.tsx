@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { LevelBadge } from '@/components/LevelBadge';
+import { TitleWithFormula } from '@/components/InlineFormula';
 import type { Formula, Level } from '@/types';
 import { LEVELS } from '@/types';
 
@@ -217,7 +218,7 @@ export function FormulasPage({ formulas }: FormulasPageProps) {
                         </div>
                         
                         <h3 className="text-sm md:text-base font-bold text-gray-800 mb-2">
-                          {formula.name}
+                          <TitleWithFormula text={formula.name} />
                         </h3>
                         
                         {formula.description && (

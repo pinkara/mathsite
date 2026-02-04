@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
+import { TitleWithFormula } from '@/components/InlineFormula';
 import type { Course, Problem, Formula, Book, Level, MonthlyStats } from '@/types';
 import { LEVELS } from '@/types';
 import { uploadImage } from '@/lib/supabase';
@@ -460,7 +461,7 @@ function CoursesManager({
                   </span>
                   <span className="text-xs text-gray-400">{course.date}</span>
                 </div>
-                <h4 className="font-medium text-gray-800">{course.title}</h4>
+                <h4 className="font-medium text-gray-800"><TitleWithFormula text={course.title} /></h4>
                 <p className="text-sm text-gray-600 line-clamp-1">{course.description}</p>
               </div>
               <div className="flex items-center gap-1 ml-4">
@@ -509,6 +510,7 @@ function ProblemsManager({
     difficulty: 'Moyen' as 'Facile' | 'Moyen' | 'Difficile',
     description: '',
     content: '',
+    solution: '',
     image: '',
     hints: [] as { id: string; content: string; formulaRefs: string[] }[],
   });
@@ -523,6 +525,7 @@ function ProblemsManager({
       difficulty: 'Moyen',
       description: '',
       content: '',
+      solution: '',
       image: '',
       hints: [],
     });
@@ -550,6 +553,7 @@ function ProblemsManager({
       difficulty: problem.difficulty,
       description: problem.description,
       content: problem.content,
+      solution: problem.solution || '',
       image: problem.image || '',
       hints: (problem.hints || []).map(h => ({ ...h, formulaRefs: h.formulaRefs || [] })),
     });
@@ -763,6 +767,24 @@ function ProblemsManager({
                 </Button>
               </div>
             </div>
+
+            {/* Solution Section */}
+            <div className="md:col-span-2 border-t border-gray-200 pt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Solution détaillée
+                <span className="text-gray-400 font-normal ml-1">(optionnel)</span>
+              </label>
+              <textarea
+                value={formData.solution}
+                onChange={(e) => setFormData(prev => ({ ...prev, solution: e.target.value }))}
+                placeholder="Solution complète du problème avec explications..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-mono"
+                rows={6}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Cette solution sera affichée avec une confirmation avant révélation.
+              </p>
+            </div>
           </div>
           <div className="flex gap-2 mt-4">
             <Button onClick={handleSubmit} className="bg-orange-600 hover:bg-orange-700">
@@ -805,7 +827,7 @@ function ProblemsManager({
                     {problem.category}
                   </span>
                 </div>
-                <h4 className="font-medium text-gray-800">{problem.title}</h4>
+                <h4 className="font-medium text-gray-800"><TitleWithFormula text={problem.title} /></h4>
                 <p className="text-sm text-gray-600 line-clamp-1">{problem.description}</p>
                 {problem.hints && problem.hints.length > 0 && (
                   <p className="text-xs text-gray-500 mt-1">
