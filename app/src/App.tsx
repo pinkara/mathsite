@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { PWAInstall } from '@/components/PWAInstall';
+import { LibraryPassword } from '@/components/LibraryPassword';
 import { HomePage } from '@/sections/HomePage';
 import { CoursesPage } from '@/sections/CoursesPage';
 import { ProblemsPage } from '@/sections/ProblemsPage';
@@ -223,12 +224,14 @@ function App() {
       
       case 'library':
         return (
-          <LibraryPage
-            books={books}
-            isAdmin={isAdmin}
-            onAddBook={addBook}
-            onRemoveBook={removeBook}
-          />
+          <LibraryPassword>
+            <LibraryPage
+              books={books}
+              isAdmin={isAdmin}
+              onAddBook={addBook}
+              onRemoveBook={removeBook}
+            />
+          </LibraryPassword>
         );
       
       case 'article':
