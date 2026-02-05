@@ -51,29 +51,15 @@
   font-size: 1.1em !important;
 }
 
-/* MathJax 3 SVG output - Formules display (bloc) */
-.prose mjx-container[display="true"] {
+.prose .mjx-chtml {
   margin: 0.5em 0;
+}
+
+/* MathJax SVG output - Centrer les formules display */
+mjx-container[display="true"] {
   display: block;
   text-align: center;
-}
-
-/* MathJax 3 SVG output - Formules inline */
-.prose mjx-container:not([display="true"]) {
-  display: inline !important;
-  margin: 0 !important;
-  vertical-align: middle;
-}
-
-/* Pour les éléments SVG dans les formules inline */
-.prose mjx-container:not([display="true"]) svg {
-  display: inline;
-  vertical-align: middle;
-}
-
-/* Ancienne classe mjx-chtml pour compatibilité */
-.prose .mjx-chtml {
-  display: inline;
+  margin: 1em 0;
 }
 
 /* === SCROLLBAR === */
