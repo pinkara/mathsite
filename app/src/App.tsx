@@ -275,9 +275,10 @@ function App() {
 
       case 'ide':
         const urlParams = getUrlParams();
+        const ideLang = state.params?.language || urlParams.lang;
         return <IDEPage 
           initialCode={state.params?.code || urlParams.code}
-          initialLanguage={state.params?.language || urlParams.lang}
+          initialLanguage={ideLang === 'javascript' ? 'javascript' : 'python'}
         />;
       
       case 'article':
