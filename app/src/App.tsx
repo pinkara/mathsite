@@ -158,12 +158,14 @@ const isSupabaseConfigured = () => {
 function getUrlParams() {
   const hash = window.location.hash;
   const queryIndex = hash.indexOf('?');
-  if (queryIndex === -1) return { code: null, lang: null };
+  if (queryIndex === -1) return { code: undefined, lang: undefined };
   
   const params = new URLSearchParams(hash.slice(queryIndex + 1));
+  const code = params.get('code');
+  const lang = params.get('lang');
   return {
-    code: params.get('code'),
-    lang: params.get('lang')
+    code: code || undefined,
+    lang: lang || undefined
   };
 }
 
