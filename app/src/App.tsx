@@ -37,11 +37,15 @@ function useMathJax() {
 
     // Configure MathJax before loading
     (window as any).MathJax = {
+      loader: {
+        load: ['[tex]/color']
+      },
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
         processEscapes: true,
         processEnvironments: true,
+        packages: {'[+]': ['color']}
       },
       svg: {
         fontCache: 'global',
@@ -54,7 +58,7 @@ function useMathJax() {
     };
 
     const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
     script.async = true;
     script.id = 'mathjax-script';
     
