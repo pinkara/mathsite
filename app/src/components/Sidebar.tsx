@@ -260,7 +260,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center overflow-hidden">
               <img 
-                src="../../../public/PINKARIUM_logo.png" 
+                src="https://raw.githubusercontent.com/pinkara/mathsite/refs/heads/master/app/public/PINKARIUM_logo.png" 
                 alt="PINKARIUM"
                 className="w-8 h-8 object-contain"
                 onError={(e) => {
