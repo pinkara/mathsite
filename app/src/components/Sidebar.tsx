@@ -228,9 +228,9 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
                 className="text-sm md:text-base lg:text-lg"
               />
             </div>
-            <p className="text-[10px] md:text-xs text-blue-200 text-center mt-1 font-medium">
-              {dailyContent.formula.name}
-            </p>
+            <div className="text-[10px] md:text-xs text-blue-200 text-center mt-1 font-medium">
+              <TitleWithFormula text={dailyContent.formula.name} />
+            </div>
           </div>
         )}
 

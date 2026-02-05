@@ -23,6 +23,24 @@ export const initialCourses: Course[] = [
     image: 'https://lh5.googleusercontent.com/proxy/JtppaEuon4s0PzO1edghauPNJaO6x5VwP1k1eNNJJXD_c12LwhTMWoMYh-eqoVyn3-sJ7_625r_dUIPG-A',
     categoryColor: '#f0f9ff',
     categoryTextColor: '#0284c7',
+    // 👇 AJOUTEZ CES DEUX LIGNES pour le bouton IDE
+    codeExample: `# Calcul de suites arithmétiques et géométriques
+
+def suite_arithmetique(u0, r, n):
+    return u0 + n * r
+
+def suite_geometrique(u0, q, n):
+    return u0 * (q ** n)
+
+# Exemples
+print("Suite Arithmétique (u0=2, r=3):")
+for n in range(6):
+    print(f"u_{n} = {suite_arithmetique(2, 3, n)}")
+
+print("\nSuite Géométrique (u0=2, q=2):")
+for n in range(6):
+    print(f"u_{n} = {suite_geometrique(2, 2, n)}")`,
+    codeLanguage: 'python',
   },
   {
     id: 'c2',

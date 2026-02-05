@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMathJaxEffect } from '@/hooks/useMathJax';
-import { ArrowLeft, Heart, ChevronUp, ChevronDown, Lightbulb, Calculator, ExternalLink, CheckCircle, Eye, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Heart, ChevronUp, ChevronDown, Lightbulb, Calculator, ExternalLink, CheckCircle, Eye, AlertTriangle, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ContentRenderer } from '@/components/ContentRenderer';
@@ -170,6 +170,29 @@ export function ArticlePage({
             content={article.content}
             className="prose-lg w-full"
           />
+          
+          {/* Bouton IDE - uniquement pour les cours avec du code */}
+          {isCourse && course?.codeExample && (
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <button
+                onClick={() => onNavigate('ide', { 
+                  code: course.codeExample, 
+                  language: course.codeLanguage || 'python' 
+                })}
+                className="w-full flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 hover:border-indigo-400 hover:shadow-sm transition-all"
+              >
+                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                  <Terminal className="w-5 h-5 text-indigo-600" />
+                </div>
+                <div className="text-left">
+                  <h4 className="font-medium text-indigo-900 text-sm">Tester le code dans l'IDE</h4>
+                  <p className="text-xs text-indigo-600">
+                    {course.codeLanguage === 'javascript' ? 'JavaScript' : 'Python'} • Cliquez pour ouvrir
+                  </p>
+                </div>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Problem Solution */}

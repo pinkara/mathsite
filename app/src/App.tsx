@@ -154,6 +154,19 @@ const isSupabaseConfigured = () => {
   return url && key && url.startsWith('https://') && key.length > 20;
 };
 
+// === RÉCUPÉRER LES PARAMÈTRES DE L'URL (pour l'IDE) ===
+function getUrlParams() {
+  const hash = window.location.hash;
+  const queryIndex = hash.indexOf('?');
+  if (queryIndex === -1) return { code: null, lang: null };
+  
+  const params = new URLSearchParams(hash.slice(queryIndex + 1));
+  return {
+    code: params.get('code'),
+    lang: params.get('lang')
+  };
+}
+
 // === MAIN APP ===
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -162,6 +175,24 @@ function App() {
   
   // Load MathJax globally for all pages
   useMathJax();
+  
+  // Écouter les changements de hash (pour les boutons IDE dans ContentRenderer)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#/ide')) {
+        // Extraire les paramètres
+        const params = getUrlParams();
+        router('ide', { code: params.code, language: params.lang });
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    // Vérifier au cas où le hash est déjà défini au mount
+    handleHashChange();
+    
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [router]);
   
   // Data hooks
   const { courses, addCourse, updateCourse, removeCourse } = useCourses();
@@ -241,7 +272,11 @@ function App() {
         );
 
       case 'ide':
-        return <IDEPage />;
+        const urlParams = getUrlParams();
+        return <IDEPage 
+          initialCode={state.params?.code || urlParams.code}
+          initialLanguage={state.params?.language || urlParams.lang}
+        />;
       
       case 'article':
         if (state.params?.type && state.params?.id) {

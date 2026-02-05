@@ -378,12 +378,9 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
             <div className="text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3 overflow-x-auto">
               <InlineFormula tex={dailyContent.formula.tex} />
             </div>
-            <p className="text-indigo-200 font-medium text-sm md:text-base">{dailyContent.formula.name}</p>
-            {dailyContent.formula.description && (
-              <p className="text-indigo-300 text-xs md:text-sm mt-2 max-w-xl mx-auto">
-                {dailyContent.formula.description}
-              </p>
-            )}
+            <div className="text-indigo-200 font-medium text-sm md:text-base">
+              <TitleWithFormula text={dailyContent.formula.name} />
+            </div>
           </div>
           <div className="flex justify-center">
             <Button 

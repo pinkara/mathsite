@@ -185,15 +185,76 @@ console.log("f'(π/4) ≈", derivee(Math.sin, Math.PI/4));  // Devrait être cos
   }
 ];
 
-export function IDEPage() {
-  const [language, setLanguage] = useState<IDELanguage>('python');
-  const [code, setCode] = useState(DEFAULT_CODES.python);
+// Fonction pour récupérer les paramètres de l'URL
+function getUrlParams() {
+  const hash = window.location.hash;
+  const queryIndex = hash.indexOf('?');
+  if (queryIndex === -1) return { code: null, lang: null };
+  
+  const params = new URLSearchParams(hash.slice(queryIndex + 1));
+  return {
+    code: params.get('code'),
+    lang: params.get('lang') as IDELanguage | null
+  };
+}
+
+interface IDEPageProps {
+  initialCode?: string;
+  initialLanguage?: IDELanguage;
+}
+
+export function IDEPage({ initialCode, initialLanguage }: IDEPageProps = {}) {
+  // Récupérer les paramètres de l'URL
+  const urlParams = getUrlParams();
+  
+  const [language, setLanguage] = useState<IDELanguage>(
+    initialLanguage || urlParams.lang || 'python'
+  );
+  const [code, setCode] = useState(
+    initialCode || (urlParams.code ? decodeURIComponent(urlParams.code) : DEFAULT_CODES[initialLanguage || urlParams.lang || 'python'])
+  );
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedSnippet, setSelectedSnippet] = useState<CodeSnippet | null>(null);
   const outputRef = useRef<HTMLDivElement>(null);
+
+  // Nettoyer l'URL après avoir récupéré les paramètres
+  useEffect(() => {
+    if (urlParams.code || urlParams.lang) {
+      // Nettoyer l'URL pour éviter de recharger le même code au refresh
+      window.history.replaceState(null, '', '#/ide');
+    }
+  }, []);
+
+  // Écouter les changements de hash (navigation depuis un autre composant)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const newParams = getUrlParams();
+      if (newParams.code) {
+        setCode(decodeURIComponent(newParams.code));
+        if (newParams.lang) {
+          setLanguage(newParams.lang);
+        }
+        // Nettoyer l'URL
+        window.history.replaceState(null, '', '#/ide');
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Mettre à jour le code et le langage quand les props changent
+  useEffect(() => {
+    if (initialCode) {
+      setCode(initialCode);
+    }
+    if (initialLanguage) {
+      setLanguage(initialLanguage);
+    }
+  }, [initialCode, initialLanguage]);
 
   // Charger Pyodide pour Python
   const [pyodide, setPyodide] = useState<any>(null);

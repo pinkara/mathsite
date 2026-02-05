@@ -89,6 +89,125 @@ mjx-container[display="true"] {
   background: #94a3b8;
 }
 
+/* === ARBORESCENCE DE FICHIERS (NSI) === */
+.file-tree {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.file-tree .folder {
+  color: #2c3e50;
+}
+
+.file-tree .folder-content {
+  margin-left: 24px;
+  border-left: 1px dashed #dee2e6;
+  padding-left: 8px;
+}
+
+.file-tree .file {
+  color: #495057;
+  padding: 2px 0;
+}
+
+.file-tree .folder::before {
+  content: "📁 ";
+}
+
+.file-tree .file::before {
+  content: "📄 ";
+}
+
+/* Icônes spécifiques selon le type de fichier */
+.file-tree .file[data-ext="py"]::before,
+.file-tree .file:has(> [data-ext="py"])::before,
+.file-tree .file-text[data-ext="py"]::before {
+  content: "🐍 ";
+}
+
+.file-tree .file[data-ext="js"]::before,
+.file-tree .file[data-ext="javascript"]::before {
+  content: "📜 ";
+}
+
+.file-tree .file[data-ext="ts"]::before,
+.file-tree .file[data-ext="typescript"]::before {
+  content: "🔷 ";
+}
+
+.file-tree .file[data-ext="html"]::before,
+.file-tree .file[data-ext="htm"]::before {
+  content: "🌐 ";
+}
+
+.file-tree .file[data-ext="css"]::before {
+  content: "🎨 ";
+}
+
+.file-tree .file[data-ext="json"]::before {
+  content: "📋 ";
+}
+
+.file-tree .file[data-ext="csv"]::before,
+.file-tree .file[data-ext="xlsx"]::before,
+.file-tree .file[data-ext="xls"]::before {
+  content: "📊 ";
+}
+
+.file-tree .file[data-ext="txt"]::before,
+.file-tree .file[data-ext="md"]::before,
+.file-tree .file[data-ext="markdown"]::before {
+  content: "📝 ";
+}
+
+.file-tree .file[data-ext="jpg"]::before,
+.file-tree .file[data-ext="jpeg"]::before,
+.file-tree .file[data-ext="png"]::before,
+.file-tree .file[data-ext="gif"]::before,
+.file-tree .file[data-ext="svg"]::before {
+  content: "🖼️ ";
+}
+
+.file-tree .file[data-ext="zip"]::before,
+.file-tree .file[data-ext="tar"]::before,
+.file-tree .file[data-ext="gz"]::before,
+.file-tree .file[data-ext="rar"]::before {
+  content: "📦 ";
+}
+
+.file-tree .file[data-ext="pdf"]::before {
+  content: "📕 ";
+}
+
+.file-tree .file[data-ext="doc"]::before,
+.file-tree .file[data-ext="docx"]::before {
+  content: "📘 ";
+}
+
+.file-tree .file[data-ext="sh"]::before,
+.file-tree .file[data-ext="bash"]::before {
+  content: "🐚 ";
+}
+
+.file-tree .file[data-ext="sql"]::before {
+  content: "🗄️ ";
+}
+
+.file-tree .file[data-ext="java"]::before {
+  content: "☕ ";
+}
+
+.file-tree .file[data-ext="cpp"]::before,
+.file-tree .file[data-ext="c"]::before,
+.file-tree .file[data-ext="h"]::before {
+  content: "⚙️ ";
+}
+
 /* Article responsive - s'adapte à la largeur */
 .article-content {
   width: 100%;

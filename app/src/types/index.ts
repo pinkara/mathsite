@@ -71,6 +71,8 @@ export interface Course {
   image?: string;
   categoryColor?: string;
   categoryTextColor?: string;
+  codeExample?: string; // Code Python/JavaScript pour l'IDE
+  codeLanguage?: 'python' | 'javascript'; // Langage du code
 }
 
 // === PROBLÈMES ===

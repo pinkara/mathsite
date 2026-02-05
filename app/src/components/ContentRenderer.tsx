@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Play } from 'lucide-react';
 
 interface ContentRendererProps {
   content: string;
@@ -18,6 +18,23 @@ function CodeBlock({ code, language = 'python' }: { code: string; language?: str
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleOpenIDE = () => {
+    // Encoder le code pour l'URL
+    const encodedCode = encodeURIComponent(code);
+    // Mapper shell/bash vers python pour l'IDE (car l'IDE ne supporte pas directement bash)
+    const langForIde = language === 'shell' || language === 'bash' ? 'python' : (language === 'text' ? 'python' : language);
+    const encodedLang = encodeURIComponent(langForIde);
+    // Naviguer vers l'IDE avec les paramètres
+    window.location.hash = `/ide?code=${encodedCode}&lang=${encodedLang}`;
+  };
+
+  // Langages supportés par l'IDE
+  const supportedLanguages = ['python', 'javascript', 'shell', 'bash'];
+  const canOpenIDE = supportedLanguages.includes(language) || language === 'text';
+  
+  // Mapper shell/bash vers un traitement approprié
+  const ideLanguage = language === 'shell' || language === 'bash' ? 'python' : language;
+
   return (
     <div className="rounded-lg overflow-hidden border border-gray-200 my-4 bg-white shadow-sm">
       {/* Header */}
@@ -30,22 +47,35 @@ function CodeBlock({ code, language = 'python' }: { code: string; language?: str
           </div>
           <span className="ml-2 text-xs text-gray-500 font-mono uppercase">{language}</span>
         </div>
-        <button
-          onClick={handleCopy}
-          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-md transition-colors"
-        >
-          {copied ? (
-            <>
-              <Check className="w-3.5 h-3.5 text-green-600" />
-              <span className="text-green-600">Copié !</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-3.5 h-3.5" />
-              <span>Copier</span>
-            </>
+        <div className="flex items-center gap-2">
+          {/* Bouton IDE - petit et à côté de Copier */}
+          {canOpenIDE && (
+            <button
+              onClick={handleOpenIDE}
+              className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-100 rounded-md transition-colors"
+              title="Tester dans l'IDE"
+            >
+              <Play className="w-3.5 h-3.5" />
+              <span>IDE</span>
+            </button>
           )}
-        </button>
+          <button
+            onClick={handleCopy}
+            className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-md transition-colors"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-green-600" />
+                <span className="text-green-600">Copié !</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copier</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
       
       {/* Code */}
@@ -167,6 +197,45 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
       }
     };
     tryTypeset();
+    
+    // Transformer les boutons IDE en vrais boutons cliquables
+    const setupIdeButtons = () => {
+      if (!containerRef.current) return;
+      
+      const ideButtons = containerRef.current.querySelectorAll('.ide-button');
+      ideButtons.forEach((button) => {
+        const code = button.getAttribute('data-code');
+        const language = button.getAttribute('data-language') || 'python';
+        
+        if (code) {
+          // Styliser le bouton
+          button.className = 'ide-button flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 hover:border-indigo-400 hover:shadow-sm transition-all cursor-pointer my-4';
+          
+          // Ajouter l'icône si pas déjà présente
+          if (!button.querySelector('svg')) {
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-600">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              <span class="text-indigo-900 font-medium">${button.textContent?.trim() || 'Tester dans l\'IDE'}</span>
+            `;
+          }
+          
+          // Ajouter le gestionnaire de clic
+          button.addEventListener('click', () => {
+            // Encoder le code pour l'URL
+            const encodedCode = encodeURIComponent(code);
+            const encodedLang = encodeURIComponent(language);
+            // Naviguer vers l'IDE avec les paramètres
+            window.location.hash = `/ide?code=${encodedCode}&lang=${encodedLang}`;
+          });
+        }
+      });
+    };
+    
+    // Attendre un peu que le DOM soit prêt
+    setTimeout(setupIdeButtons, 100);
   }, [content]);
 
   return (

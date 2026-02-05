@@ -82,6 +82,241 @@ function factorielle(n) {
 
 ---
 
+## 🚀 Code Exécutable - Bouton IDE
+
+Pour tous les blocs de code **Python** et **JavaScript**, un **bouton "IDE"** apparaît automatiquement à côté du bouton "Copier". Cliquez dessus pour ouvrir l'IDE avec le code pré-rempli !
+
+### Comment ça marche
+
+1. Ajoutez un bloc de code avec `language-python` ou `language-javascript`
+2. Le bouton **▶ IDE** apparaît automatiquement dans le header
+3. Cliquez dessus → l'IDE s'ouvre avec le code prêt à être exécuté
+
+### Exemple
+
+```html
+<h3>Résolution d'équation du 2nd degré</h3>
+
+<pre><code class="language-python">
+import math
+
+def resoudre_eq2(a, b, c):
+    delta = b**2 - 4*a*c
+    if delta > 0:
+        x1 = (-b - math.sqrt(delta)) / (2*a)
+        x2 = (-b + math.sqrt(delta)) / (2*a)
+        return f"Deux solutions: x₁ = {x1}, x₂ = {x2}"
+    elif delta == 0:
+        return f"Solution unique: x = {-b / (2*a)}"
+    else:
+        return "Pas de solution réelle"
+
+print(resoudre_eq2(1, -5, 6))
+</code></pre>
+```
+
+**Résultat :** Un bloc de code avec les boutons `[▶ IDE] [📋 Copier]` en haut à droite.
+
+### Langages supportés
+
+| Langage | Classe HTML | Bouton IDE |
+|---------|-------------|------------|
+| Python | `language-python` | ✅ |
+| JavaScript | `language-javascript` | ✅ |
+| TypeScript | `language-typescript` | ✅ (en JavaScript) |
+| Shell/Bash | `language-shell` ou `language-bash` | ✅ (converti en Python) |
+| Autres | `language-xxx` | ❌ |
+
+**Note :** Le code Shell/Bash peut être ouvert dans l'IDE mais sera traité comme du Python (pour les exercices NSI c'est utile pour expliquer les commandes).
+
+### Alternative : Bouton personnalisé (option avancée)
+
+Si vous voulez un bouton personnalisé ailleurs dans le contenu :
+
+```html
+<div 
+  class="ide-button" 
+  data-code="votre code ici"
+  data-language="python"
+>
+  🖥️ Tester dans l'IDE
+</div>
+```
+
+### Bonnes pratiques
+
+1. **Code fonctionnel** - Testez d'abord dans l'IDE avant de l'ajouter au cours
+2. **Exemples concrets** - Utilisez des valeurs numériques pour illustrer
+3. **Output visible** - Utilisez `print()` (Python) ou `console.log()` (JS)
+4. **Commentaires** - Ajoutez des commentaires pour expliquer le code
+
+---
+
+## 📁 Arborescence de fichiers (pour NSI)
+
+Pour les exercices de NSI (Numérique et Sciences Informatiques), vous pouvez créer des **arborescences de fichiers** interactives.
+
+### Syntaxe HTML
+
+```html
+<div class="file-tree">
+  <div class="folder">
+    📁 projet_nsi/
+    <div class="folder-content">
+      <div class="folder">
+        📁 src/
+        <div class="folder-content">
+          <div class="file">📄 main.py</div>
+          <div class="file">📄 utils.py</div>
+          <div class="folder">
+            📁 modules/
+            <div class="folder-content">
+              <div class="file">📄 __init__.py</div>
+              <div class="file">📄 helpers.py</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="folder">
+        📁 tests/
+        <div class="folder-content">
+          <div class="file">📄 test_main.py</div>
+        </div>
+      </div>
+      <div class="file">📄 README.md</div>
+      <div class="file">📄 requirements.txt</div>
+    </div>
+  </div>
+</div>
+```
+
+### Exemple complet avec style
+
+```html
+<h3>Structure du projet</h3>
+
+<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 16px; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6;">
+  <div style="margin-left: 0;">
+    <span style="color: #f4d03f;">📁</span> <strong>mon_projet/</strong>
+  </div>
+  <div style="margin-left: 20px;">
+    <span style="color: #f4d03f;">📁</span> <strong>data/</strong>
+    <div style="margin-left: 20px;">
+      <span style="color: #5dade2;">📄</span> input.csv
+    </div>
+    <div style="margin-left: 20px;">
+      <span style="color: #5dade2;">📄</span> output.json
+    </div>
+  </div>
+  <div style="margin-left: 20px;">
+    <span style="color: #f4d03f;">📁</span> <strong>src/</strong>
+    <div style="margin-left: 20px;">
+      <span style="color: #5dade2;">📄</span> main.py
+    </div>
+    <div style="margin-left: 20px;">
+      <span style="color: #5dade2;">📄</span> functions.py
+    </div>
+  </div>
+  <div style="margin-left: 20px;">
+    <span style="color: #58d68d;">📄</span> README.md
+  </div>
+  <div style="margin-left: 20px;">
+    <span style="color: #58d68d;">📄</span> requirements.txt
+  </div>
+</div>
+```
+
+### Icônes par type de fichier
+
+Pour afficher une icône spécifique selon l'extension, ajoutez l'attribut `data-ext` :
+
+```html
+<div class="file-tree">
+  <div class="folder">
+    📁 projet/
+    <div class="folder-content">
+      <div class="file" data-ext="py">main.py</div>
+      <div class="file" data-ext="js">script.js</div>
+      <div class="file" data-ext="html">index.html</div>
+      <div class="file" data-ext="css">style.css</div>
+      <div class="file" data-ext="csv">data.csv</div>
+      <div class="file" data-ext="txt">README.txt</div>
+      <div class="file" data-ext="json">package.json</div>
+      <div class="file" data-ext="md">README.md</div>
+    </div>
+  </div>
+</div>
+```
+
+### Tableau des icônes disponibles
+
+| Extension | Attribut | Icône | Description |
+|-----------|----------|-------|-------------|
+| `.py` | `data-ext="py"` | 🐍 | Python |
+| `.js` | `data-ext="js"` | 📜 | JavaScript |
+| `.ts` | `data-ext="ts"` | 🔷 | TypeScript |
+| `.html` | `data-ext="html"` | 🌐 | HTML |
+| `.css` | `data-ext="css"` | 🎨 | CSS |
+| `.json` | `data-ext="json"` | 📋 | JSON |
+| `.csv` | `data-ext="csv"` | 📊 | Données (CSV/Excel) |
+| `.txt` | `data-ext="txt"` | 📝 | Texte/Markdown |
+| `.md` | `data-ext="md"` | 📝 | Markdown |
+| `.jpg/.png` | `data-ext="png"` | 🖼️ | Images |
+| `.zip` | `data-ext="zip"` | 📦 | Archives |
+| `.pdf` | `data-ext="pdf"` | 📕 | PDF |
+| `.sh` | `data-ext="sh"` | 🐚 | Shell/Bash |
+| `.sql` | `data-ext="sql"` | 🗄️ | SQL |
+| `.java` | `data-ext="java"` | ☕ | Java |
+| `.cpp/.c` | `data-ext="cpp"` | ⚙️ | C/C++ |
+| Autres | (sans attribut) | 📄 | Fichier générique |
+
+### Exemple complet NSI
+
+```html
+<h3>Structure d'un projet Python</h3>
+
+<div class="file-tree">
+  <div class="folder">
+    📁 mon_projet/
+    <div class="folder-content">
+      <div class="folder">
+        📁 data/
+        <div class="folder-content">
+          <div class="file" data-ext="csv">eleves.csv</div>
+          <div class="file" data-ext="json">config.json</div>
+        </div>
+      </div>
+      <div class="folder">
+        📁 src/
+        <div class="folder-content">
+          <div class="file" data-ext="py">__init__.py</div>
+          <div class="file" data-ext="py">main.py</div>
+          <div class="file" data-ext="py">utils.py</div>
+        </div>
+      </div>
+      <div class="folder">
+        📁 tests/
+        <div class="folder-content">
+          <div class="file" data-ext="py">test_main.py</div>
+        </div>
+      </div>
+      <div class="file" data-ext="md">README.md</div>
+      <div class="file" data-ext="txt">requirements.txt</div>
+    </div>
+  </div>
+</div>
+```
+
+### Pour les exercices NSI
+
+Cette arborescence est utile pour :
+- Montrer la structure d'un projet Python
+- Expliquer l'organisation des fichiers
+- Présenter des exercices sur la manipulation de fichiers
+- Illustrer les imports entre modules
+
+---
+
 ## 📝 Écrire du LaTeX/MathJax
 
 ### Formules en ligne
@@ -280,6 +515,10 @@ print(resoudre_eq2(1, -5, 6))  # x² - 5x + 6 = 0
 
 <p>La courbe représentative est une <strong>parabole</strong>.</p>
 ```
+
+### 🚀 Code exécutable automatique
+
+Pour les blocs de code Python et JavaScript, le bouton **▶ IDE** apparaît automatiquement à côté du bouton "Copier". Les élèves peuvent cliquer pour ouvrir l'IDE avec le code pré-rempli !
 
 ---
 

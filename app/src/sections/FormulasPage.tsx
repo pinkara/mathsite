@@ -241,9 +241,9 @@ export function FormulasPage({ formulas, highlightFormula }: FormulasPageProps) 
                         </h3>
                         
                         {formula.description && (
-                          <p className="text-xs md:text-sm text-gray-600 mb-3">
-                            {formula.description}
-                          </p>
+                          <div className="text-xs md:text-sm text-gray-600 mb-3">
+                            <TitleWithFormula text={formula.description} />
+                          </div>
                         )}
 
                         {/* Formula Display */}
