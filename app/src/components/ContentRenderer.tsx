@@ -31,9 +31,6 @@ function CodeBlock({ code, language = 'python' }: { code: string; language?: str
   // Langages supportés par l'IDE
   const supportedLanguages = ['python', 'javascript', 'shell', 'bash'];
   const canOpenIDE = supportedLanguages.includes(language) || language === 'text';
-  
-  // Mapper shell/bash vers un traitement approprié
-  const ideLanguage = language === 'shell' || language === 'bash' ? 'python' : language;
 
   return (
     <div className="rounded-lg overflow-hidden border border-gray-200 my-4 bg-white shadow-sm">

@@ -145,5 +145,7 @@ export interface RouterState {
     type?: 'course' | 'problem';
     id?: string;
     highlightFormula?: string;
+    code?: string;
+    language?: string;
   };
 }
