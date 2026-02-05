@@ -10,26 +10,26 @@ export function MathRenderer({ content, className = '' }: MathRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Charger MathJax si nécessaire
     if (typeof window !== 'undefined' && !(window as any).MathJax) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.async = true;
-      script.id = 'mathjax-script';
-      
-      // Configuration MathJax
+      // Configuration MathJax - selon documentation officielle
       (window as any).MathJax = {
+        loader: {load: ['[tex]/color']},
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
           displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          packages: {'[+]': ['color']}
         },
         svg: {
           fontCache: 'global',
         },
       };
       
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.async = true;
+      script.id = 'MathJax-script';
+      
       script.onload = () => {
-        // Run typeset on load for any content already rendered
         if (containerRef.current && (window as any).MathJax?.typesetPromise) {
           (window as any).MathJax.typesetPromise([containerRef.current]).catch(console.error);
         }
@@ -39,12 +39,11 @@ export function MathRenderer({ content, className = '' }: MathRendererProps) {
   }, []);
 
   useEffect(() => {
-    // Typeset les formules après le rendu; retry a few times if MathJax not yet loaded
     let tries = 0;
     const tryTypeset = () => {
       if (containerRef.current && (window as any).MathJax?.typesetPromise) {
         (window as any).MathJax.typesetPromise([containerRef.current]).catch(console.error);
-      } else if (tries < 5) {
+      } else if (tries < 15) {
         tries += 1;
         setTimeout(tryTypeset, 300);
       }
