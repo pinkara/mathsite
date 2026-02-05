@@ -62,6 +62,60 @@ mjx-container[display="true"] {
   margin: 1em 0;
 }
 
+/* Défilement horizontal pour les formules trop larges (comme Wikipedia) */
+.prose mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+}
+
+/* Style de la scrollbar pour les formules (optionnel, pour un look plus propre) */
+.prose mjx-container[display="true"]::-webkit-scrollbar {
+  height: 6px;
+}
+
+.prose mjx-container[display="true"]::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.prose mjx-container[display="true"]::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.prose mjx-container[display="true"]::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Article responsive - s'adapte à la largeur */
+.article-content {
+  width: 100%;
+  max-width: none;
+}
+
+/* Le texte dans l'article doit s'étendre sur toute la largeur */
+.article-content .prose {
+  max-width: none !important;
+}
+
+/* Images et médias responsives */
+.article-content img,
+.article-content video,
+.article-content iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tableaux responsives avec défilement horizontal */
+.article-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar {
   width: 8px;

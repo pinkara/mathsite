@@ -170,7 +170,7 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
   }, [content]);
 
   return (
-    <div ref={containerRef} className={`prose prose-gray max-w-none ${className}`}>
+    <div ref={containerRef} className={`prose prose-gray max-w-none w-full ${className}`}>
       {parsedParts.map((part, index) => (
         part.type === 'code' ? (
           <CodeBlock key={index} code={part.content} language={part.language} />

@@ -249,6 +249,37 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
             </div>
           </div>
         </div>
+
+        {/* PINKARIUM Quick Access */}
+        <a 
+          href="https://pinkara.github.io/PINKARIUM/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-3 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg border border-pink-200 cursor-pointer hover:border-pink-400 hover:shadow-sm transition-all block"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center overflow-hidden">
+              <img 
+                src="/PINKARIUM_logo.png" 
+                alt="PINKARIUM"
+                className="w-8 h-8 object-contain"
+                onError={(e) => {
+                  // Fallback si l'image n'est pas trouvée
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-600"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>';
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <h4 className="font-medium text-pink-900 text-sm">PINKARIUM</h4>
+              <p className="text-xs text-pink-600">Découvertes intéractives</p>
+            </div>
+          </div>
+        </a>
       </div>
 
       {/* Derniers cours ajoutés */}

@@ -165,10 +165,10 @@ export function ArticlePage({
         )}
 
         {/* Content */}
-        <div className="p-6 md:p-8">
+        <div className="p-6 md:p-8 article-content">
           <ContentRenderer 
             content={article.content}
-            className="prose-lg"
+            className="prose-lg w-full"
           />
         </div>
 
