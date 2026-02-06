@@ -489,7 +489,7 @@ export function LibraryPage({
                   Ajouter un PDF
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-white">
                 <DialogHeader>
                   <DialogTitle>Ajouter un livre PDF</DialogTitle>
                 </DialogHeader>

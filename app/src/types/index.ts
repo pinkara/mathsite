@@ -69,6 +69,7 @@ export interface Course {
   description: string;
   content: string;
   image?: string;
+  imageCredits?: string; // Crédits de l'image de couverture
   categoryColor?: string;
   categoryTextColor?: string;
   codeExample?: string; // Code Python/JavaScript pour l'IDE
@@ -94,6 +95,7 @@ export interface Problem {
   hints: ProblemHint[];
   solution?: string; // Solution détaillée du problème
   image?: string;
+  imageCredits?: string; // Crédits de l'image de couverture
   date?: string;
 }
 

@@ -247,13 +247,24 @@ function CoursesManager({
   const [editingId, setEditingId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    category: string;
+    level: Level;
+    description: string;
+    content: string;
+    image: string;
+    imageCredits: string;
+    categoryColor: string;
+    categoryTextColor: string;
+  }>({
     title: '',
     category: '',
-    level: 'Term' as Level,
+    level: 'Term',
     description: '',
     content: '',
     image: '',
+    imageCredits: '',
     categoryColor: '#f0f9ff',
     categoryTextColor: '#0284c7',
   });
@@ -266,6 +277,7 @@ function CoursesManager({
       description: '',
       content: '',
       image: '',
+      imageCredits: '',
       categoryColor: '#f0f9ff',
       categoryTextColor: '#0284c7',
     });
@@ -292,6 +304,7 @@ function CoursesManager({
       description: course.description,
       content: course.content,
       image: course.image || '',
+      imageCredits: course.imageCredits || '',
       categoryColor: course.categoryColor || '#f0f9ff',
       categoryTextColor: course.categoryTextColor || '#0284c7',
     });
@@ -390,7 +403,15 @@ function CoursesManager({
                 </Button>
               </div>
               {formData.image && (
-                <img src={formData.image} alt="Preview" className="mt-2 h-20 rounded-lg object-cover" />
+                <>
+                  <img src={formData.image} alt="Preview" className="mt-2 h-20 rounded-lg object-cover" />
+                  <Input
+                    value={formData.imageCredits}
+                    onChange={(e) => setFormData(prev => ({ ...prev, imageCredits: e.target.value }))}
+                    placeholder="Crédits de l'image (ex: © Auteur - Source)"
+                    className="mt-2 text-sm"
+                  />
+                </>
               )}
             </div>
             <div className="md:col-span-2">
@@ -503,16 +524,28 @@ function ProblemsManager({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    category: string;
+    level: Level;
+    difficulty: 'Facile' | 'Moyen' | 'Difficile';
+    description: string;
+    content: string;
+    solution: string;
+    image: string;
+    imageCredits: string;
+    hints: { id: string; content: string; formulaRefs: string[] }[];
+  }>({
     title: '',
     category: '',
-    level: 'Term' as Level,
-    difficulty: 'Moyen' as 'Facile' | 'Moyen' | 'Difficile',
+    level: 'Term',
+    difficulty: 'Moyen',
     description: '',
     content: '',
     solution: '',
     image: '',
-    hints: [] as { id: string; content: string; formulaRefs: string[] }[],
+    imageCredits: '',
+    hints: [],
   });
 
   const [newHint, setNewHint] = useState({ content: '', formulaRefs: '' });
@@ -527,6 +560,7 @@ function ProblemsManager({
       content: '',
       solution: '',
       image: '',
+      imageCredits: '',
       hints: [],
     });
     setNewHint({ content: '', formulaRefs: '' });
@@ -555,6 +589,7 @@ function ProblemsManager({
       content: problem.content,
       solution: problem.solution || '',
       image: problem.image || '',
+      imageCredits: problem.imageCredits || '',
       hints: (problem.hints || []).map(h => ({ ...h, formulaRefs: h.formulaRefs || [] })),
     });
     setEditingId(problem.id);
@@ -686,7 +721,15 @@ function ProblemsManager({
                 </Button>
               </div>
               {formData.image && (
-                <img src={formData.image} alt="Preview" className="mt-2 h-20 rounded-lg object-cover" />
+                <>
+                  <img src={formData.image} alt="Preview" className="mt-2 h-20 rounded-lg object-cover" />
+                  <Input
+                    value={formData.imageCredits}
+                    onChange={(e) => setFormData(prev => ({ ...prev, imageCredits: e.target.value }))}
+                    placeholder="Crédits de l'image (ex: © Auteur - Source)"
+                    className="mt-2 text-sm"
+                  />
+                </>
               )}
             </div>
             <div className="md:col-span-2">

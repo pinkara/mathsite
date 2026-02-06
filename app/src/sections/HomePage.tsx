@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { BookOpen, Puzzle, Calculator, ArrowRight, Sparkles, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
+import { AnkiHelpDialog } from '@/components/AnkiHelpDialog';
 import type { Course, Problem, Formula } from '@/types';
 
 // === INLINE FORMULA COMPONENT ===
@@ -393,6 +394,9 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
           </div>
         </section>
       )}
+
+      {/* Anki Help Button */}
+      <AnkiHelpDialog />
     </div>
   );
 }

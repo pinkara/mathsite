@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS courses (
   description TEXT NOT NULL,
   content TEXT NOT NULL,
   image TEXT,
+  imagecredits TEXT DEFAULT '',
   categoryColor TEXT,
   categoryTextColor TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -35,6 +36,7 @@ CREATE TABLE IF NOT EXISTS problems (
   description TEXT NOT NULL,
   content TEXT NOT NULL,
   image TEXT,
+  imagecredits TEXT DEFAULT '',
   hints JSONB DEFAULT '[]'::jsonb,
   date TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -120,7 +122,20 @@ CREATE INDEX IF NOT EXISTS idx_books_category ON books(category);
 CREATE INDEX IF NOT EXISTS idx_books_created_at ON books(created_at);
 
 -- ============================================
--- 5. ACTIVER LA RÉPLICATION POUR LES ABONNEMENTS (OPTIONNEL)
+-- 5. MISE À JOUR DES TABLES EXISTANTES
+-- ============================================
+-- Si vous avez déjà créé les tables, exécutez ces commandes :
+
+-- Ajouter la colonne imagecredits à courses (si elle n'existe pas)
+ALTER TABLE courses 
+ADD COLUMN IF NOT EXISTS imagecredits TEXT DEFAULT '';
+
+-- Ajouter la colonne imagecredits à problems (si elle n'existe pas)
+ALTER TABLE problems 
+ADD COLUMN IF NOT EXISTS imagecredits TEXT DEFAULT '';
+
+-- ============================================
+-- 6. ACTIVER LA RÉPLICATION POUR LES ABONNEMENTS (OPTIONNEL)
 -- ============================================
 
 alter publication supabase_realtime add table courses;

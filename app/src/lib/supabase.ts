@@ -44,7 +44,8 @@ export async function fetchCourses(): Promise<Course[]> {
     ...course,
     categoryColor: course.categorycolor || course.categoryColor || '#f0f9ff',
     categoryTextColor: course.categorytextcolor || course.categoryTextColor || '#0284c7',
-    image: course.image || ''
+    image: course.image || '',
+    imageCredits: course.imagecredits || course.imageCredits || ''
   }));
 }
 
@@ -60,6 +61,7 @@ export async function addCourseToDB(course: Omit<Course, 'id'> & { id?: string }
     description: course.description,
     content: course.content,
     image: course.image || '',
+    imagecredits: course.imageCredits || '',
     categorycolor: course.categoryColor,
     categorytextcolor: course.categoryTextColor
   };
@@ -94,6 +96,7 @@ export async function updateCourseInDB(id: string, updates: Partial<Course>) {
   if (updates.description !== undefined) updateData.description = updates.description;
   if (updates.content !== undefined) updateData.content = updates.content;
   if (updates.image !== undefined) updateData.image = updates.image;
+  if (updates.imageCredits !== undefined) updateData.imagecredits = updates.imageCredits;
   if (updates.categoryColor !== undefined) updateData.categorycolor = updates.categoryColor;
   if (updates.categoryTextColor !== undefined) updateData.categorytextcolor = updates.categoryTextColor;
 
@@ -142,6 +145,7 @@ export async function fetchProblems(): Promise<Problem[]> {
   return (data || []).map((problem: any) => ({
     ...problem,
     image: problem.image || '',
+    imageCredits: problem.imagecredits || problem.imageCredits || '',
     hints: problem.hints || [],
     solution: problem.solution || '',
     date: problem.date || problem.created_at?.split('T')[0] || '2024-01-01'
@@ -160,6 +164,7 @@ export async function addProblemToDB(problem: Omit<Problem, 'id'> & { id?: strin
     content: problem.content,
     solution: problem.solution || '',
     image: problem.image || '',
+    imagecredits: problem.imageCredits || '',
     hints: problem.hints || [],
     date: problem.date || new Date().toISOString().split('T')[0]
   };
@@ -193,6 +198,7 @@ export async function updateProblemInDB(id: string, updates: Partial<Problem>) {
   if (updates.content !== undefined) updateData.content = updates.content;
   if (updates.solution !== undefined) updateData.solution = updates.solution;
   if (updates.image !== undefined) updateData.image = updates.image;
+  if (updates.imageCredits !== undefined) updateData.imagecredits = updates.imageCredits;
   if (updates.hints !== undefined) updateData.hints = updates.hints;
   if (updates.date !== undefined) updateData.date = updates.date;
 

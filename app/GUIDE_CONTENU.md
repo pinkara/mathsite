@@ -1,6 +1,6 @@
 # 📚 Guide d'utilisation - Contenu MathUnivers
 
-Ce guide explique comment enrichir vos cours et problèmes avec des images, du code, et du LaTeX.
+Ce guide explique comment enrichir vos cours et problèmes avec des images, du code, du LaTeX, et les nouvelles fonctionnalités interactives.
 
 ---
 
@@ -10,6 +10,7 @@ Ce guide explique comment enrichir vos cours et problèmes avec des images, du c
 1. Dans le formulaire d'ajout/modification, cliquez sur "Ajouter une image"
 2. Sélectionnez une image depuis votre ordinateur
 3. L'image est automatiquement uploadée et son URL est insérée
+4. **Nouveau** : Ajoutez les crédits/source de l'image dans le champ "Crédits de l'image" qui apparaît (ex: `© Auteur - Source`)
 
 ### Méthode 2 : URL externe
 Vous pouvez utiliser une URL d'image externe (Google Images, Unsplash, etc.) :
@@ -22,6 +23,275 @@ Pour insérer une image dans le corps du texte :
 ```html
 <img src="https://example.com/image.jpg" alt="Description" style="max-width: 100%;" />
 ```
+
+### Méthode 4 : Image avec crédits
+Pour afficher une image avec les crédits/source en dessous :
+```html
+<img-with-credits 
+  src="https://example.com/image.jpg" 
+  alt="Description de l'image"
+  credits="© Nom de l'auteur - Licence CC BY"
+  style="max-width: 100%; border-radius: 8px;"
+/>
+```
+
+#### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `src` | URL de l'image | ✅ Oui |
+| `alt` | Texte alternatif | ❌ Non |
+| `credits` | Crédits/Source (affiché en italique sous l'image) | ❌ Non |
+| `style` | Styles CSS inline | ❌ Non |
+
+#### Exemple
+```html
+<h3>La spirale de Fibonacci</h3>
+
+<img-with-credits 
+  src="https://monsite.com/images/fibonacci-spiral.jpg" 
+  alt="Spirale de Fibonacci dans la nature"
+  credits="© Wikipédia - Image du domaine public"
+  style="max-width: 100%; display: block; margin: 0 auto;"
+/>
+
+<p>Cette spirale illustre la suite de Fibonacci...</p>
+```
+
+---
+
+## 🎮 Liens vers PINKARIUM
+
+Intégrez des liens vers des activités interactives PINKARIUM dans vos cours.
+
+### Syntaxe
+```html
+<pinkarium-link 
+  url="https://pinkara.github.io/PINKARIUM/algo/fourier_drawing.html" 
+  title="Transformée de Fourier interactive" 
+  description="Visualisez la décomposition de Fourier en temps réel" 
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `url` | Lien vers l'activité PINKARIUM | ✅ Oui |
+| `title` | Titre affiché | ❌ Non (défaut: "Activité PINKARIUM") |
+| `description` | Description sous le titre | ❌ Non |
+
+### Exemples
+
+**Transformée de Fourier :**
+```html
+<h2>Transformée de Fourier</h2>
+
+<p>La transformée de Fourier permet de décomposer un signal en ses composantes fréquentielles.</p>
+
+<pinkarium-link 
+  url="https://pinkara.github.io/PINKARIUM/algo/fourier_drawing.html" 
+  title="🎨 Dessin par Fourier" 
+  description="Créez des dessins avec des épicycloides - Visualisation interactive" 
+/>
+```
+
+**Algorithme de tri :**
+```html
+<pinkarium-link 
+  url="https://pinkara.github.io/PINKARIUM/algo/sorting.html" 
+  title="Visualisation des tris" 
+  description="Comparez les algorithmes de tri en temps réel" 
+/>
+```
+
+---
+
+## 🖥️ Activités interactives (iframe)
+
+Intégrez des activités interactives via iframe : GeoGebra, simulations, ou code personnalisé.
+
+### Syntaxe
+```html
+<activity-iframe 
+  src="https://www.geogebra.org/m/wemqzb3y" 
+  title="Graphique GeoGebra" 
+  height="500px" 
+  width="100%" 
+  credits="© GeoGebra - Nom de l'auteur"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `src` | URL de l'activité | ✅ Oui |
+| `title` | Titre affiché au-dessus | ❌ Non |
+| `height` | Hauteur (ex: "400px", "500px") | ❌ Non (défaut: "400px") |
+| `width` | Largeur | ❌ Non (défaut: "100%") |
+| `credits` | Crédits/Source (affiché en petit en bas) | ❌ Non |
+
+### Exemples
+
+**GeoGebra - Material spécifique :**
+```html
+<h3>Graphe interactif</h3>
+
+<p>Manipulez le graphe ci-dessous pour explorer la fonction :</p>
+
+<activity-iframe 
+  src="https://www.geogebra.org/m/wemqzb3y" 
+  title="GeoGebra - Grapheur" 
+  height="600px" 
+  credits="© GeoGebra - Mathieu Blossier"
+/>
+```
+
+> 💡 **Astuce GeoGebra** : Vous pouvez utiliser directement l'URL du material GeoGebra (ex: `geogebra.org/m/XXXXXX`). 
+> Le système convertira automatiquement en URL d'embed.
+
+**Simulation physique :**
+```html
+<activity-iframe 
+  src="https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_fr.html" 
+  title="Simulation : Mouvement parabolique" 
+  height="550px" 
+  credits="© PhET Interactive Simulations, University of Colorado Boulder"
+/>
+```
+
+**Code interactif personnalisé :**
+```html
+<activity-iframe 
+  src="https://mon-site.com/activite-maths.html" 
+  title="Activité : Fractions équivalentes" 
+  height="450px" 
+  credits="© Mon Établissement - Prof. Martin"
+/>
+
+---
+
+## 🎬 Vidéos
+
+Intégrez des lecteurs vidéo directement dans vos cours.
+
+### Syntaxe
+```html
+<video-player 
+  src="https://example.com/ma-video.mp4" 
+  title="Démonstration du théorème" 
+  poster="https://example.com/vignette.jpg" 
+  credits="© Nom de l'auteur - Source"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `src` | URL de la vidéo | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `poster` | Image de vignette | ❌ Non |
+| `credits` | Crédits/Source (affiché en petit en bas) | ❌ Non |
+
+### Exemple
+```html
+<h2>Le théorème de Pythagore</h2>
+
+<p>Voici une démonstration visuelle :</p>
+
+<video-player 
+  src="https://monsite.com/videos/pythagore-demo.mp4" 
+  title="📐 Démonstration du théorème de Pythagore" 
+  poster="https://monsite.com/images/pythagore-thumb.jpg" 
+  credits="© Khan Academy - Licence CC BY-NC"
+/>
+
+<p>Observez comment le carré de l'hypoténuse...</p>
+```
+
+---
+
+## 🎵 Audio
+
+Ajoutez des extraits audio (explications vocales, podcasts pédagogiques).
+
+### Syntaxe
+```html
+<audio-player 
+  src="https://example.com/mon-audio.mp3" 
+  title="Explication : Les nombres complexes"
+  credits="© Podcast Mathématiques - Jean Dupont"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `src` | URL du fichier audio | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `credits` | Crédits/Source (affiché en petit en bas) | ❌ Non |
+
+### Exemple
+```html
+<h3>Podcast du cours</h3>
+
+<p>Écoutez l'explication en audio :</p>
+
+<audio-player 
+  src="https://monsite.com/audio/complexes-explication.mp3" 
+  title="🎧 Introduction aux nombres complexes" 
+/>
+```
+
+---
+
+## 🧠 Flashcards Anki (.apkg)
+
+Permettez aux élèves de télécharger des flashcards pour réviser avec Anki.
+
+### Syntaxe
+```html
+<anki-download 
+  src="https://example.com/flashcards.apkg" 
+  filename="cours-fonctions-flashcards.apkg" 
+  title="Flashcards : Les fonctions" 
+  description="20 cartes sur les limites, continuité et dérivabilité" 
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `src` | URL du fichier .apkg | ✅ Oui |
+| `filename` | Nom du fichier téléchargé | ❌ Non (défaut: "flashcards.apkg") |
+| `title` | Titre affiché | ❌ Non (défaut: "Flashcards Anki") |
+| `description` | Description | ❌ Non |
+
+### Exemple
+```html
+<h2>Révision - Fonctions dérivables</h2>
+
+<p>Pour réviser ce cours, téléchargez les flashcards :</p>
+
+<anki-download 
+  src="https://monsite.com/anki/derivation-flashcards.apkg" 
+  filename="derivation-flashcards.apkg" 
+  title="🧠 Flashcards : Dérivation" 
+  description="25 cartes - Formules de dérivation et applications" 
+/>
+
+<div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 12px; margin: 10px 0;">
+  <strong>💡 Conseil :</strong> Importez ce fichier dans Anki pour réviser avec la répétition espacée.
+  Cliquez sur le bouton ❓ bleu en bas à droite de la page pour voir comment utiliser Anki.
+</div>
+```
+
+### Créer des fichiers .apkg
+
+Pour créer vos propres flashcards :
+1. Créez un deck dans Anki
+2. Ajoutez vos cartes (recto/verso)
+3. Fichier → Exporter → Exporter en tant que : Anki Collection Package (.apkg)
+4. Uploadez le fichier sur votre hébergement
+5. Utilisez l'URL dans la balise `<anki-download />`
 
 ---
 
@@ -487,6 +757,14 @@ $$ax^2 + bx + c = 0$$
   <strong>📌 Formule importante :</strong> Le discriminant est $\Delta = b^2 - 4ac$
 </div>
 
+<h3>Activité interactive</h3>
+
+<pinkarium-link 
+  url="https://pinkara.github.io/PINKARIUM/algo/fourier_drawing.html" 
+  title="🎨 Exploration graphique" 
+  description="Visualisez les paraboles selon les coefficients" 
+/>
+
 <h3>Exemple en Python</h3>
 
 <pre><code class="language-python">
@@ -509,6 +787,15 @@ def resoudre_eq2(a, b, c):
 print(resoudre_eq2(1, -5, 6))  # x² - 5x + 6 = 0
 </code></pre>
 
+<h3>Révision avec Anki</h3>
+
+<anki-download 
+  src="https://monsite.com/anki/equations-flashcards.apkg" 
+  filename="equations-flashcards.apkg" 
+  title="🧠 Flashcards : Équations du 2nd degré" 
+  description="15 cartes avec les formules clés et exercices corrigés" 
+/>
+
 <h3>Schéma explicatif</h3>
 
 <img src="https://example.com/parabole.png" alt="Parabole" style="max-width: 100%;" />
@@ -522,12 +809,36 @@ Pour les blocs de code Python et JavaScript, le bouton **▶ IDE** apparaît aut
 
 ---
 
+## 📸 Crédits des images (Admin)
+
+Quand vous ajoutez une image de couverture à un cours ou un problème via le panneau admin, vous pouvez (et devez !) ajouter les crédits :
+
+### Dans le formulaire Admin
+1. Cliquez sur "Ajouter une image" et sélectionnez votre image
+2. Une fois l'image uploadée, un champ **"Crédits de l'image"** apparaît sous l'aperçu
+3. Renseignez la source : `© Nom de l'auteur - Source`
+
+### Exemples de crédits
+- `© Wikipédia - Domaine public`
+- `© GeoGebra - Mathieu Blossier`
+- `© Khan Academy - Licence CC BY-NC`
+- `© Pixabay - Libre de droits`
+- `© Photo de l'auteur`
+
+Les crédits s'affichent en petit texte italique sous l'image sur la page du cours/problème.
+
+---
+
 ## 🔧 Conseils
 
 1. **Testez votre contenu** - Utilisez l'aperçu avant de sauvegarder
 2. **Images optimisées** - Préférez des images < 500KB pour de bonnes performances
 3. **Code indenté** - Utilisez une indentation cohérente (4 espaces recommandé)
 4. **Backup** - Gardez une copie de vos contenus au cas où
+5. **Vidéos/Audio** - Utilisez des formats largement supportés (MP4 pour vidéo, MP3 pour audio)
+6. **Iframes** - Vérifiez que le site autorisé l'intégration (headers X-Frame-Options)
+7. **Anki** - Testez vos fichiers .apkg avant de les partager
+8. **Crédits** - Toujours mentionner la source des images et contenus externes
 
 ---
 
@@ -537,3 +848,6 @@ En cas de problème avec :
 - **Le LaTeX** → Vérifiez la syntaxe, utilisez des backslash doubles `\\`
 - **Les images** → Vérifiez que l'URL est accessible publiquement
 - **Le code** → Assurez-vous d'utiliser la bonne classe `language-xxx`
+- **Les vidéos/audio** → Vérifiez les formats (MP4/MP3 recommandés)
+- **Les iframes** → Certains sites bloquent l'intégration
+- **Les flashcards Anki** → Cliquez sur le bouton ❓ en bas à droite pour le guide complet

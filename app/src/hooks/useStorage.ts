@@ -93,6 +93,7 @@ export function useCourses() {
             const normalizedData = data.map(course => ({
               ...course,
               image: course.image || '',
+              imageCredits: course.imageCredits || '',
               categoryColor: course.categoryColor || '#f0f9ff',
               categoryTextColor: course.categoryTextColor || '#0284c7'
             }));
@@ -125,6 +126,7 @@ export function useCourses() {
       date: new Date().toISOString().split('T')[0],
       // Assurer que les champs optionnels ne sont pas undefined
       image: course.image || '',
+      imageCredits: course.imageCredits || '',
       categoryColor: course.categoryColor || '#f0f9ff',
       categoryTextColor: course.categoryTextColor || '#0284c7',
     };
@@ -236,6 +238,7 @@ export function useProblems() {
       date: new Date().toISOString().split('T')[0],
       // Assurer que les champs optionnels ne sont pas undefined
       image: problem.image || '',
+      imageCredits: problem.imageCredits || '',
       hints: problem.hints || [],
       solution: problem.solution || '',
     };

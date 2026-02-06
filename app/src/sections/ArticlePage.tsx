@@ -155,12 +155,19 @@ export function ArticlePage({
 
         {/* Image (si cours) */}
         {isCourse && course?.image && (
-          <div className="w-full h-64 md:h-80 overflow-hidden">
-            <img
-              src={course.image}
-              alt={course.title}
-              className="w-full h-full object-cover"
-            />
+          <div className="w-full">
+            <div className="w-full h-64 md:h-80 overflow-hidden">
+              <img
+                src={course.image}
+                alt={course.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {course.imageCredits && (
+              <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
+                <p className="text-xs text-gray-500 italic">{course.imageCredits}</p>
+              </div>
+            )}
           </div>
         )}
 
