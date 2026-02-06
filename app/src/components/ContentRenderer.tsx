@@ -2,6 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check, Play, ExternalLink, Gamepad2, Video, Headphones, Download, Brain } from 'lucide-react';
+import { MoleculeViewer } from './MoleculeViewer';
+import { MoleculeVSEPR } from './MoleculeVSEPR';
+import { MoleculeVSEPR3D } from './MoleculeVSEPR3D';
+import { MoleculeJSmol } from './MoleculeJSmol';
+import { MoleculeVSEPRViewer } from './MoleculeVSEPRViewer';
+import { Molecule3Dmol } from './Molecule3Dmol';
+import { Molecule3DmolEmbed } from './Molecule3DmolEmbed';
+import { Molecule3DmolNative } from './Molecule3DmolNative';
+import { MoleculeJSmolVSEPR } from './MoleculeJSmolVSEPR';
+import { Molecule3DmolVSEPR } from './Molecule3DmolVSEPR';
+import { Molecule3DmolVSEPREmbed } from './Molecule3DmolVSEPREmbed';
+import { GlossaryTerm } from './GlossaryTerm';
 
 interface ContentRendererProps {
   content: string;
@@ -385,19 +397,43 @@ type ContentPart =
   | { type: 'video'; src: string; title?: string; poster?: string; credits?: string }
   | { type: 'audio'; src: string; title?: string; credits?: string }
   | { type: 'anki'; src: string; filename?: string; title?: string; description?: string }
-  | { type: 'image'; src: string; alt?: string; credits?: string; style?: React.CSSProperties };
+  | { type: 'image'; src: string; alt?: string; credits?: string; style?: React.CSSProperties }
+  | { type: 'molecule'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'moleculeVSEPR'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'moleculeVSEPR3D'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'moleculeJSmol'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'moleculeIframe'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'moleculeVSEPRViewer'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'molecule3Dmol'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'molecule3DmolEmbed'; formula: string; height?: string; credits?: string }
+  | { type: 'molecule3DmolNative'; formula: string; height?: string; credits?: string }
+  | { type: 'glossary'; term: string; definition: string; content?: string };
 
 function parseContent(content: string): ContentPart[] {
   const parts: ContentPart[] = [];
   
   // Regex pour détecter les différents types de contenu
   const codeBlockRegex = /<pre><code(?:\s+class=["']language-(\w+)["'])?\s*>([\s\S]*?)<\/code><\/pre>/gi;
-  const pinkariumRegex = /<pinkarium-link\s+url=["']([^"']+)["'](?:\s+title=["']([^"']*)["'])?(?:\s+description=["']([^"']*)["'])?\s*\/>/gi;
-  const iframeRegex = /<activity-iframe\s+src=["']([^"']+)["'](?:\s+title=["']([^"']*)["'])?(?:\s+height=["']([^"']*)["'])?(?:\s+width=["']([^"']*)["'])?(?:\s+credits=["']([^"']*)["'])?\s*\/>/gi;
-  const videoRegex = /<video-player\s+src=["']([^"']+)["'](?:\s+title=["']([^"']*)["'])?(?:\s+poster=["']([^"']*)["'])?(?:\s+credits=["']([^"']*)["'])?\s*\/>/gi;
-  const audioRegex = /<audio-player\s+src=["']([^"']+)["'](?:\s+title=["']([^"']*)["'])?(?:\s+credits=["']([^"']*)["'])?\s*\/>/gi;
-  const ankiRegex = /<anki-download\s+src=["']([^"']+)["'](?:\s+filename=["']([^"']*)["'])?(?:\s+title=["']([^"']*)["'])?(?:\s+description=["']([^"']*)["'])?\s*\/>/gi;
-  const imageRegex = /<img-with-credits\s+src=["']([^"']+)["'](?:\s+alt=["']([^"']*)["'])?(?:\s+credits=["']([^"']*)["'])?(?:\s+style=["']([^"']*)["'])?\s*\/>/gi;
+  const pinkariumRegex = /<pinkarium-link\s+url=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+description=["']([^"]*)["'])?\s*\/>/gi;
+  const iframeRegex = /<activity-iframe\s+src=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+width=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const videoRegex = /<video-player\s+src=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+poster=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const audioRegex = /<audio-player\s+src=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const ankiRegex = /<anki-download\s+src=["']([^"']+)["'](?:\s+filename=["']([^"]*)["'])?(?:\s+title=["']([^"]*)["'])?(?:\s+description=["']([^"]*)["'])?\s*\/>/gi;
+  const imageRegex = /<img-with-credits\s+src=["']([^"']+)["'](?:\s+alt=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+style=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeRegex = /<molecule-viewer\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeVSEPRRegex = /<molecule-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeVSEPR3DRegex = /<molecule-vsepr-3d\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeJSmolRegex = /<molecule-jsmol\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeIframeRegex = /<molecule-iframe\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeVSEPRViewerRegex = /<molecule-vsepr-viewer\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolRegex = /<molecule-3dmol\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolEmbedRegex = /<molecule-3d-embed\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolNativeRegex = /<molecule-3d-native\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeJSmolVSEPRRegex = /<molecule-jsmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+source=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolVSEPRRegex = /<molecule-3dmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolVSEPREmbedRegex = /<molecule-3d-vsepr\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+controls=["']([^"]*)["'])?\s*\/>/gi;
+  const molecule3DmolVSEPRSimpleRegex = /<molecule-3d-simple\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
+  const glossaryRegex = /<glossary-term\s+term=["']([^"']+)["']\s+definition=["']([^"]*)["']\s*>(.*?)<\/glossary-term>/gi;
   
   // Combiner tous les regex avec leur type
   const allRegexes: Array<{ regex: RegExp; type: string }> = [
@@ -408,6 +444,20 @@ function parseContent(content: string): ContentPart[] {
     { regex: audioRegex, type: 'audio' },
     { regex: ankiRegex, type: 'anki' },
     { regex: imageRegex, type: 'image' },
+    { regex: moleculeRegex, type: 'molecule' },
+    { regex: moleculeVSEPRRegex, type: 'moleculeVSEPR' },
+    { regex: moleculeVSEPR3DRegex, type: 'moleculeVSEPR3D' },
+    { regex: moleculeJSmolRegex, type: 'moleculeJSmol' },
+    { regex: moleculeIframeRegex, type: 'moleculeIframe' },
+    { regex: moleculeVSEPRViewerRegex, type: 'moleculeVSEPRViewer' },
+    { regex: molecule3DmolRegex, type: 'molecule3Dmol' },
+    { regex: molecule3DmolEmbedRegex, type: 'molecule3DmolEmbed' },
+    { regex: molecule3DmolNativeRegex, type: 'molecule3DmolNative' },
+    { regex: moleculeJSmolVSEPRRegex, type: 'moleculeJSmolVSEPR' },
+    { regex: molecule3DmolVSEPRRegex, type: 'molecule3DmolVSEPR' },
+    { regex: molecule3DmolVSEPREmbedRegex, type: 'molecule3DmolVSEPREmbed' },
+    { regex: molecule3DmolVSEPRSimpleRegex, type: 'molecule3DmolVSEPRSimple' },
+    { regex: glossaryRegex, type: 'glossary' },
   ];
   
   let lastIndex = 0;
@@ -528,6 +578,143 @@ function parseContent(content: string): ContentPart[] {
           alt: match[2],
           credits: match[3],
           style: parsedStyle,
+        });
+        break;
+      }
+      case 'molecule': {
+        parts.push({
+          type: 'molecule',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'moleculeVSEPR': {
+        parts.push({
+          type: 'moleculeVSEPR',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'moleculeVSEPR3D': {
+        parts.push({
+          type: 'moleculeVSEPR3D',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'moleculeJSmol': {
+        parts.push({
+          type: 'moleculeJSmol',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'moleculeIframe': {
+        parts.push({
+          type: 'moleculeIframe',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'moleculeVSEPRViewer': {
+        parts.push({
+          type: 'moleculeVSEPRViewer',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'molecule3Dmol': {
+        parts.push({
+          type: 'molecule3Dmol',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'molecule3DmolEmbed': {
+        parts.push({
+          type: 'molecule3DmolEmbed',
+          formula: match[1],
+          height: match[2],
+          credits: match[3],
+        });
+        break;
+      }
+      case 'molecule3DmolNative': {
+        parts.push({
+          type: 'molecule3DmolNative',
+          formula: match[1],
+          height: match[2],
+          credits: match[3],
+        });
+        break;
+      }
+      case 'moleculeJSmolVSEPR': {
+        parts.push({
+          type: 'moleculeJSmolVSEPR',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+          source: match[5],
+        });
+        break;
+      }
+      case 'molecule3DmolVSEPR': {
+        parts.push({
+          type: 'molecule3DmolVSEPR',
+          formula: match[1],
+          title: match[2],
+          height: match[3],
+          credits: match[4],
+        });
+        break;
+      }
+      case 'molecule3DmolVSEPREmbed': {
+        parts.push({
+          type: 'molecule3DmolVSEPREmbed',
+          formula: match[1],
+          height: match[2],
+          credits: match[3],
+          controls: match[4] !== 'false',
+        });
+        break;
+      }
+      case 'molecule3DmolVSEPRSimple': {
+        parts.push({
+          type: 'molecule3DmolVSEPRSimple',
+          formula: match[1],
+          height: match[2],
+          credits: match[3],
+        });
+        break;
+      }
+      case 'glossary': {
+        parts.push({
+          type: 'glossary',
+          term: match[1],
+          definition: match[2] || '',
+          content: match[3],
         });
         break;
       }
@@ -702,6 +889,146 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 credits={part.credits}
                 style={part.style}
               />
+            );
+          case 'molecule':
+            return (
+              <MoleculeViewer
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'moleculeVSEPR':
+            return (
+              <MoleculeVSEPR
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'moleculeVSEPR3D':
+            return (
+              <MoleculeVSEPR3D
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'moleculeJSmol':
+            return (
+              <MoleculeJSmol
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'moleculeIframe':
+            return (
+              <MoleculeJSmol
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+                iframe={true}
+              />
+            );
+          case 'moleculeVSEPRViewer':
+            return (
+              <MoleculeVSEPRViewer
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'molecule3Dmol':
+            return (
+              <Molecule3Dmol
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'molecule3DmolEmbed':
+            return (
+              <Molecule3DmolEmbed
+                key={index}
+                formula={part.formula}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'molecule3DmolNative':
+            return (
+              <Molecule3DmolNative
+                key={index}
+                formula={part.formula}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'moleculeJSmolVSEPR':
+            return (
+              <MoleculeJSmolVSEPR
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+                source={part.source as any}
+              />
+            );
+          case 'molecule3DmolVSEPR':
+            return (
+              <Molecule3DmolVSEPR
+                key={index}
+                formula={part.formula}
+                title={part.title}
+                height={part.height}
+                credits={part.credits}
+              />
+            );
+          case 'molecule3DmolVSEPREmbed':
+            return (
+              <Molecule3DmolVSEPREmbed
+                key={index}
+                formula={part.formula}
+                height={part.height}
+                credits={part.credits}
+                controls={part.controls}
+              />
+            );
+          case 'molecule3DmolVSEPRSimple':
+            return (
+              <Molecule3DmolVSEPREmbed
+                key={index}
+                formula={part.formula}
+                height={part.height}
+                credits={part.credits}
+                controls={false}
+              />
+            );
+          case 'glossary':
+            return (
+              <GlossaryTerm
+                key={index}
+                term={part.term}
+                definition={part.definition}
+              >
+                {part.content}
+              </GlossaryTerm>
             );
           case 'html':
           default:

@@ -809,6 +809,503 @@ Pour les blocs de code Python et JavaScript, le bouton **▶ IDE** apparaît aut
 
 ---
 
+## 🧪 Molécules 3D VSEPR avec JSmol (Recommandé)
+
+Visualisez des molécules avec **JSmol**, la bibliothèque JavaScript professionnelle utilisée par VChem3D. C'est la meilleure option pour un rendu VSEPR fidèle et interactif.
+
+### Syntaxe
+```html
+<molecule-jsmol 
+  formula="NH3" 
+  title="Ammoniac VSEPR" 
+  height="600px"
+  credits="Visualisation JSmol"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `formula` | Formule chimique (CH4, NH3, H2O, BF3, CO2, SO2) | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `height` | Hauteur du visualiseur | ❌ Non (défaut: "600px") |
+| `credits` | Crédits | ❌ Non |
+
+### Molécules disponibles VSEPR
+| Formule | Notation | Géométrie | Angles | Doublets |
+|---------|----------|-----------|--------|----------|
+| `CH4` | AX₄ | Tétraédrique | 109,5° | 0 |
+| `NH3` | AX₃E | Pyramide trigone | 107° | 1 |
+| `H2O` | AX₂E₂ | Coudée | 104,5° | 2 |
+| `BF3` | AX₃ | Triangle plan | 120° | 0 |
+| `CO2` | AX₂ | Linéaire | 180° | 0 |
+| `SO2` | AX₂E | Coudée | 119° | 1 |
+
+### Exemple complet
+```html
+<h3>Comparaison VSEPR : Effet des doublets non liants</h3>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+  <molecule-jsmol 
+    formula="CH4" 
+    title="CH₄ - Référence (AX₄)" 
+    height="500px"
+  />
+  
+  <molecule-jsmol 
+    formula="NH3" 
+    title="NH₃ - 1 doublet (AX₃E)" 
+    height="500px"
+  />
+  
+  <molecule-jsmol 
+    formula="H2O" 
+    title="H₂O - 2 doublets (AX₂E₂)" 
+    height="500px"
+  />
+</div>
+
+<div style="background: #e0e7ff; border-left: 4px solid #4f46e5; padding: 16px; margin-top: 20px;">
+  <strong>📊 Analyse :</strong>
+  <ul>
+    <li><strong>CH₄</strong> : Angle parfait de 109,5° (pas de contrainte)</li>
+    <li><strong>NH₃</strong> : Compression à 107° (1 doublet repousse)</li>
+    <li><strong>H₂O</strong> : Compression à 104,5° (2 doublets repoussent fortement)</li>
+  </ul>
+</div>
+```
+
+### Fonctionnalités interactives
+- ✅ **Doublets non liants (E)** : Affiche/masque les doublets comme des sphères bleu clair
+- ✅ **Tétraèdre de référence** : Montre le tétraèdre théorique (lignes jaunes)
+- ✅ **JSmol natif** : Rotation 3D fluide, zoom, labels
+- ✅ **Couleurs CPK** : Convention internationale des couleurs atomiques
+
+### Pourquoi JSmol ?
+JSmol est la référence en visualisation moléculaire web :
+- Utilisé par VChem3D (Université Toulouse III)
+- Compatible avec tous les navigateurs
+- Grande communauté scientifique
+- Documentation complète
+
+---
+
+## 🧪 Molécules 3D VSEPR Professionnel (3Dmol.js)
+
+Alternative utilisant 3Dmol.js - rendu 3D avec doublets non liants réalistes.
+
+### Syntaxe
+```html
+<molecule-vsepr-3d 
+  formula="NH3" 
+  title="Ammoniac VSEPR" 
+  height="550px"
+  credits="© Visualisation 3Dmol"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `formula` | Formule chimique | ✅ Oui |
+| `title` | Titre | ❌ Non |
+| `height` | Hauteur | ❌ Non |
+| `credits` | Crédits | ❌ Non |
+
+### Molécules disponibles
+| Formule | Notation | Géométrie | Caractéristique |
+|---------|----------|-----------|-----------------|
+| `CH4` | AX₄ | Tétraédrique | 4 liaisons, pas de doublet |
+| `NH3` | AX₃E | Pyramide trigone | 1 doublet non liant visible |
+| `H2O` | AX₂E₂ | Coudée | 2 doublets non liants |
+| `BF3` | AX₃ | Triangle plan | Planarité parfaite |
+| `CO2` | AX₂ | Linéaire | 180° exact |
+
+### Exemple
+```html
+<h3>Comparaison VSEPR : CH₄ vs NH₃ vs H₂O</h3>
+
+<molecule-vsepr-3d 
+  formula="CH4" 
+  title="Méthane - Référence tétraédrique" 
+  height="500px"
+/>
+
+<molecule-vsepr-3d 
+  formula="NH3" 
+  title="Ammoniac - Effet du doublet" 
+  height="500px"
+/>
+
+<p><strong>Observations :</strong> Le doublet non liant de NH₃ (lobe bleu clair) compresse l'angle H-N-H de 109,5° à 107°.</p>
+```
+
+### Fonctionnalités
+- ✅ **Doublets non liants** en lobes 3D réalistes (bleu clair)
+- ✅ **Tétraèdre de référence** affichable (lignes jaunes pointillées)
+- ✅ **Rotation/Zoom** fluides avec la souris
+- ✅ **Info VSEPR** avec notation A, X, E expliquée
+
+---
+
+## 🧪 Molécules 3D VSEPR (iFrame - VChem3D/PhET)
+
+Alternative utilisant des visualiseurs externes professionnels.
+
+### Syntaxe
+```html
+<molecule-vsepr 
+  formula="NH3" 
+  title="Ammoniac" 
+  height="600px"
+  credits="© VChem3D - Université Toulouse III"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `formula` | Formule chimique (CH4, NH3, H2O, BF3, CO2, SO2) | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `height` | Hauteur du visualiseur | ❌ Non (défaut: "600px") |
+| `credits` | Crédits | ❌ Non |
+
+### Molécules disponibles avec théorie VSEPR
+| Formule | Notation VSEPR | Géométrie | Angle |
+|---------|----------------|-----------|-------|
+| `CH4` | AX4 | Tétraédrique | 109,5° |
+| `NH3` | AX3E | Pyramide trigone | 107° |
+| `H2O` | AX2E2 | Coudée | 104,5° |
+| `BF3` | AX3 | Triangle plan | 120° |
+| `CO2` | AX2 | Linéaire | 180° |
+| `SO2` | AX2E | Coudée | 119° |
+
+### Exemples
+
+**Ammoniac avec théorie VSEPR :**
+```html
+<h3>Structure VSEPR de l'ammoniac</h3>
+
+<p>Observez comment le doublet non liant compresse l'angle H-N-H :</p>
+
+<molecule-vsepr 
+  formula="NH3" 
+  title="Ammoniac - Théorie VSEPR" 
+  height="600px"
+  credits="© VChem3D - Université Toulouse III"
+/>
+
+<div style="background: #e0e7ff; border-left: 4px solid #4f46e5; padding: 12px; margin: 10px 0;">
+  <strong>💡 Notation VSEPR : AX3E</strong><br>
+  A = Azote (atome central)<br>
+  X3 = 3 liaisons N-H<br>
+  E = 1 doublet non liant
+</div>
+```
+
+**Comparaison CH4 vs NH3 vs H2O :**
+```html
+<h3>Effet des doublets non liants sur la géométrie</h3>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+  <div>
+    <h4>Méthane CH₄ (AX4)</h4>
+    <molecule-vsepr formula="CH4" height="400px" />
+    <p>Angle parfait de 109,5° - pas de doublet non liant.</p>
+  </div>
+  
+  <div>
+    <h4>Ammoniac NH₃ (AX3E)</h4>
+    <molecule-vsepr formula="NH3" height="400px" />
+    <p>Angle réduit à 107° à cause du doublet.</p>
+  </div>
+  
+  <div>
+    <h4>Eau H₂O (AX2E2)</h4>
+    <molecule-vsepr formula="H2O" height="400px" />
+    <p>Angle encore plus réduit à 104,5° (2 doublets).</p>
+  </div>
+</div>
+```
+
+### Fonctionnalités du visualiseur
+- **Source VChem3D** : Visualisation professionnelle avec JSmol
+- **Source PhET** : Simulation interactive (alternative)
+- **Doublets non liants** : Affiche/masque les doublets (lobes bleu clair)
+- **Tétraèdre** : Affiche le tétraèdre de référence
+- **Rotation/Zoom** : Interactions 3D complètes
+
+---
+
+## 🧪 Molécules JSmol VSEPR (Avancé)
+
+Visualiseur JSmol avec boutons VSEPR pour afficher/masquer les doublets non liants et la géométrie de référence.
+
+### Syntaxe
+```html
+<molecule-jsmol-vsepr 
+  formula="NH3" 
+  title="Ammoniac" 
+  height="500px"
+  credits="© JSmol"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `formula` | Formule chimique | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `height` | Hauteur du visualiseur | ❌ Non (défaut: "500px") |
+| `credits` | Crédits | ❌ Non |
+
+### Molécules disponibles
+
+**Molécules VSEPR avec coordonnées :**
+| Formule | Notation | Géométrie | Doublets | Tétraèdre |
+|---------|----------|-----------|----------|-----------|
+| `CH4` | AX4 | Tétraédrique | ❌ | ✅ |
+| `NH3` | AX3E | Pyramide | ✅ | ✅ |
+| `H2O` | AX2E2 | Coudée | ✅ | ✅ |
+| `BF3` | AX3 | Triangle plan | ❌ | ❌ |
+| `CO2` | AX2 | Linéaire | ❌ | ❌ |
+| `SO2` | AX2E | Coudée | ✅ | ✅ |
+
+**Molécules depuis PubChem (chargement auto) :**
+| Formule | Nom | Description |
+|---------|-----|-------------|
+| `ETHANOL` | Éthanol | C₂H₅OH |
+| `BENZENE` | Benzène | C₆H₆ |
+| `GLUCOSE` | Glucose | C₆H₁₂O₆ |
+| `CAFFEINE` | Caféine | C₈H₁₀N₄O₂ |
+
+### Boutons de contrôle VSEPR
+
+**Doublets non liants (E)**
+- Affiche des sphères bleu clair semi-transparentes représentant les doublets non liants
+- Disponible pour NH3, H2O, SO2
+
+**Géométrie de référence**
+- Dessine un tétraèdre avec des lignes jaunes pointillées
+- Montre la géométrie idéale AX4 autour de l'atome central
+- Disponible pour CH4, NH3, H2O, SO2
+
+**Reset**
+- Remet la vue à zéro (zoom, rotation)
+- Cache les éléments VSEPR
+
+### Exemples
+
+**Ammoniac avec doublets VSEPR :**
+```html
+<h3>Structure VSEPR de l'ammoniac NH₃</h3>
+
+<p>Cliquez sur "Doublets non liants" pour visualiser le doublet libre de l'azote :</p>
+
+<molecule-jsmol-vsepr 
+  formula="NH3" 
+  title="Ammoniac - Théorie VSEPR" 
+  height="500px"
+  credits="© Visualisation JSmol"
+/>
+
+<p>Le doublet non liant repousse les liaisons N-H, réduisant l'angle de 109,5° à 107°.</p>
+```
+
+**Molécule chargée depuis PubChem :**
+```html
+<h3>Caféine</h3>
+
+<molecule-jsmol-vsepr 
+  formula="CAFFEINE" 
+  title="Molécule de caféine" 
+  height="500px"
+/>
+```
+
+### Ajouter une nouvelle molécule
+
+Pour ajouter une molécule au code, modifiez le fichier `app/src/components/MoleculeJSmolVSEPR.tsx` :
+
+**Option 1 : Charger depuis PubChem (le plus simple)**
+```typescript
+NOM_MOLECULE: {
+  name: "Nom affiché",
+  notation: "AX4",  // ou autre notation VSEPR
+  geometry: "Tétraédrique",
+  atoms: "Formule",
+  loadCommand: "load $nom_molecule"  // Nom dans PubChem
+}
+```
+
+**Option 2 : Définir les coordonnées (pour VSEPR précis)**
+```typescript
+NOM_MOLECULE: {
+  name: "Nom affiché",
+  notation: "AX3E",
+  geometry: "Pyramide",
+  atoms: "Formule",
+  bondedAtoms: [2, 3, 4],  // Indices des atomes liés au central
+  lonePairs: [{ x: 0, y: -0.8, z: 0.5 }],  // Position des doublets
+  jmolScript: `load data "model"
+NOM
+C 0.0 0.0 0.0
+H 0.629 0.629 0.629
+...
+end "model"
+spacefill 25%
+wireframe 0.15
+color atoms cpk
+background white
+zoom 120`
+}
+```
+
+### Fonctionnalités
+- ✅ **Chargement auto** depuis PubChem pour les molécules courantes
+- ✅ **Coordonnées personnalisées** pour les molécules VSEPR pédagogiques
+- ✅ **Doublets non liants** affichables en bleu clair translucide
+- ✅ **Tétraèdre de référence** en lignes jaunes pointillées
+- ✅ **Bouton Reset** pour remettre la vue à zéro
+- ✅ **Rotation/Zoom** fluides avec la souris
+
+### Théorie VSEPR expliquée
+La théorie VSEPR (Valence Shell Electron Pair Repulsion) explique la géométrie des molécules :
+
+- **A** : Atome central
+- **X** : Pairs d'électrons liantes (liaisons)
+- **E** : Pairs d'électrons non liantes (doublets)
+
+**Règle** : Les paires d'électrons se repoussent pour maximiser leurs distances. Les doublets non liants repoussent plus fort que les liaisons, compressant les angles.
+
+---
+
+## 🧪 Molécules 3D (Simple)
+
+Visualisez des molécules en 3D basiques avec rotation, zoom et options d'affichage.
+
+### Syntaxe
+```html
+<molecule-viewer 
+  formula="NH3" 
+  title="Ammoniac" 
+  height="450px"
+  credits="© Données PDB - Domaine public"
+/>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `formula` | Formule chimique (NH3, H2O, CH4, CO2, CH3OH) | ✅ Oui |
+| `title` | Titre affiché | ❌ Non |
+| `height` | Hauteur du visualiseur | ❌ Non (défaut: "400px") |
+| `credits` | Crédits des données | ❌ Non |
+
+### Molécules disponibles
+| Formule | Nom | Description |
+|---------|-----|-------------|
+| `NH3` | Ammoniac | Molécule trigone pyramidale avec doublet non liant |
+| `H2O` | Eau | Molécule coudée avec deux doublets non liants |
+| `CH4` | Méthane | Molécule tétraédrique |
+| `CO2` | Dioxyde de carbone | Molécule linéaire |
+| `CH3OH` | Méthanol | Alcool avec groupement hydroxyle |
+
+### Exemples
+
+**Ammoniac avec doublets non liants :**
+```html
+<h3>Structure de l'ammoniac NH₃</h3>
+
+<p>L'ammoniac présente une géométrie trigone pyramidale avec un doublet non liant sur l'azote :</p>
+
+<molecule-viewer 
+  formula="NH3" 
+  title="Ammoniac NH₃" 
+  height="450px"
+  credits="© Visualisation 3D moléculaire"
+/>
+
+<p>Cliquez sur le bouton "Doublets non liants" pour montrer/cacher le doublet libre.</p>
+```
+
+**Molécule d'eau :**
+```html
+<h3>L'eau H₂O</h3>
+
+<molecule-viewer 
+  formula="H2O" 
+  title="Molécule d'eau" 
+  height="400px"
+/>
+```
+
+### Fonctionnalités
+- **Rotation** : Cliquez et faites glisser pour tourner la molécule
+- **Zoom** : Utilisez la molette ou les boutons +/-
+- **Doublets non liants** : Bouton pour afficher/masquer les doublets
+- **Étiquettes** : Affiche/masque les noms des atomes
+- **Informations** : Détails sur la molécule (atomes, liaisons, doublets)
+
+---
+
+## 📖 Définitions et Glossaire (Popups)
+
+Créez des mots avec définitions qui apparaissent au survol. Idéal pour expliquer des termes techniques sans interrompre la lecture.
+
+### Syntaxe
+```html
+<glossary-term term="Limite" definition="Valeur vers laquelle tend une fonction quand la variable approche une certaine valeur">
+  limite
+</glossary-term>
+```
+
+### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `term` | Le terme à définir (affiché dans le popup) | ✅ Oui |
+| `definition` | La définition complète | ✅ Oui |
+| `children` | Le texte affiché dans le contenu (peut différer du terme) | ❌ Non |
+
+### Exemples
+
+**Définition simple :**
+```html
+<p>La <glossary-term term="Dérivée" definition="Nombre dérivé d'une fonction en un point, limite du taux d'accroissement">dérivée</glossary-term> représente la pente de la tangente.</p>
+```
+
+**Plusieurs termes dans un paragraphe :**
+```html
+<p>Pour étudier la <glossary-term term="Continuité" definition="Une fonction est continue si on peut tracer son graphe sans lever le crayon">continuité</glossary-term>, 
+on utilise souvent le <glossary-term term="Théorème des valeurs intermédiaires" definition="Si f est continue sur [a,b], alors f prend toutes les valeurs entre f(a) et f(b)">théorème des valeurs intermédiaires</glossary-term>.</p>
+```
+
+**Terme avec texte différent :**
+```html
+<p>Le <glossary-term term="Taux d'accroissement" definition="Rapport [f(x+h)-f(x)]/h représentant la pente moyenne">taux d'accroissement</glossary-term> tend vers la dérivée.</p>
+```
+
+**Définition avec mathématiques :**
+```html
+<p>La <glossary-term term="Convergence d'une suite" definition="Une suite (uₙ) converge vers L si ∀ε>0, ∃N tel que ∀n≥N, |uₙ-L|<ε">convergence</glossary-term> 
+est fondamentale en analyse.</p>
+```
+
+### Fonctionnalités du popup
+- 🎯 **Positionnement intelligent** : Le popup s'adapte pour rester visible (ne dépasse pas de l'écran)
+- ⏱️ **Délai de survol** : Le popup reste ouvert 300ms après avoir quitté le mot
+- 🖱️ **Survol possible** : Vous pouvez déplacer la souris du mot vers le popup sans qu'il ne disparaisse
+- 📱 **Responsive** : S'adapte aux mobiles et tablettes
+- ✨ **Style** : Mot souligné en pointillés bleu avec icône de livre
+
+### Cas d'usage
+- Définir des termes techniques (limite, dérivée, intégrale)
+- Expliquer des notations mathématiques
+- Donner des rappels de cours
+- Citer des théorèmes avec leurs énoncés
+
+---
+
 ## 📸 Crédits des images (Admin)
 
 Quand vous ajoutez une image de couverture à un cours ou un problème via le panneau admin, vous pouvez (et devez !) ajouter les crédits :

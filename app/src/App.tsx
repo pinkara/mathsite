@@ -386,7 +386,7 @@ function App() {
           </p>
           <div className="flex items-center justify-center gap-4 mt-4">
             <a 
-              href="https://github.com/pinkara/MathUnivers" 
+              href="https://github.com/pinkara/mathsite" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-900 transition-colors"
@@ -396,9 +396,6 @@ function App() {
               </svg>
             </a>
           </div>
-          <p className="text-gray-400 text-xs mt-4">
-            &copy; {new Date().getFullYear()} MathUnivers. Tous droits réservés.
-          </p>
         </div>
       </footer>
 

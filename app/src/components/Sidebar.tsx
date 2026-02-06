@@ -103,7 +103,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
         </p>
         <div className="flex items-center gap-4 text-gray-400">
           <a 
-            href="https://github.com/pinkara/MathUnivers" 
+            href="https://github.com/pinkara/mathsite" 
             target="_blank" 
             rel="noopener noreferrer"
             className="hover:text-gray-900 transition-colors"
