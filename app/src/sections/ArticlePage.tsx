@@ -32,9 +32,10 @@ export function ArticlePage({
   const [revealedHints, setRevealedHints] = useState<Set<string>>(new Set());
   const [vote, setVote] = useState<'up' | 'down' | null>(null);
   const [solutionState, setSolutionState] = useState<'hidden' | 'confirm' | 'visible'>('hidden');
+  const [zoomLevel, setZoomLevel] = useState<75 | 100 | 125 | 150>(100);
 
-  // Forcer MathJax à re-parser après révélation d'indices, vote ou solution
-  useMathJaxEffect([revealedHints, vote, solutionState]);
+  // Forcer MathJax à re-parser après révélation d'indices, vote, solution ou changement de zoom
+  useMathJaxEffect([revealedHints, vote, solutionState, zoomLevel]);
 
   // Récupérer l'article
   const article = type === 'course' 
@@ -171,11 +172,71 @@ export function ArticlePage({
           </div>
         )}
 
-        {/* Content */}
-        <div className="p-6 md:p-8 article-content">
+        {/* Zoom Controls */}
+        <div className="px-6 md:px-8 pt-4 pb-2 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 mr-1 hidden sm:inline">Zoom:</span>
+            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setZoomLevel(75)}
+                className={cn(
+                  'px-3 py-1.5 rounded text-xs font-medium transition-all min-w-[40px]',
+                  zoomLevel === 75 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-800'
+                )}
+                title="Zoom 75%"
+              >
+                75%
+              </button>
+              <button
+                onClick={() => setZoomLevel(100)}
+                className={cn(
+                  'px-3 py-1.5 rounded text-xs font-medium transition-all min-w-[40px]',
+                  zoomLevel === 100 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-800'
+                )}
+                title="Zoom 100%"
+              >
+                100%
+              </button>
+              <button
+                onClick={() => setZoomLevel(125)}
+                className={cn(
+                  'px-3 py-1.5 rounded text-xs font-medium transition-all min-w-[40px]',
+                  zoomLevel === 125 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-800'
+                )}
+                title="Zoom 125%"
+              >
+                  125%
+              </button>
+              <button
+                onClick={() => setZoomLevel(150)}
+                className={cn(
+                  'px-3 py-1.5 rounded text-xs font-medium transition-all min-w-[40px]',
+                  zoomLevel === 150 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-800'
+                )}
+                title="Zoom 150%"
+              >
+                150%
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Content with Zoom */}
+        <div 
+          className="p-6 md:p-8 article-content overflow-x-auto transition-all duration-300"
+          style={{ zoom: `${zoomLevel}%` }}
+        >
           <ContentRenderer 
             content={article.content}
-            className="prose-lg w-full"
+            className="w-full"
           />
           
           {/* Bouton IDE - uniquement pour les cours avec du code */}
@@ -260,7 +321,9 @@ export function ArticlePage({
                     Masquer
                   </button>
                 </div>
-                <ContentRenderer content={problem.solution} />
+                <div style={{ zoom: `${zoomLevel}%` }}>
+                  <ContentRenderer content={problem.solution} />
+                </div>
               </div>
             )}
           </div>
@@ -298,7 +361,9 @@ export function ArticlePage({
                   
                   {revealedHints.has(hint.id) && (
                     <div className="p-4 border-t border-gray-100">
-                      <ContentRenderer content={hint.content} />
+                      <div style={{ zoom: `${zoomLevel}%` }}>
+                        <ContentRenderer content={hint.content} />
+                      </div>
                       
                       {/* Formula References */}
                       {hint.formulaRefs && hint.formulaRefs.length > 0 && (

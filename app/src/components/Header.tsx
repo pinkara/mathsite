@@ -11,7 +11,9 @@ import {
   Library, 
   Lock,
   ChevronRight,
-  Terminal
+  Terminal,
+  Layers,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,6 +42,7 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
     { route: 'problems' as Route, label: 'Problèmes', icon: Puzzle },
     { route: 'formulas' as Route, label: 'Formules', icon: Calculator },
     { route: 'library' as Route, label: 'Librairie', icon: Library },
+    { route: 'subjects' as Route, label: 'Matières', icon: Layers },
     { route: 'ide' as Route, label: 'IDE', icon: Terminal },
   ];
 
@@ -226,7 +229,7 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
           </div>
 
           {/* Mobile Navigation */}
-          <nav className="p-2 space-y-1">
+          <nav className="p-2 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentRoute === item.route;
@@ -238,32 +241,43 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
                     setIsMobileMenuOpen(false);
                   }}
                   className={cn(
-                    'w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all',
+                    'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
                     isActive 
                       ? 'bg-blue-50 text-blue-700' 
                       : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
                   )}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4" />
                   {item.label}
                   <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
                 </button>
               );
             })}
+            {/* PINKARIUM Link */}
+            <a
+              href="https://pinkara.github.io/PINKARIUM/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all text-gray-600 hover:text-pink-600 hover:bg-pink-50"
+            >
+              <ExternalLink className="w-4 h-4" />
+              PINKARIUM
+              <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
+            </a>
             <button
               onClick={() => {
                 onNavigate('admin');
                 setIsMobileMenuOpen(false);
               }}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all',
+                'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
                 currentRoute === 'admin'
                   ? 'bg-purple-50 text-purple-700' 
                   : 'text-gray-600 hover:text-purple-600 hover:bg-gray-50'
               )}
             >
-              <Lock className="w-5 h-5" />
-              {isAdmin ? 'Panel Admin' : 'Connexion Admin'}
+              <Lock className="w-4 h-4" />
+              {isAdmin ? 'Admin' : 'Connexion'}
               <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
             </button>
           </nav>

@@ -138,6 +138,7 @@ export type Route =
   | 'formulas' 
   | 'library' 
   | 'ide'
+  | 'subjects'
   | 'admin' 
   | 'article';
 

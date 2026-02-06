@@ -5,7 +5,8 @@ import {
   Calculator, 
   Star,
   TrendingUp,
-  Terminal
+  Terminal,
+  GraduationCap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Course, Problem, Formula } from '@/types';
@@ -233,6 +234,22 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
             </div>
           </div>
         )}
+
+        {/* Subjects Portal */}
+        <div 
+          className="p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200 cursor-pointer hover:border-blue-400 hover:shadow-sm transition-all"
+          onClick={() => onNavigate('subjects')}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h4 className="font-medium text-blue-900 text-sm">Portail des matières</h4>
+              <p className="text-xs text-blue-600">Toutes les matières</p>
+            </div>
+          </div>
+        </div>
 
         {/* IDE Quick Access */}
         <div 

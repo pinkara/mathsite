@@ -9,6 +9,7 @@ import { ProblemsPage } from '@/sections/ProblemsPage';
 import { FormulasPage } from '@/sections/FormulasPage';
 import { LibraryPage } from '@/sections/LibraryPage';
 import { IDEPage } from '@/sections/IDEPage';
+import { SubjectsPortal } from '@/sections/SubjectsPortal';
 import { ArticlePage } from '@/sections/ArticlePage';
 import { AdminPage } from '@/sections/AdminPage';
 import { useRouter } from '@/hooks/useRouter';
@@ -280,6 +281,9 @@ function App() {
           initialCode={state.params?.code || urlParams.code}
           initialLanguage={ideLang === 'javascript' ? 'javascript' : 'python'}
         />;
+      
+      case 'subjects':
+        return <SubjectsPortal />;
       
       case 'article':
         if (state.params?.type && state.params?.id) {
