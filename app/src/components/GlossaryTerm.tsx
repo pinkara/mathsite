@@ -103,12 +103,12 @@ export function GlossaryTerm({ term, definition, children }: GlossaryTermProps) 
   };
 
   return (
-    <span className="relative inline-block">
+    <>
       <span
         ref={triggerRef}
         onMouseEnter={showPopup}
         onMouseLeave={hidePopup}
-        className="border-b-2 border-dotted border-blue-500 text-blue-700 font-medium cursor-help hover:bg-blue-50 px-0.5 rounded transition-colors"
+        className="border-b-2 border-dotted border-blue-500 text-blue-700 font-medium cursor-help hover:bg-blue-50 px-0.5 rounded transition-colors inline"
       >
         {children || term}
       </span>
@@ -148,7 +148,7 @@ export function GlossaryTerm({ term, definition, children }: GlossaryTermProps) 
           </div>
         </div>
       )}
-    </span>
+    </>
   );
 }
 

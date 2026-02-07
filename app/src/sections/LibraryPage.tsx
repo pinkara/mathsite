@@ -10,10 +10,11 @@ import {
   BookOpen,
   Trash2,
   AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 import { cn } from "@/lib/utils";
 import { LevelBadge } from "@/components/LevelBadge";
@@ -128,6 +129,7 @@ function BookCard({
 }) {
   const { url: pdfUrl, isLocal: isPdfLocal } = usePDFUrl(book.pdfUrl);
   const [coverObjectUrl, setCoverObjectUrl] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Charger l'image de couverture si elle est stockée localement
   useEffect(() => {
@@ -174,12 +176,45 @@ function BookCard({
         )}
         {isAdmin && (
           <button
-            onClick={() => onRemoveBook(book.id)}
+            onClick={() => setShowDeleteConfirm(true)}
             className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
           >
             <Trash2 className="w-4 h-4" />
           </button>
         )}
+        
+        {/* Dialog de confirmation de suppression */}
+        <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-red-600">
+                <AlertTriangle className="w-5 h-5" />
+                Confirmer la suppression
+              </DialogTitle>
+              <DialogDescription>
+                Êtes-vous sûr de vouloir supprimer le PDF <strong>"{book.title}"</strong> ?
+                <br />
+                Cette action est irréversible.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex flex-row gap-2 justify-end mt-4">
+              <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
+                Annuler
+              </Button>
+              <Button 
+                variant="destructive"
+                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => {
+                  onRemoveBook(book.id);
+                  setShowDeleteConfirm(false);
+                }}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Supprimer
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Content */}

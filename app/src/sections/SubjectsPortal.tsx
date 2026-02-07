@@ -45,8 +45,8 @@ const subjects: SubjectSite[] = [
     icon: <FlaskConical className="w-8 h-8" />,
     color: 'from-purple-500 to-pink-600',
     bgGradient: 'from-purple-50 to-pink-100',
-    url: '#',
-    status: 'coming-soon'
+    url: 'https://pinkara.github.io/PhysiChem/',
+    status: 'available'
   },
   {
     id: 'es',

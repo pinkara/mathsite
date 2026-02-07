@@ -745,7 +745,7 @@ function parseContent(content: string): ContentPart[] {
 
 // Composant principal
 export function ContentRenderer({ content, className = '' }: ContentRendererProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
   const parsedParts = parseContent(content);
 
   useEffect(() => {
@@ -828,25 +828,58 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
     setTimeout(setupIdeButtons, 100);
   }, [content]);
 
-  return (
-    <div ref={containerRef} className={`prose prose-gray max-w-none w-full ${className}`}>
-      {parsedParts.map((part, index) => {
+  // Fusionner les éléments HTML adjacents avec les glossary terms pour éviter les espaces
+  const renderContent = () => {
+    const result: React.ReactNode[] = [];
+    let currentHtml = '';
+    
+    const flushHtml = () => {
+      if (currentHtml) {
+        result.push(
+          <span 
+            key={`html-${result.length}`} 
+            className="inline" 
+            dangerouslySetInnerHTML={{ __html: currentHtml }} 
+          />
+        );
+        currentHtml = '';
+      }
+    };
+    
+    parsedParts.forEach((part, index) => {
+      if (part.type === 'html') {
+        currentHtml += part.content;
+      } else if (part.type === 'glossary') {
+        flushHtml();
+        result.push(
+          <GlossaryTerm
+            key={`glossary-${index}`}
+            term={part.term}
+            definition={part.definition}
+          >
+            {part.content}
+          </GlossaryTerm>
+        );
+      } else {
+        flushHtml();
         switch (part.type) {
           case 'code':
-            return <CodeBlock key={index} code={part.content} language={part.language} />;
+            result.push(<CodeBlock key={`code-${index}`} code={part.content} language={part.language} />);
+            break;
           case 'pinkarium':
-            return (
+            result.push(
               <PinkariumLink
-                key={index}
+                key={`pink-${index}`}
                 url={part.url}
                 title={part.title}
                 description={part.description}
               />
             );
+            break;
           case 'iframe':
-            return (
+            result.push(
               <IframeActivity
-                key={index}
+                key={`iframe-${index}`}
                 src={part.src}
                 title={part.title}
                 height={part.height}
@@ -854,89 +887,98 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 credits={part.credits}
               />
             );
+            break;
           case 'video':
-            return (
+            result.push(
               <VideoPlayer
-                key={index}
+                key={`video-${index}`}
                 src={part.src}
                 title={part.title}
                 poster={part.poster}
                 credits={part.credits}
               />
             );
+            break;
           case 'audio':
-            return (
+            result.push(
               <AudioPlayer
-                key={index}
+                key={`audio-${index}`}
                 src={part.src}
                 title={part.title}
                 credits={part.credits}
               />
             );
+            break;
           case 'anki':
-            return (
+            result.push(
               <AnkiDownloadButton
-                key={index}
+                key={`anki-${index}`}
                 src={part.src}
                 filename={part.filename}
                 title={part.title}
                 description={part.description}
               />
             );
+            break;
           case 'image':
-            return (
+            result.push(
               <ImageWithCredits
-                key={index}
+                key={`img-${index}`}
                 src={part.src}
                 alt={part.alt}
                 credits={part.credits}
                 style={part.style}
               />
             );
+            break;
           case 'molecule':
-            return (
+            result.push(
               <MoleculeViewer
-                key={index}
+                key={`mol-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'moleculeVSEPR':
-            return (
+            result.push(
               <MoleculeVSEPR
-                key={index}
+                key={`vsepr-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'moleculeVSEPR3D':
-            return (
+            result.push(
               <MoleculeVSEPR3D
-                key={index}
+                key={`vsepr3d-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'moleculeJSmol':
-            return (
+            result.push(
               <MoleculeJSmol
-                key={index}
+                key={`jsmol-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'moleculeIframe':
-            return (
+            result.push(
               <MoleculeJSmol
-                key={index}
+                key={`moliframe-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
@@ -944,100 +986,105 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 iframe={true}
               />
             );
+            break;
           case 'moleculeVSEPRViewer':
-            return (
+            result.push(
               <MoleculeVSEPRViewer
-                key={index}
+                key={`vseprv-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'molecule3Dmol':
-            return (
+            result.push(
               <Molecule3Dmol
-                key={index}
+                key={`3dmol-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'molecule3DmolEmbed':
-            return (
+            result.push(
               <Molecule3DmolEmbed
-                key={index}
+                key={`3dembed-${index}`}
                 formula={part.formula}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'molecule3DmolNative':
-            return (
+            result.push(
               <Molecule3DmolNative
-                key={index}
+                key={`3dnative-${index}`}
                 formula={part.formula}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'moleculeJSmolVSEPR':
-            return (
+            result.push(
               <MoleculeJSmolVSEPR
-                key={index}
+                key={`jsmolv-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'molecule3DmolVSEPR':
-            return (
+            result.push(
               <Molecule3DmolVSEPR
-                key={index}
+                key={`3dvsepr-${index}`}
                 formula={part.formula}
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
               />
             );
+            break;
           case 'molecule3DmolVSEPREmbed':
-            return (
+            result.push(
               <Molecule3DmolVSEPREmbed
-                key={index}
+                key={`3dvembed-${index}`}
                 formula={part.formula}
                 height={part.height}
                 credits={part.credits}
                 controls={part.controls ?? true}
               />
             );
+            break;
           case 'molecule3DmolVSEPRSimple':
-            return (
+            result.push(
               <Molecule3DmolVSEPREmbed
-                key={index}
+                key={`3dvsimple-${index}`}
                 formula={part.formula}
                 height={part.height}
                 credits={part.credits}
                 controls={false}
               />
             );
-          case 'glossary':
-            return (
-              <GlossaryTerm
-                key={index}
-                term={part.term}
-                definition={part.definition}
-              >
-                {part.content}
-              </GlossaryTerm>
-            );
-          case 'html':
-          default:
-            return <div key={index} dangerouslySetInnerHTML={{ __html: part.content }} />;
+            break;
         }
-      })}
-    </div>
+      }
+    });
+    
+    flushHtml();
+    return result;
+  };
+
+  return (
+    <span ref={containerRef} className={`inline ${className}`}>
+      {renderContent()}
+    </span>
   );
 }
 
