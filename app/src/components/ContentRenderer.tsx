@@ -407,6 +407,10 @@ type ContentPart =
   | { type: 'molecule3Dmol'; formula: string; title?: string; height?: string; credits?: string }
   | { type: 'molecule3DmolEmbed'; formula: string; height?: string; credits?: string }
   | { type: 'molecule3DmolNative'; formula: string; height?: string; credits?: string }
+  | { type: 'moleculeJSmolVSEPR'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'molecule3DmolVSEPR'; formula: string; title?: string; height?: string; credits?: string }
+  | { type: 'molecule3DmolVSEPREmbed'; formula: string; height?: string; credits?: string; controls?: boolean }
+  | { type: 'molecule3DmolVSEPRSimple'; formula: string; height?: string; credits?: string }
   | { type: 'glossary'; term: string; definition: string; content?: string };
 
 function parseContent(content: string): ContentPart[] {
@@ -429,7 +433,7 @@ function parseContent(content: string): ContentPart[] {
   const molecule3DmolRegex = /<molecule-3dmol\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolEmbedRegex = /<molecule-3d-embed\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolNativeRegex = /<molecule-3d-native\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
-  const moleculeJSmolVSEPRRegex = /<molecule-jsmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+source=["']([^"]*)["'])?\s*\/>/gi;
+  const moleculeJSmolVSEPRRegex = /<molecule-jsmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPRRegex = /<molecule-3dmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPREmbedRegex = /<molecule-3d-vsepr\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+controls=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPRSimpleRegex = /<molecule-3d-simple\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
@@ -676,7 +680,6 @@ function parseContent(content: string): ContentPart[] {
           title: match[2],
           height: match[3],
           credits: match[4],
-          source: match[5],
         });
         break;
       }
@@ -987,7 +990,6 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 title={part.title}
                 height={part.height}
                 credits={part.credits}
-                source={part.source as any}
               />
             );
           case 'molecule3DmolVSEPR':
@@ -1007,7 +1009,7 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 formula={part.formula}
                 height={part.height}
                 credits={part.credits}
-                controls={part.controls}
+                controls={part.controls ?? true}
               />
             );
           case 'molecule3DmolVSEPRSimple':

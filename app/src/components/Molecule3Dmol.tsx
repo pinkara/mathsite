@@ -39,18 +39,6 @@ interface MoleculeConfig {
   lonePairs?: { x: number; y: number; z: number }[];
 }
 
-// Couleurs CPK
-const CPK_COLORS: Record<string, string> = {
-  'H': '#FFFFFF',  // Blanc
-  'C': '#909090',  // Gris
-  'N': '#3050F8',  // Bleu
-  'O': '#FF0D0D',  // Rouge
-  'F': '#90E050',  // Vert clair
-  'S': '#FFFF30',  // Jaune
-  'B': '#FFB5B5',  // Rose
-  'P': '#FF8000',  // Orange
-  'Cl': '#1FF01F', // Vert
-};
 
 const MOLECULES: Record<string, MoleculeConfig> = {
   CH4: {
@@ -340,7 +328,6 @@ export function Molecule3Dmol({
     // Ajouter la géométrie de référence si activée
     if (showGeometry && config?.hasTetrahedron) {
       const atoms = config.atomList;
-      const central = atoms[0];
       const others = atoms.slice(1);
       
       // Relier les atomes périphériques

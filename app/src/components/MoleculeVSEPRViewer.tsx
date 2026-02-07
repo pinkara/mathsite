@@ -235,8 +235,6 @@ export function MoleculeVSEPRViewer({
           if (!isMounted) return;
           
           const atoms = config.dataScript.split(';');
-          const firstAtom = atoms[0].split(' ')[0];
-          const restAtoms = atoms.slice(1).join(';');
           
           // Construire la molécule atome par atome
           let loadScript = `load data "model"\n${formula}\n${atoms.join('\n')}\nend "model";`;

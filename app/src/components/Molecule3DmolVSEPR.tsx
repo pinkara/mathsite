@@ -277,7 +277,6 @@ export function Molecule3DmolVSEPR({
 
     // Ajouter la géométrie de référence si activée
     if (showGeometry && config.hasTetrahedron && config.atomList.length > 2) {
-      const central = config.atomList[0];
       const others = config.atomList.slice(1);
       
       // Relier tous les atomes périphériques entre eux

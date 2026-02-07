@@ -3739,7 +3739,7 @@ export function Molecule3DmolVSEPREmbed({
     if (showGeometry && config.hasTetrahedron) {
       const atoms = config.atomList.slice(1);
       
-      const vertices = [...atoms];
+      const vertices: { x: number; y: number; z: number }[] = [...atoms];
       if (showLonePairs && config.lonePairs) {
         config.lonePairs.forEach(lp => vertices.push(lp));
       }
