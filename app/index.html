@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="/icon-192x192.png" />
     
     <!-- Manifest PWA -->
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
     
     <title>MathUnivers</title>
     
@@ -23,7 +23,11 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
+          // Détecter le base path pour GitHub Pages
+          const basePath = window.location.pathname.includes('/mathsite/') ? '/mathsite/' : '/';
+          const swPath = basePath + 'sw.js';
+          
+          navigator.serviceWorker.register(swPath)
             .then((registration) => {
               console.log('[PWA] Service Worker enregistré:', registration.scope);
             })

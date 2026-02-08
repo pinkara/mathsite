@@ -34,7 +34,7 @@ const subjects: SubjectSite[] = [
     icon: <Calculator className="w-8 h-8" />,
     color: 'from-blue-500 to-indigo-600',
     bgGradient: 'from-blue-50 to-indigo-100',
-    url: window.location.origin,
+    url: window.location.origin + (window.location.pathname.includes('/mathsite/') ? '/mathsite/' : '/'),
     status: 'available'
   },
   {

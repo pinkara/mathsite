@@ -2,12 +2,12 @@
   "name": "MathUnivers",
   "short_name": "MathUnivers",
   "description": "L'encyclopédie mathématique collaborative - Cours, problèmes et formules",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": ".",
   "lang": "fr",
   "icons": [
     {
