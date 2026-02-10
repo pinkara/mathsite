@@ -159,7 +159,7 @@ interface IframeActivityProps {
   credits?: string;
 }
 
-function IframeActivity({ src, title = 'Activité interactive', height = '400px', width = '100%', credits }: IframeActivityProps) {
+function IframeActivity({ src, title = 'Activité interactive', height = '400px', credits }: IframeActivityProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -442,7 +442,7 @@ function parseContent(content: string): ContentPart[] {
   const molecule3DmolVSEPRRegex = /<molecule-3dmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPREmbedRegex = /<molecule-3d-vsepr\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+controls=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPRSimpleRegex = /<molecule-3d-simple\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
-  const glossaryRegex = /<glossary-term\s+term=(["'])([^\1]*?)\1\s+definition=(["'])([^\3]*?)\3\s*>([\s\S]*?)<\/glossary-term>/gi;
+  const glossaryRegex = /<glossary-term\s+term=(['"])(.*?)\1\s+definition=(['"])(.*?)\3\s*>([\s\S]*?)<\/glossary-term>/gi;
   
   // Combiner tous les regex avec leur type
   const allRegexes: Array<{ regex: RegExp; type: string }> = [
@@ -750,7 +750,7 @@ function parseContent(content: string): ContentPart[] {
 
 // Composant principal
 export function ContentRenderer({ content, className = '' }: ContentRendererProps) {
-  const containerRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const parsedParts = parseContent(content);
 
   useEffect(() => {
