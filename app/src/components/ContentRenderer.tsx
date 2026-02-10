@@ -169,7 +169,8 @@ function IframeActivity({ src, title = 'Activité interactive', height = '400px'
     const geogebraMaterialMatch = url.match(/geogebra\.org\/m\/(\w+)/);
     if (geogebraMaterialMatch) {
       const materialId = geogebraMaterialMatch[1];
-      return `https://www.geogebra.org/material/iframe/id/${materialId}`;
+      // Ajouter des paramètres pour afficher l'interface complète avec la barre latérale
+      return `https://www.geogebra.org/material/iframe/id/${materialId}/width/1200/height/600/border/888888/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false`;
     }
     
     // GeoGebra Calculator URL
@@ -202,7 +203,7 @@ function IframeActivity({ src, title = 'Activité interactive', height = '400px'
           </a>
         </div>
       )}
-      <div className="relative" style={{ height, width }}>
+      <div className="relative overflow-x-auto" style={{ height, width: '100%', minWidth: '100%' }}>
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
             <div className="flex flex-col items-center gap-2">
@@ -229,8 +230,12 @@ function IframeActivity({ src, title = 'Activité interactive', height = '400px'
         <iframe
           src={embedUrl}
           title={title}
-          className="border-0 w-full h-full"
-          style={{ width: '100%', height: '100%' }}
+          className="border-0"
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            minWidth: '800px' // Largeur minimale pour afficher tous les panneaux GeoGebra
+          }}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           onLoad={() => setIsLoading(false)}
@@ -437,7 +442,7 @@ function parseContent(content: string): ContentPart[] {
   const molecule3DmolVSEPRRegex = /<molecule-3dmol-vsepr\s+formula=["']([^"']+)["'](?:\s+title=["']([^"]*)["'])?(?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPREmbedRegex = /<molecule-3d-vsepr\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+controls=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPRSimpleRegex = /<molecule-3d-simple\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
-  const glossaryRegex = /<glossary-term\s+term=["']([^"']+)["']\s+definition=["']([^"]*)["']\s*>(.*?)<\/glossary-term>/gi;
+  const glossaryRegex = /<glossary-term\s+term=(["'])([^\1]*?)\1\s+definition=(["'])([^\3]*?)\3\s*>([\s\S]*?)<\/glossary-term>/gi;
   
   // Combiner tous les regex avec leur type
   const allRegexes: Array<{ regex: RegExp; type: string }> = [
@@ -715,9 +720,9 @@ function parseContent(content: string): ContentPart[] {
       case 'glossary': {
         parts.push({
           type: 'glossary',
-          term: match[1],
-          definition: match[2] || '',
-          content: match[3],
+          term: match[2],
+          definition: match[4] || '',
+          content: match[5]?.trim() || match[2],
         });
         break;
       }
@@ -1082,9 +1087,9 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
   };
 
   return (
-    <span ref={containerRef} className={`inline ${className}`}>
+    <div ref={containerRef} className={`prose prose-blue max-w-none ${className}`}>
       {renderContent()}
-    </span>
+    </div>
   );
 }
 
