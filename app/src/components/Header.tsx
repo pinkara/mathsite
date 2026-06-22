@@ -6,19 +6,26 @@ import {
   Menu, 
   Home, 
   BookOpen, 
-  Puzzle, 
   Calculator, 
   Library, 
   Lock,
   ChevronRight,
   Terminal,
   Layers,
-  ExternalLink
+  ExternalLink,
+  Clock,
+  User,
+  Flame,
+  Star,
+  LogOut,
+  Map,
+  LayoutGrid,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-import type { Route } from '@/types';
+import type { Route, UserProfile } from '@/types';
 
 interface HeaderProps {
   currentRoute: Route;
@@ -29,9 +36,24 @@ interface HeaderProps {
     problems: { id: string; title: string; category: string; type: string }[];
     formulas: { id: string; name: string; category: string; type: string }[];
   };
+  profile?: UserProfile | null;
+  isSupabaseReady?: boolean;
+  isAuthenticated?: boolean;
+  onSignInGoogle?: () => void;
+  onSignOut?: () => void;
 }
 
-export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: HeaderProps) {
+export function Header({
+  currentRoute,
+  onNavigate,
+  isAdmin,
+  searchResults,
+  profile,
+  isSupabaseReady,
+  isAuthenticated,
+  onSignInGoogle,
+  onSignOut,
+}: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -39,12 +61,18 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
   const navItems = [
     { route: 'home' as Route, label: 'Accueil', icon: Home },
     { route: 'courses' as Route, label: 'Cours', icon: BookOpen },
-    { route: 'problems' as Route, label: 'Problèmes', icon: Puzzle },
     { route: 'formulas' as Route, label: 'Formules', icon: Calculator },
+    { route: 'timeline' as Route, label: 'Timeline', icon: Clock },
     { route: 'library' as Route, label: 'Librairie', icon: Library },
     { route: 'subjects' as Route, label: 'Matières', icon: Layers },
     { route: 'ide' as Route, label: 'IDE', icon: Terminal },
+    { route: 'profile' as Route, label: 'Profil', icon: User },
+    { route: 'worlds' as Route, label: 'Mondes', icon: Map },
+    { route: 'collection' as Route, label: 'Collection', icon: LayoutGrid },
   ];
+
+  const userLevel = profile ? Math.floor(profile.xp / 100) + 1 : 1;
+  const xpIntoLevel = profile ? profile.xp % 100 : 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +107,7 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button 
@@ -197,8 +225,68 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
               )}
             >
               <Lock className="w-4 h-4" />
-              {isAdmin ? 'Admin' : 'Connexion'}
+              Admin
             </Button>
+
+            {/* User Profile Widget */}
+            {isAuthenticated ? (
+              <div className="hidden md:flex items-center gap-2">
+                <button
+                  onClick={() => onNavigate('profile')}
+                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm transition-all"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-sm font-bold">
+                    {profile?.name ? profile.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
+                  </div>
+                  <div className="text-left leading-tight">
+                    <div className="text-xs font-semibold text-gray-900">{profile?.name || 'Compte'}</div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
+                      <span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-amber-500" /> Niv. {userLevel}</span>
+                      {profile && profile.streak > 0 && (
+                        <span className="flex items-center gap-0.5 text-orange-600"><Flame className="w-3 h-3" /> {profile.streak}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-12">
+                    <Progress value={xpIntoLevel} className="h-1.5" />
+                  </div>
+                </button>
+                <Button
+                  onClick={onSignOut}
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 text-gray-500 hover:text-red-600"
+                  title="Se déconnecter"
+                >
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : isSupabaseReady ? (
+              <Button
+                onClick={onSignInGoogle}
+                variant="outline"
+                size="sm"
+                className="hidden md:flex items-center gap-1.5 border-blue-200 text-blue-700 hover:bg-blue-50"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Google
+              </Button>
+            ) : (
+              <Button
+                onClick={() => onNavigate('profile')}
+                variant="outline"
+                size="sm"
+                className="hidden md:flex items-center gap-1.5"
+              >
+                <User className="w-4 h-4" />
+                Mon compte
+              </Button>
+            )}
 
             {/* Mobile Menu Button */}
             <button
@@ -277,9 +365,40 @@ export function Header({ currentRoute, onNavigate, isAdmin, searchResults }: Hea
               )}
             >
               <Lock className="w-4 h-4" />
-              {isAdmin ? 'Admin' : 'Connexion'}
+              Admin
               <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
             </button>
+
+            {/* Mobile Auth */}
+            {isSupabaseReady && (
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  if (isAuthenticated) {
+                    onSignOut?.();
+                  } else {
+                    onSignInGoogle?.();
+                  }
+                }}
+                className={cn(
+                  'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                  isAuthenticated
+                    ? 'text-red-600 hover:bg-red-50'
+                    : 'text-blue-700 hover:bg-blue-50'
+                )}
+              >
+                {isAuthenticated ? <LogOut className="w-4 h-4" /> : (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  </svg>
+                )}
+                {isAuthenticated ? 'Se déconnecter' : 'Se connecter avec Google'}
+                <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
+              </button>
+            )}
           </nav>
         </div>
       )}

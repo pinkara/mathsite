@@ -23,6 +23,17 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
+          // En dev (localhost), désenregistrer les SW pour éviter les conflits de cache/HMR
+          if (window.location.hostname === 'localhost') {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+              for (const registration of registrations) {
+                registration.unregister();
+                console.log('[PWA] Service Worker désenregistré (dev):', registration.scope);
+              }
+            });
+            return;
+          }
+
           // Détecter le base path pour GitHub Pages
           const basePath = window.location.pathname.includes('/mathsite/') ? '/mathsite/' : '/';
           const swPath = basePath + 'sw.js';

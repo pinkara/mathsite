@@ -1326,6 +1326,52 @@ Les crédits s'affichent en petit texte italique sous l'image sur la page du cou
 
 ---
 
+## 📊 Graphiques interactifs (Recharts)
+
+Vous pouvez intégrer des visualisations interactives directement dans le contenu HTML de vos cours. Ces composants sont gérés par la librairie Recharts.
+
+### Sommes de Riemann
+
+Affichez un curseur qui permet de régler le nombre de rectangles sous une courbe et de voir l'aire approchée converger vers la valeur exacte.
+
+```html
+<riemann-sum function="x^2" min="0" max="2" initial-rectangles="5" />
+```
+
+#### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `function` | Expression de la fonction (ex: `x^2`, `sin(x)`, `exp(x)`) | ✅ Oui |
+| `min` | Borne inférieure de l'intervalle | ❌ Non (défaut: 0) |
+| `max` | Borne supérieure de l'intervalle | ❌ Non (défaut: 2) |
+| `initial-rectangles` | Nombre de rectangles au départ | ❌ Non (défaut: 5) |
+
+#### Exemples
+```html
+<p>L'aire sous la courbe peut être approchée par des rectangles :</p>
+<riemann-sum function="x^2" min="0" max="2" initial-rectangles="4" />
+
+<p>Comparez avec une fonction sinus :</p>
+<riemann-sum function="sin(x)" min="0" max="3.14" initial-rectangles="10" />
+```
+
+### Tracé de fonction
+
+Affichez simplement le graphe d'une fonction sur un intervalle donné.
+
+```html
+<function-plot expr="sin(x)" min="-6.28" max="6.28" />
+```
+
+#### Attributs
+| Attribut | Description | Requis |
+|----------|-------------|--------|
+| `expr` | Expression de la fonction | ✅ Oui |
+| `min` | Borne inférieure | ❌ Non (défaut: -6.28) |
+| `max` | Borne supérieure | ❌ Non (défaut: 6.28) |
+
+---
+
 ## 🔧 Conseils
 
 1. **Testez votre contenu** - Utilisez l'aperçu avant de sauvegarder

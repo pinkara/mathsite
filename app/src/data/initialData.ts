@@ -41,6 +41,7 @@ print("\nSuite Géométrique (u0=2, q=2):")
 for n in range(6):
     print(f"u_{n} = {suite_geometrique(2, 2, n)}")`,
     codeLanguage: 'python',
+    subjectType: 'academic',
   },
   {
     id: 'c2',
@@ -59,6 +60,7 @@ for n in range(6):
     `,
     categoryColor: '#fef3c7',
     categoryTextColor: '#d97706',
+    subjectType: 'academic',
   },
   {
     id: 'c3',
@@ -80,6 +82,29 @@ for n in range(6):
     `,
     categoryColor: '#dcfce7',
     categoryTextColor: '#16a34a',
+    subjectType: 'academic',
+  },
+  {
+    id: 'c4',
+    type: 'course',
+    title: 'Introduction aux Intégrales',
+    category: 'Analyse',
+    level: 'Term',
+    date: '2024-02-10',
+    description: 'Découvrez l\'intégrale comme limite de sommes d\'aires de rectangles, de façon interactive.',
+    content: `
+      <p>L\'intégrale d\'une fonction positive $f$ sur $[a, b]$ représente l\'aire comprise entre la courbe de $f$, l\'axe des abscisses et les droites $x = a$ et $x = b$.</p>
+      <h2>Sommes de Riemann</h2>
+      <p>Pour approcher cette aire, on découpe l\'intervalle en $n$ rectangles de même largeur. Plus $n$ est grand, plus l\'approximation est précise.</p>
+      <p>Essayez ci-dessous : déplacez le curseur pour changer le nombre de rectangles et observez comment l\'aire approchée se rapproche de la valeur exacte.</p>
+      <riemann-sum function="x^2" min="0" max="2" initial-rectangles="5" />
+      <h2>Valeur exacte</h2>
+      <p>Pour $f(x) = x^2$ sur $[0, 2]$, on a : $$\\int_0^2 x^2 \\, dx = \\left[ \\frac{x^3}{3} \\right]_0^2 = \\frac{8}{3} \\approx 2,667$$</p>
+      <p>Remarquez que lorsque $n$ devient grand, l\'aire approchée converge bien vers cette valeur.</p>
+    `,
+    categoryColor: '#f0f9ff',
+    categoryTextColor: '#0284c7',
+    subjectType: 'academic',
   },
 ];
 
@@ -105,6 +130,7 @@ export const initialProblems: Problem[] = [
         formulaRefs: ['DL-SIN-001'],
       },
     ],
+    subjectType: 'academic',
   },
   {
     id: 'p2',
@@ -122,6 +148,7 @@ export const initialProblems: Problem[] = [
         formulaRefs: ['INT-GAUSS-001'],
       },
     ],
+    subjectType: 'exotic',
   },
   {
     id: 'p3',
@@ -139,6 +166,7 @@ export const initialProblems: Problem[] = [
         formulaRefs: ['EQ-QUAD-001'],
       },
     ],
+    subjectType: 'academic',
   },
 ];
 

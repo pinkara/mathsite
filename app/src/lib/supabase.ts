@@ -45,7 +45,8 @@ export async function fetchCourses(): Promise<Course[]> {
     categoryColor: course.categorycolor || course.categoryColor || '#f0f9ff',
     categoryTextColor: course.categorytextcolor || course.categoryTextColor || '#0284c7',
     image: course.image || '',
-    imageCredits: course.imagecredits || course.imageCredits || ''
+    imageCredits: course.imagecredits || course.imageCredits || '',
+    subjectType: course.subjecttype || course.subjectType || 'academic'
   }));
 }
 
@@ -63,7 +64,8 @@ export async function addCourseToDB(course: Omit<Course, 'id'> & { id?: string }
     image: course.image || '',
     imagecredits: course.imageCredits || '',
     categorycolor: course.categoryColor,
-    categorytextcolor: course.categoryTextColor
+    categorytextcolor: course.categoryTextColor,
+    subjecttype: course.subjectType || 'academic'
   };
   
   if (course.id) courseData.id = course.id;
@@ -99,6 +101,7 @@ export async function updateCourseInDB(id: string, updates: Partial<Course>) {
   if (updates.imageCredits !== undefined) updateData.imagecredits = updates.imageCredits;
   if (updates.categoryColor !== undefined) updateData.categorycolor = updates.categoryColor;
   if (updates.categoryTextColor !== undefined) updateData.categorytextcolor = updates.categoryTextColor;
+  if (updates.subjectType !== undefined) updateData.subjecttype = updates.subjectType;
 
   const { data, error } = await supabase
     .from('courses')
@@ -148,7 +151,14 @@ export async function fetchProblems(): Promise<Problem[]> {
     imageCredits: problem.imagecredits || problem.imageCredits || '',
     hints: problem.hints || [],
     solution: problem.solution || '',
-    date: problem.date || problem.created_at?.split('T')[0] || '2024-01-01'
+    answer: problem.answer || '',
+    answerLatex: problem.answer_latex || problem.answerLatex || '',
+    answerMathJson: problem.answer_math_json || problem.answerMathJson || '',
+    answerType: problem.answer_type || problem.answerType || 'exact',
+    answerFields: problem.answer_fields || problem.answerFields || [],
+    allowedToolbarButtons: problem.allowed_toolbar_buttons || problem.allowedToolbarButtons || [],
+    date: problem.date || problem.created_at?.split('T')[0] || '2024-01-01',
+    subjectType: problem.subjecttype || problem.subjectType || 'academic'
   }));
 }
 
@@ -163,10 +173,17 @@ export async function addProblemToDB(problem: Omit<Problem, 'id'> & { id?: strin
     description: problem.description,
     content: problem.content,
     solution: problem.solution || '',
+    answer: problem.answer || '',
+    answer_latex: problem.answerLatex || '',
+    answer_math_json: problem.answerMathJson || '',
+    answer_type: problem.answerType || 'exact',
+    answer_fields: problem.answerFields || [],
+    allowed_toolbar_buttons: problem.allowedToolbarButtons || [],
     image: problem.image || '',
     imagecredits: problem.imageCredits || '',
     hints: problem.hints || [],
-    date: problem.date || new Date().toISOString().split('T')[0]
+    date: problem.date || new Date().toISOString().split('T')[0],
+    subjecttype: problem.subjectType || 'academic'
   };
   
   if (problem.id) problemData.id = problem.id;
@@ -197,10 +214,17 @@ export async function updateProblemInDB(id: string, updates: Partial<Problem>) {
   if (updates.description !== undefined) updateData.description = updates.description;
   if (updates.content !== undefined) updateData.content = updates.content;
   if (updates.solution !== undefined) updateData.solution = updates.solution;
+  if (updates.answer !== undefined) updateData.answer = updates.answer;
+  if (updates.answerLatex !== undefined) updateData.answer_latex = updates.answerLatex;
+  if (updates.answerMathJson !== undefined) updateData.answer_math_json = updates.answerMathJson;
+  if (updates.answerType !== undefined) updateData.answer_type = updates.answerType;
+  if (updates.answerFields !== undefined) updateData.answer_fields = updates.answerFields;
+  if (updates.allowedToolbarButtons !== undefined) updateData.allowed_toolbar_buttons = updates.allowedToolbarButtons;
   if (updates.image !== undefined) updateData.image = updates.image;
   if (updates.imageCredits !== undefined) updateData.imagecredits = updates.imageCredits;
   if (updates.hints !== undefined) updateData.hints = updates.hints;
   if (updates.date !== undefined) updateData.date = updates.date;
+  if (updates.subjectType !== undefined) updateData.subjecttype = updates.subjectType;
 
   const { data, error } = await supabase
     .from('problems')

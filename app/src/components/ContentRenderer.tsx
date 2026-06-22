@@ -14,6 +14,8 @@ import { MoleculeJSmolVSEPR } from './MoleculeJSmolVSEPR';
 import { Molecule3DmolVSEPR } from './Molecule3DmolVSEPR';
 import { Molecule3DmolVSEPREmbed } from './Molecule3DmolVSEPREmbed';
 import { GlossaryTerm } from './GlossaryTerm';
+import { RiemannSumVisualizer } from './interactive/RiemannSumVisualizer';
+import { FunctionPlotter } from './interactive/FunctionPlotter';
 
 interface ContentRendererProps {
   content: string;
@@ -416,7 +418,9 @@ type ContentPart =
   | { type: 'molecule3DmolVSEPR'; formula: string; title?: string; height?: string; credits?: string }
   | { type: 'molecule3DmolVSEPREmbed'; formula: string; height?: string; credits?: string; controls?: boolean }
   | { type: 'molecule3DmolVSEPRSimple'; formula: string; height?: string; credits?: string }
-  | { type: 'glossary'; term: string; definition: string; content?: string };
+  | { type: 'glossary'; term: string; definition: string; content?: string }
+  | { type: 'riemann'; functionExpr: string; min: number; max: number; initialRectangles: number }
+  | { type: 'functionPlot'; expr: string; min: number; max: number };
 
 function parseContent(content: string): ContentPart[] {
   const parts: ContentPart[] = [];
@@ -443,6 +447,8 @@ function parseContent(content: string): ContentPart[] {
   const molecule3DmolVSEPREmbedRegex = /<molecule-3d-vsepr\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?(?:\s+controls=["']([^"]*)["'])?\s*\/>/gi;
   const molecule3DmolVSEPRSimpleRegex = /<molecule-3d-simple\s+formula=["']([^"']+)["'](?:\s+height=["']([^"]*)["'])?(?:\s+credits=["']([^"]*)["'])?\s*\/>/gi;
   const glossaryRegex = /<glossary-term\s+term=(['"])(.*?)\1\s+definition=(['"])(.*?)\3\s*>([\s\S]*?)<\/glossary-term>/gi;
+  const riemannRegex = /<riemann-sum\s+function=["']([^"']+)["'](?:\s+min=["']([^"']+)["'])?(?:\s+max=["']([^"']+)["'])?(?:\s+initial-rectangles=["']([^"']+)["'])?\s*\/>/gi;
+  const functionPlotRegex = /<function-plot\s+expr=["']([^"']+)["'](?:\s+min=["']([^"']+)["'])?(?:\s+max=["']([^"']+)["'])?\s*\/>/gi;
   
   // Combiner tous les regex avec leur type
   const allRegexes: Array<{ regex: RegExp; type: string }> = [
@@ -467,6 +473,8 @@ function parseContent(content: string): ContentPart[] {
     { regex: molecule3DmolVSEPREmbedRegex, type: 'molecule3DmolVSEPREmbed' },
     { regex: molecule3DmolVSEPRSimpleRegex, type: 'molecule3DmolVSEPRSimple' },
     { regex: glossaryRegex, type: 'glossary' },
+    { regex: riemannRegex, type: 'riemann' },
+    { regex: functionPlotRegex, type: 'functionPlot' },
   ];
   
   let lastIndex = 0;
@@ -723,6 +731,25 @@ function parseContent(content: string): ContentPart[] {
           term: match[2],
           definition: match[4] || '',
           content: match[5]?.trim() || match[2],
+        });
+        break;
+      }
+      case 'riemann': {
+        parts.push({
+          type: 'riemann',
+          functionExpr: match[1],
+          min: Number(match[2] ?? 0),
+          max: Number(match[3] ?? 2),
+          initialRectangles: Number(match[4] ?? 5),
+        });
+        break;
+      }
+      case 'functionPlot': {
+        parts.push({
+          type: 'functionPlot',
+          expr: match[1],
+          min: Number(match[2] ?? -6.28),
+          max: Number(match[3] ?? 6.28),
         });
         break;
       }
@@ -1075,6 +1102,27 @@ export function ContentRenderer({ content, className = '' }: ContentRendererProp
                 height={part.height}
                 credits={part.credits}
                 controls={false}
+              />
+            );
+            break;
+          case 'riemann':
+            result.push(
+              <RiemannSumVisualizer
+                key={`riemann-${index}`}
+                functionExpr={part.functionExpr}
+                min={part.min}
+                max={part.max}
+                initialRectangles={part.initialRectangles}
+              />
+            );
+            break;
+          case 'functionPlot':
+            result.push(
+              <FunctionPlotter
+                key={`fplot-${index}`}
+                expr={part.expr}
+                min={part.min}
+                max={part.max}
               />
             );
             break;

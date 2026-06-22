@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { BookOpen, Puzzle, Calculator, ArrowRight, Sparkles, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
+import { SubjectTypeBadge } from '@/components/SubjectTypeBadge';
 import { AnkiHelpDialog } from '@/components/AnkiHelpDialog';
 import type { Course, Problem, Formula } from '@/types';
 
@@ -148,6 +149,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
                   COURS DU JOUR
                 </span>
                 <LevelBadge level={dailyContent.course.level} size="sm" />
+                <SubjectTypeBadge type={dailyContent.course.subjectType} />
               </div>
               {dailyContent.course.image && (
                 <div className="h-32 md:h-40 mb-3 md:mb-4 overflow-hidden rounded-lg">
@@ -221,6 +223,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
                     {dailyContent.problem.category}
                   </span>
                   <DifficultyBadge difficulty={dailyContent.problem.difficulty} size="sm" />
+                  <SubjectTypeBadge type={dailyContent.problem.subjectType} />
                 </div>
                 <h3 className="text-base md:text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
                   <TitleWithFormula text={dailyContent.problem.title} />
@@ -280,7 +283,10 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
                 )}
                 <div className="p-3 md:p-4">
                   <div className="flex items-start justify-between mb-2 md:mb-3">
-                    <LevelBadge level={course.level} size="sm" />
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <LevelBadge level={course.level} size="sm" />
+                      <SubjectTypeBadge type={course.subjectType} />
+                    </div>
                     <span className="text-[10px] md:text-xs text-gray-400">{course.date}</span>
                   </div>
                   <span 
@@ -347,9 +353,10 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
                 )}
                 <div className="p-3 md:p-4">
                   <div className="flex items-start justify-between mb-2 md:mb-3">
-                    <div className="flex items-center gap-1.5 md:gap-2">
+                    <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
                       <LevelBadge level={problem.level} size="sm" />
                       <DifficultyBadge difficulty={problem.difficulty} size="sm" />
+                      <SubjectTypeBadge type={problem.subjectType} />
                     </div>
                   </div>
                   <span className="text-[10px] md:text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mb-1 md:mb-2 inline-block">

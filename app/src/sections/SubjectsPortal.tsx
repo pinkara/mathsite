@@ -1,11 +1,7 @@
 import { 
   Calculator, 
-  Globe, 
   FlaskConical, 
   Atom,
-  BookOpen, 
-  Music, 
-  Languages,
   Monitor,
   GraduationCap,
   ExternalLink,
@@ -67,61 +63,6 @@ const subjects: SubjectSite[] = [
     icon: <Monitor className="w-8 h-8" />,
     color: 'from-slate-600 to-slate-800',
     bgGradient: 'from-slate-50 to-gray-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'histgeo',
-    name: 'HistoGeo',
-    fullName: 'Histoire-Géographie + EMC',
-    description: 'Cours d\'histoire, géographie et enseignement moral et civique.',
-    icon: <Globe className="w-8 h-8" />,
-    color: 'from-amber-500 to-orange-600',
-    bgGradient: 'from-amber-50 to-orange-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'francais',
-    name: 'Littéraire',
-    fullName: 'Français',
-    description: 'Littérature, grammaire, méthodologie et analyse de textes.',
-    icon: <BookOpen className="w-8 h-8" />,
-    color: 'from-red-500 to-rose-600',
-    bgGradient: 'from-red-50 to-rose-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'anglais',
-    name: 'EnglishPlus',
-    fullName: 'Anglais',
-    description: 'Cours d\'anglais, vocabulaire et culture anglo-saxonne.',
-    icon: <Languages className="w-8 h-8" />,
-    color: 'from-cyan-500 to-blue-600',
-    bgGradient: 'from-cyan-50 to-blue-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'allemand',
-    name: 'DeutschUnivers',
-    fullName: 'Allemand',
-    description: 'Cours d\'allemand, grammaire et culture germanique.',
-    icon: <GraduationCap className="w-8 h-8" />,
-    color: 'from-yellow-500 to-amber-600',
-    bgGradient: 'from-yellow-50 to-amber-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'musique',
-    name: 'Harmonie',
-    fullName: 'Musique',
-    description: 'Théorie musicale, histoire de la musique et pratique.',
-    icon: <Music className="w-8 h-8" />,
-    color: 'from-violet-500 to-purple-600',
-    bgGradient: 'from-violet-50 to-purple-100',
     url: '#',
     status: 'coming-soon'
   }

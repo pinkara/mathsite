@@ -4,19 +4,45 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { LevelBadge } from '@/components/LevelBadge';
+import { SubjectTypeBadge } from '@/components/SubjectTypeBadge';
 import { TitleWithFormula } from '@/components/InlineFormula';
-import type { Course, Level } from '@/types';
+import type { Course, Level, SubjectType, ArenaContent, UserProfile, Problem, Formula } from '@/types';
 import { LEVELS } from '@/types';
+import { getArenaContents } from '@/lib/worldsConfig';
 
 interface CoursesPageProps {
   courses: Course[];
   onNavigate: (route: string, params?: any) => void;
+  profile?: UserProfile | null;
+  arenaContents?: ArenaContent[];
+  problems?: Problem[];
+  formulas?: Formula[];
 }
 
-export function CoursesPage({ courses, onNavigate }: CoursesPageProps) {
+function isCourseUnlocked(
+  course: Course,
+  profile: UserProfile | null,
+  arenaContents: ArenaContent[],
+  problems: Problem[],
+  formulas: Formula[]
+): boolean {
+  if (course.subjectType !== 'exotic') return true;
+  if (!profile) return false;
+  const bonusEntries = arenaContents.filter(
+    (ac) => ac.contentType === 'course' && ac.contentId === course.id && (ac.isBonus || ac.isOlympiad)
+  );
+  if (bonusEntries.length === 0) return true;
+  return bonusEntries.some((ac) => {
+    const contents = getArenaContents(ac.worldId, ac.arenaNumber, [], problems, formulas, arenaContents);
+    return contents.problems.length > 0 && contents.problems.every((p) => profile.completedProblemIds.includes(p.id));
+  });
+}
+
+export function CoursesPage({ courses, onNavigate, profile, arenaContents = [], problems = [], formulas = [] }: CoursesPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeSubjectType, setActiveSubjectType] = useState<SubjectType | 'all'>('all');
 
   // Extraire les catégories uniques
   const categories = useMemo(() => {
@@ -34,17 +60,20 @@ export function CoursesPage({ courses, onNavigate }: CoursesPageProps) {
       
       const matchesLevel = !selectedLevel || course.level === selectedLevel;
       const matchesCategory = !selectedCategory || course.category === selectedCategory;
+      const matchesSubjectType = activeSubjectType === 'all' || course.subjectType === activeSubjectType;
+      const isUnlocked = isCourseUnlocked(course, profile || null, arenaContents, problems, formulas);
       
-      return matchesSearch && matchesLevel && matchesCategory;
+      return matchesSearch && matchesLevel && matchesCategory && matchesSubjectType && isUnlocked;
     });
-  }, [courses, searchQuery, selectedLevel, selectedCategory]);
+  }, [courses, searchQuery, selectedLevel, selectedCategory, activeSubjectType]);
 
-  const hasActiveFilters = selectedLevel || selectedCategory;
+  const hasActiveFilters = selectedLevel || selectedCategory || activeSubjectType !== 'all';
 
   const clearFilters = () => {
     setSelectedLevel(null);
     setSelectedCategory(null);
     setSearchQuery('');
+    setActiveSubjectType('all');
   };
 
   return (
@@ -60,6 +89,28 @@ export function CoursesPage({ courses, onNavigate }: CoursesPageProps) {
             {filteredCourses.length} cours disponibles
           </p>
         </div>
+      </div>
+
+      {/* Subject Type Tabs */}
+      <div className="flex gap-2 border-b border-gray-200">
+        {([
+          { key: 'all', label: 'Tous' },
+          { key: 'academic', label: 'Programme scolaire' },
+          { key: 'exotic', label: 'Olympiades & hors programme' },
+        ] as { key: SubjectType | 'all'; label: string }[]).map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveSubjectType(tab.key)}
+            className={cn(
+              'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+              activeSubjectType === tab.key
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Search & Filters */}
@@ -179,7 +230,10 @@ export function CoursesPage({ courses, onNavigate }: CoursesPageProps) {
               {/* Content */}
               <div className="p-4 md:p-5">
                 <div className="flex items-start justify-between mb-2 md:mb-3">
-                  <LevelBadge level={course.level} />
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <LevelBadge level={course.level} />
+                    <SubjectTypeBadge type={course.subjectType} />
+                  </div>
                   <span className="text-xs text-gray-400">{course.date}</span>
                 </div>
 

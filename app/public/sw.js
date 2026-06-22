@@ -1,7 +1,7 @@
 // Service Worker pour MathUnivers PWA
 // Gère le cache et les routes pour le base path /mathsite/
 
-const CACHE_NAME = 'mathunivers-v2';
+const CACHE_NAME = 'mathunivers-v4';
 
 // Détecter le base path depuis l'URL du service worker
 const getBasePath = () => {

@@ -5,14 +5,21 @@ import { PWAInstall } from '@/components/PWAInstall';
 import { LibraryPassword } from '@/components/LibraryPassword';
 import { HomePage } from '@/sections/HomePage';
 import { CoursesPage } from '@/sections/CoursesPage';
-import { ProblemsPage } from '@/sections/ProblemsPage';
 import { FormulasPage } from '@/sections/FormulasPage';
 import { LibraryPage } from '@/sections/LibraryPage';
 import { IDEPage } from '@/sections/IDEPage';
 import { SubjectsPortal } from '@/sections/SubjectsPortal';
 import { ArticlePage } from '@/sections/ArticlePage';
 import { AdminPage } from '@/sections/AdminPage';
+import { TimelinePage } from '@/sections/TimelinePage';
+import { ProfilePage } from '@/sections/ProfilePage';
+import { WorldsMapPage } from '@/sections/WorldsMapPage';
+import { ArenaPage } from '@/sections/ArenaPage';
+import { CollectionPage } from '@/sections/CollectionPage';
+import { WelcomePage } from '@/sections/WelcomePage';
+import { WelcomeModal } from '@/components/WelcomeModal';
 import { useRouter } from '@/hooks/useRouter';
+import { useAuth } from '@/hooks/useAuth';
 import { 
   useCourses, 
   useProblems, 
@@ -20,11 +27,14 @@ import {
   useLibrary, 
   useAdmin, 
   useStats,
-  useLikes 
+  useLikes,
+  useTimeline,
+  useUserProfile,
+  useArenaContents,
 } from '@/hooks/useStorage';
 import { initializeData } from '@/data/initialData';
 import { cn } from '@/lib/utils';
-import type { Route } from '@/types';
+import type { Route, Level } from '@/types';
 
 // === GLOBAL MATHJAX LOADER ===
 // Load MathJax globally so LaTeX works on all pages
@@ -128,7 +138,7 @@ function SupabaseWarning() {
   
   return (
     <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2">
           <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -205,6 +215,63 @@ function App() {
   const { isAdmin, login, logout } = useAdmin();
   const { monthlyStats, recordVisit } = useStats();
   const { toggleLike, isLiked } = useLikes();
+  const { events, addEvent, updateEvent, removeEvent } = useTimeline();
+  const { user, isLoading: isAuthLoading, isSupabaseReady, signInWithGoogle, signOut } = useAuth();
+  const { arenaContents, addArenaContent, updateArenaContent, removeArenaContent } = useArenaContents();
+  const { profile, isLoaded: isProfileLoaded, updateProfile, resetProfile, openChest, checkIn, completeProblem, spendCurrency, setLevel } = useUserProfile(user, isSupabaseReady, { courses, problems, formulas, arenaContents });
+
+  // Page de bienvenue : affichée la première fois
+  const [hasSeenWelcome, setHasSeenWelcome] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('mathunivers_welcome_seen') === 'true';
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (user && profile?.name) {
+      localStorage.setItem('mathunivers_welcome_seen', 'true');
+      setHasSeenWelcome(true);
+    }
+  }, [user, profile?.name]);
+
+  const [authIntent, setAuthIntent] = useState<'signin' | 'signup' | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('mathunivers_auth_intent') as 'signin' | 'signup' | null;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (user && authIntent) {
+      localStorage.removeItem('mathunivers_auth_intent');
+      setAuthIntent(null);
+    }
+  }, [user, authIntent]);
+
+  const handleWelcomeSignIn = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mathunivers_welcome_seen', 'true');
+      localStorage.setItem('mathunivers_auth_intent', 'signin');
+    }
+    setAuthIntent('signin');
+    signInWithGoogle();
+  };
+
+  const handleWelcomeSignUp = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mathunivers_welcome_seen', 'true');
+      localStorage.setItem('mathunivers_auth_intent', 'signup');
+    }
+    setAuthIntent('signup');
+    signInWithGoogle();
+  };
+
+  const handleWelcomeGuest = (name: string, level: Level) => {
+    updateProfile({ name, level });
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mathunivers_welcome_seen', 'true');
+    }
+    setHasSeenWelcome(true);
+  };
 
   // Initialize data on mount
   useEffect(() => {
@@ -218,6 +285,13 @@ function App() {
 
     return () => clearTimeout(timer);
   }, [recordVisit]);
+
+  // Check-in user for streak tracking once profile is loaded
+  useEffect(() => {
+    if (isProfileLoaded && profile) {
+      checkIn();
+    }
+  }, [isProfileLoaded, profile, checkIn]);
 
   // Handle navigation
   const handleNavigate = useCallback((route: string, params?: any) => {
@@ -243,16 +317,15 @@ function App() {
           <CoursesPage
             courses={courses}
             onNavigate={handleNavigate}
+            profile={profile}
+            arenaContents={arenaContents}
+            problems={problems}
+            formulas={formulas}
           />
         );
       
       case 'problems':
-        return (
-          <ProblemsPage
-            problems={problems}
-            onNavigate={handleNavigate}
-          />
-        );
+        return <WorldsMapPage profile={profile} onSelectArena={(w, a) => handleNavigate('worlds', { worldId: w, arenaNumber: a })} />;
       
       case 'formulas':
         return (
@@ -285,6 +358,31 @@ function App() {
       case 'subjects':
         return <SubjectsPortal />;
       
+      case 'timeline':
+        // Périodes historiques prédéfinies
+        const historicalPeriods = [
+          { id: 'antiquity', name: 'Antiquité', startYear: -2000, endYear: 476, color: '#f59e0b', description: 'Des premières civilisations à la chute de l\'Empire romain' },
+          { id: 'middle-ages', name: 'Moyen Âge', startYear: 476, endYear: 1492, color: '#8b5cf6', description: 'De la chute de Rome à la découverte de l\'Amérique' },
+          { id: 'renaissance', name: 'Renaissance', startYear: 1492, endYear: 1600, color: '#ec4899', description: 'Renouveau des arts et des sciences' },
+          { id: '17th', name: 'XVIIe siècle', startYear: 1600, endYear: 1700, color: '#3b82f6', description: 'L\'âge classique des mathématiques' },
+          { id: '18th', name: 'XVIIIe siècle', startYear: 1700, endYear: 1800, color: '#10b981', description: 'Le siècle des Lumières' },
+          { id: '19th', name: 'XIXe siècle', startYear: 1800, endYear: 1900, color: '#8b5cf6', description: 'L\'âge d\'or des mathématiques modernes' },
+          { id: '20th', name: 'XXe siècle', startYear: 1900, endYear: 2000, color: '#ef4444', description: 'Les fondements et la crise des mathématiques' },
+          { id: '21st', name: 'XXIe siècle', startYear: 2000, endYear: 2100, color: '#06b6d4', description: 'L\'ère numérique et l\'informatique' },
+        ];
+        
+        return (
+          <TimelinePage
+            events={events}
+            periods={historicalPeriods}
+            courses={courses}
+            problems={problems}
+            formulas={formulas}
+            isAdmin={isAdmin}
+            onNavigate={handleNavigate}
+          />
+        );
+      
       case 'article':
         if (state.params?.type && state.params?.id) {
           return (
@@ -297,6 +395,10 @@ function App() {
               isLiked={isLiked(state.params.type === 'course' ? 'course' : 'course', state.params.id)}
               onToggleLike={() => toggleLike(state.params!.type === 'course' ? 'course' : 'course', state.params!.id!)}
               onNavigate={handleNavigate}
+              onCompleteProblem={(problem, xp) => completeProblem(problem, xp)}
+              completedProblemIds={profile?.completedProblemIds || []}
+              currency={profile?.currency || 0}
+              onSpendCurrency={spendCurrency}
             />
           );
         }
@@ -313,6 +415,8 @@ function App() {
             formulas={formulas}
             books={books}
             monthlyStats={monthlyStats}
+            timelineEvents={events}
+            arenaContents={arenaContents}
             onAddCourse={addCourse}
             onUpdateCourse={updateCourse}
             onRemoveCourse={removeCourse}
@@ -322,16 +426,66 @@ function App() {
             onAddFormula={addFormula}
             onUpdateFormula={updateFormula}
             onRemoveFormula={removeFormula}
+            onAddTimelineEvent={addEvent}
+            onUpdateTimelineEvent={updateEvent}
+            onRemoveTimelineEvent={removeEvent}
+            onAddArenaContent={addArenaContent}
+            onUpdateArenaContent={updateArenaContent}
+            onRemoveArenaContent={removeArenaContent}
           />
         );
+      
+      case 'profile':
+        return (
+          <ProfilePage
+            profile={profile}
+            onReset={resetProfile}
+            onOpenChest={openChest}
+            onNavigate={handleNavigate}
+            onSetLevel={setLevel}
+          />
+        );
+      
+      case 'worlds': {
+        const { worldId, arenaNumber } = state.params || {};
+        if (worldId && typeof arenaNumber === 'number') {
+          return (
+            <ArenaPage
+              worldId={worldId}
+              arenaNumber={arenaNumber}
+              profile={profile}
+              courses={courses}
+              problems={problems}
+              formulas={formulas}
+              arenaContents={arenaContents}
+              onNavigate={handleNavigate}
+            />
+          );
+        }
+        return <WorldsMapPage profile={profile} onSelectArena={(w, a) => handleNavigate('worlds', { worldId: w, arenaNumber: a })} />;
+      }
+      
+      case 'collection':
+        return <CollectionPage profile={profile} />;
       
       default:
         return null;
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isAuthLoading) {
     return <LoadingScreen />;
+  }
+
+  if (!hasSeenWelcome) {
+    return (
+      <WelcomePage
+        onSignIn={handleWelcomeSignIn}
+        onSignUp={handleWelcomeSignUp}
+        onContinueAsGuest={handleWelcomeGuest}
+        isSupabaseReady={isSupabaseReady}
+      />
+    );
   }
 
   return (
@@ -342,6 +496,11 @@ function App() {
         currentRoute={state.route}
         onNavigate={handleNavigate}
         isAdmin={isAdmin}
+        profile={profile}
+        isSupabaseReady={isSupabaseReady}
+        isAuthenticated={!!user}
+        onSignInGoogle={signInWithGoogle}
+        onSignOut={signOut}
         searchResults={{
           courses: courses.map(c => ({ id: c.id, title: c.title, category: c.category, type: 'course' })),
           problems: problems.map(p => ({ id: p.id, title: p.title, category: p.category, type: 'problem' })),
@@ -350,7 +509,7 @@ function App() {
       />
       
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content */}
             <div className={cn(
@@ -360,9 +519,9 @@ function App() {
               {renderContent()}
             </div>
 
-            {/* Sidebar (hidden on admin page) */}
-            {state.route !== 'admin' && (
-              <div className="hidden lg:block lg:w-80 flex-shrink-0">
+            {/* Sidebar (hidden on admin and timeline pages) */}
+            {state.route !== 'admin' && state.route !== 'timeline' && (
+              <div className="hidden lg:block lg:w-80 xl:w-96 flex-shrink-0">
                 <div className="sticky top-24">
                   <Sidebar
                     courses={courses}
@@ -379,7 +538,7 @@ function App() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-8 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               MathUnivers
@@ -402,6 +561,11 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Welcome / Create profile modal when profile has no name yet or after signup */}
+      {((!profile?.name) || authIntent === 'signup') && (
+        <WelcomeModal profile={profile} onCreate={updateProfile} mode={authIntent || 'guest'} />
+      )}
 
       {/* PWA Install Banner */}
       <PWAInstall />

@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { useMathJaxEffect } from '@/hooks/useMathJax';
-import { ArrowLeft, Heart, ChevronUp, ChevronDown, Lightbulb, Calculator, ExternalLink, CheckCircle, Eye, AlertTriangle, Terminal } from 'lucide-react';
+import { ArrowLeft, Heart, ChevronUp, ChevronDown, Lightbulb, Calculator, ExternalLink, CheckCircle, Eye, AlertTriangle, Terminal, Coins } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ContentRenderer } from '@/components/ContentRenderer';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
+import { SubjectTypeBadge } from '@/components/SubjectTypeBadge';
 import { TitleWithFormula } from '@/components/InlineFormula';
+const ProblemSolver = lazy(() => import('@/components/ProblemSolver'));
 import type { Course, Problem, Formula } from '@/types';
+import { getHintCost, getSolutionCost, CURRENCY_NAME, CURRENCY_SYMBOL } from '@/lib/worldsConfig';
 
 interface ArticlePageProps {
   type: 'course' | 'problem';
@@ -17,6 +20,10 @@ interface ArticlePageProps {
   isLiked: boolean;
   onToggleLike: () => void;
   onNavigate: (route: string, params?: any) => void;
+  onCompleteProblem?: (problem: Problem, xpAmount: number) => void;
+  completedProblemIds?: string[];
+  currency?: number;
+  onSpendCurrency?: (amount: number) => boolean;
 }
 
 export function ArticlePage({ 
@@ -27,15 +34,16 @@ export function ArticlePage({
   formulas,
   isLiked, 
   onToggleLike, 
-  onNavigate 
+  onNavigate,
+  onCompleteProblem,
+  completedProblemIds,
+  currency = 0,
+  onSpendCurrency,
 }: ArticlePageProps) {
   const [revealedHints, setRevealedHints] = useState<Set<string>>(new Set());
   const [vote, setVote] = useState<'up' | 'down' | null>(null);
   const [solutionState, setSolutionState] = useState<'hidden' | 'confirm' | 'visible'>('hidden');
   const [zoomLevel, setZoomLevel] = useState<75 | 100 | 125 | 150>(100);
-
-  // Forcer MathJax à re-parser après révélation d'indices, vote, solution ou changement de zoom
-  useMathJaxEffect([revealedHints, vote, solutionState, zoomLevel]);
 
   // Récupérer l'article
   const article = type === 'course' 
@@ -58,6 +66,10 @@ export function ArticlePage({
   const isCourse = type === 'course';
   const course = isCourse ? article as Course : null;
   const problem = !isCourse ? article as Problem : null;
+  const problemCompleted = !!problem && (completedProblemIds?.includes(problem.id) ?? false);
+
+  // Forcer MathJax à re-parser après révélation d'indices, vote, solution, zoom ou complétion
+  useMathJaxEffect([revealedHints, vote, solutionState, zoomLevel, problemCompleted]);
 
   // Trouver les formules référencées
   const getFormulaByCode = (code: string) => {
@@ -70,10 +82,30 @@ export function ArticlePage({
       if (newSet.has(hintId)) {
         newSet.delete(hintId);
       } else {
+        const cost = getHintCost();
+        if (onSpendCurrency && !newSet.has(hintId)) {
+          if (currency < cost) {
+            window.alert(`Il te faut ${cost} ${CURRENCY_NAME} pour révéler un indice.`);
+            return prev;
+          }
+          if (!onSpendCurrency(cost)) return prev;
+        }
         newSet.add(hintId);
       }
       return newSet;
     });
+  };
+
+  const handleRevealSolution = () => {
+    const cost = getSolutionCost();
+    if (onSpendCurrency) {
+      if (currency < cost) {
+        window.alert(`Il te faut ${cost} ${CURRENCY_NAME} pour voir la solution.`);
+        return;
+      }
+      if (!onSpendCurrency(cost)) return;
+    }
+    setSolutionState('visible');
   };
 
   const handleVote = (direction: 'up' | 'down') => {
@@ -111,6 +143,7 @@ export function ArticlePage({
               {!isCourse && problem && (
                 <DifficultyBadge difficulty={problem.difficulty} />
               )}
+              <SubjectTypeBadge type={article.subjectType} size="md" />
             </div>
             <div className="flex items-center gap-2">
               {isCourse && (
@@ -263,6 +296,20 @@ export function ArticlePage({
           )}
         </div>
 
+        {/* Problem Solver */}
+        {!isCourse && problem && onCompleteProblem && (
+          <div className="px-6 md:px-8 pb-6 md:pb-8">
+            <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded-xl" />}>
+              <ProblemSolver
+                problem={problem}
+                completed={completedProblemIds?.includes(problem.id)}
+                solutionRevealed={solutionState === 'visible'}
+                onComplete={(xp) => onCompleteProblem(problem, xp)}
+              />
+            </Suspense>
+          </div>
+        )}
+
         {/* Problem Solution */}
         {!isCourse && problem && problem.solution && problem.solution.trim() && (
           <div className="p-6 md:p-8 bg-gradient-to-br from-green-50 to-emerald-50 border-t border-green-200">
@@ -278,6 +325,10 @@ export function ArticlePage({
               >
                 <Eye className="w-5 h-5" />
                 Voir la solution
+                <span className="ml-2 inline-flex items-center gap-1 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                  <Coins className="w-3 h-3" />
+                  {getSolutionCost()} {CURRENCY_SYMBOL}
+                </span>
               </button>
             )}
 
@@ -298,10 +349,12 @@ export function ArticlePage({
                     Non, continuer à réfléchir
                   </button>
                   <button
-                    onClick={() => setSolutionState('visible')}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    onClick={handleRevealSolution}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors inline-flex items-center gap-2"
                   >
                     Oui, voir la solution
+                    <Coins className="w-4 h-4" />
+                    {getSolutionCost()} {CURRENCY_SYMBOL}
                   </button>
                 </div>
               </div>
@@ -355,7 +408,10 @@ export function ArticlePage({
                     {revealedHints.has(hint.id) ? (
                       <ChevronUp className="w-5 h-5 text-gray-400" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                      <span className="inline-flex items-center gap-1 text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                        <Coins className="w-3 h-3" />
+                        {getHintCost()} {CURRENCY_SYMBOL}
+                      </span>
                     )}
                   </button>
                   

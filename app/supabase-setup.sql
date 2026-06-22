@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS courses (
   imagecredits TEXT DEFAULT '',
   categoryColor TEXT,
   categoryTextColor TEXT,
+  subjecttype TEXT DEFAULT 'academic',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -39,6 +40,8 @@ CREATE TABLE IF NOT EXISTS problems (
   imagecredits TEXT DEFAULT '',
   hints JSONB DEFAULT '[]'::jsonb,
   date TEXT,
+  subjecttype TEXT DEFAULT 'academic',
+  answer TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -134,6 +137,14 @@ ADD COLUMN IF NOT EXISTS imagecredits TEXT DEFAULT '';
 ALTER TABLE problems 
 ADD COLUMN IF NOT EXISTS imagecredits TEXT DEFAULT '';
 
+-- Ajouter la colonne subjecttype à courses (si elle n'existe pas)
+ALTER TABLE courses 
+ADD COLUMN IF NOT EXISTS subjecttype TEXT DEFAULT 'academic';
+
+-- Ajouter la colonne subjecttype à problems (si elle n'existe pas)
+ALTER TABLE problems 
+ADD COLUMN IF NOT EXISTS subjecttype TEXT DEFAULT 'academic';
+
 -- ============================================
 -- 6. ACTIVER LA RÉPLICATION POUR LES ABONNEMENTS (OPTIONNEL)
 -- ============================================
@@ -142,3 +153,83 @@ alter publication supabase_realtime add table courses;
 alter publication supabase_realtime add table problems;
 alter publication supabase_realtime add table formulas;
 alter publication supabase_realtime add table books;
+
+-- ============================================
+-- 7. TABLE DES PROFILS ÉLÈVES (GAMIFICATION)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL DEFAULT '',
+  level TEXT NOT NULL DEFAULT 'Term',
+  xp INTEGER NOT NULL DEFAULT 0,
+  streak INTEGER NOT NULL DEFAULT 0,
+  last_active_date TEXT NOT NULL DEFAULT '',
+  badges TEXT[] NOT NULL DEFAULT '{}',
+  completed_course_ids TEXT[] NOT NULL DEFAULT '{}',
+  completed_problem_ids TEXT[] NOT NULL DEFAULT '{}',
+  chest_count INTEGER NOT NULL DEFAULT 0,
+  unlocked_chests INTEGER NOT NULL DEFAULT 0,
+  weekly_activity JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_profiles_xp ON profiles(xp DESC);
+CREATE INDEX IF NOT EXISTS idx_profiles_streak ON profiles(streak DESC);
+
+-- Créer automatiquement un profil vide à l'inscription
+CREATE OR REPLACE FUNCTION public.create_profile_for_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, name, level)
+  VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'name', NEW.raw_user_meta_data->>'full_name', ''), 'Term');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION public.create_profile_for_user();
+
+-- Sécurité : chaque utilisateur gère son propre profil
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own profile"
+  ON profiles FOR ALL
+  USING (auth.uid() = id)
+  WITH CHECK (auth.uid() = id);
+
+-- Le leaderboard est public (lecture seule)
+CREATE POLICY "Profiles are readable for leaderboard"
+  ON profiles FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+-- Autorisations pour la clé anonyme
+GRANT ALL ON profiles TO anon;
+GRANT ALL ON profiles TO authenticated;
+
+-- Réplication temps réel (optionnel)
+alter publication supabase_realtime add table profiles;
+
+-- ============================================
+-- 8. COLONNES POUR LES RÉPONSES MATHÉMATIQUES
+-- ============================================
+
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS answer_latex TEXT;
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS answer_math_json TEXT;
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS answer_type TEXT DEFAULT 'exact';
+
+-- ============================================
+-- 9. BOUTONS DU CLAVIER AUTORISÉS PAR PROBLÈME
+-- ============================================
+
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS allowed_toolbar_buttons JSONB DEFAULT '[]'::jsonb;
+
+-- ============================================
+-- 10. CHAMPS DE RÉPONSE MULTIPLES
+-- ============================================
+
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS answer_fields JSONB DEFAULT '[]'::jsonb;

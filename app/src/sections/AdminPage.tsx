@@ -7,6 +7,7 @@ import {
   Calculator, 
   Library,
   Plus,
+  CheckCircle,
   Trash2,
   Edit2,
   Save,
@@ -17,7 +18,27 @@ import {
   Eye,
   BarChart3,
   Loader2,
-  AlertTriangle
+  AlertTriangle,
+  Clock,
+  Calendar,
+  Target,
+  ExternalLink,
+  Lightbulb,
+  Music,
+  Triangle,
+  Edit3,
+  Grid3x3,
+  Hash,
+  Layers,
+  Activity,
+  Cpu,
+  Globe,
+  Infinity,
+  GitBranch,
+  Award,
+  BrainCircuit,
+  User,
+  History,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,8 +47,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { cn } from '@/lib/utils';
 import { LevelBadge, DifficultyBadge } from '@/components/LevelBadge';
 import { TitleWithFormula } from '@/components/InlineFormula';
-import type { Course, Problem, Formula, Book, Level, MonthlyStats } from '@/types';
+import { MathInput } from '@/components/MathInput';
+import { MathToolbar } from '@/components/MathToolbar';
+import { ToolbarButtonSelector } from '@/components/ToolbarButtonSelector';
+import type { Course, Problem, Formula, Book, Level, MonthlyStats, TimelineEvent, SubjectType, ProblemAnswerField, ArenaContent } from '@/types';
+import type { MathInputRef } from '@/components/MathInput';
 import { LEVELS } from '@/types';
+import { WORLDS, type WorldId } from '@/lib/worldsConfig';
 import { uploadImage } from '@/lib/supabase';
 
 interface AdminPageProps {
@@ -39,6 +65,8 @@ interface AdminPageProps {
   formulas: Formula[];
   books: Book[];
   monthlyStats: MonthlyStats[];
+  timelineEvents: TimelineEvent[];
+  arenaContents: ArenaContent[];
   onAddCourse: (course: Omit<Course, 'id' | 'type' | 'date'>) => void;
   onUpdateCourse: (id: string, updates: Partial<Course>) => void;
   onRemoveCourse: (id: string) => void;
@@ -48,6 +76,12 @@ interface AdminPageProps {
   onAddFormula: (formula: Omit<Formula, 'id'>) => void;
   onUpdateFormula: (id: string, updates: Partial<Formula>) => void;
   onRemoveFormula: (id: string) => void;
+  onAddTimelineEvent: (event: Omit<TimelineEvent, 'id'>) => void;
+  onUpdateTimelineEvent: (id: string, updates: Partial<TimelineEvent>) => void;
+  onRemoveTimelineEvent: (id: string) => void;
+  onAddArenaContent: (content: Omit<ArenaContent, 'id'>) => void;
+  onUpdateArenaContent: (id: string, updates: Partial<ArenaContent>) => void;
+  onRemoveArenaContent: (id: string) => void;
 }
 
 // === FORMULAIRE DE CONNEXION ===
@@ -260,6 +294,7 @@ function CoursesManager({
     imageCredits: string;
     categoryColor: string;
     categoryTextColor: string;
+    subjectType: SubjectType;
   }>({
     title: '',
     category: '',
@@ -270,6 +305,7 @@ function CoursesManager({
     imageCredits: '',
     categoryColor: '#f0f9ff',
     categoryTextColor: '#0284c7',
+    subjectType: 'academic',
   });
 
   const resetForm = () => {
@@ -283,6 +319,7 @@ function CoursesManager({
       imageCredits: '',
       categoryColor: '#f0f9ff',
       categoryTextColor: '#0284c7',
+      subjectType: 'academic',
     });
   };
 
@@ -310,6 +347,7 @@ function CoursesManager({
       imageCredits: course.imageCredits || '',
       categoryColor: course.categoryColor || '#f0f9ff',
       categoryTextColor: course.categoryTextColor || '#0284c7',
+      subjectType: course.subjectType || 'academic',
     });
     setEditingId(course.id);
     setIsAdding(true);
@@ -378,6 +416,17 @@ function CoursesManager({
                     {level.label}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Type de contenu</label>
+              <select
+                value={formData.subjectType}
+                onChange={(e) => setFormData(prev => ({ ...prev, subjectType: e.target.value as SubjectType }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              >
+                <option value="academic">Programme scolaire</option>
+                <option value="exotic">Olympiades & hors programme</option>
               </select>
             </div>
             <div>
@@ -571,9 +620,12 @@ function ProblemsManager({
     description: string;
     content: string;
     solution: string;
+    answer: string;
+    answerFields: ProblemAnswerField[];
     image: string;
     imageCredits: string;
     hints: { id: string; content: string; formulaRefs: string[] }[];
+    subjectType: SubjectType;
   }>({
     title: '',
     category: '',
@@ -582,14 +634,19 @@ function ProblemsManager({
     description: '',
     content: '',
     solution: '',
+    answer: '',
+    answerFields: [],
     image: '',
     imageCredits: '',
     hints: [],
+    subjectType: 'academic',
   });
 
   const [newHint, setNewHint] = useState({ content: '', formulaRefs: '' });
+  const [formError, setFormError] = useState<string | null>(null);
 
   const resetForm = () => {
+    setFormError(null);
     setFormData({
       title: '',
       category: '',
@@ -598,24 +655,35 @@ function ProblemsManager({
       description: '',
       content: '',
       solution: '',
+      answer: '',
+      answerFields: [],
       image: '',
       imageCredits: '',
       hints: [],
+      subjectType: 'academic',
     });
     setNewHint({ content: '', formulaRefs: '' });
   };
 
   const handleSubmit = () => {
-    if (formData.title && formData.category && formData.content) {
-      if (editingId) {
-        onUpdate(editingId, formData);
-        setEditingId(null);
-      } else {
-        onAdd(formData);
-      }
-      resetForm();
-      setIsAdding(false);
+    setFormError(null);
+    if (!formData.title || !formData.category || !formData.content) {
+      setFormError('Veuillez remplir les champs obligatoires : titre, catégorie et énoncé.');
+      return;
     }
+    console.log('[Admin] Submitting problem:', {
+      id: editingId,
+      answerFieldsCount: formData.answerFields.length,
+      answerFields: formData.answerFields,
+    });
+    if (editingId) {
+      onUpdate(editingId, formData);
+      setEditingId(null);
+    } else {
+      onAdd(formData);
+    }
+    resetForm();
+    setIsAdding(false);
   };
 
   const startEdit = (problem: Problem) => {
@@ -627,12 +695,59 @@ function ProblemsManager({
       description: problem.description,
       content: problem.content,
       solution: problem.solution || '',
+      answer: problem.answer || '',
+      answerFields: problem.answerFields?.length
+        ? problem.answerFields
+        : (problem.answerLatex || problem.answer)
+          ? [{
+              id: 'legacy-1',
+              label: 'Réponse',
+              latex: problem.answerLatex || problem.answer || '',
+              mathJson: problem.answerMathJson || '',
+              type: problem.answerType || 'exact',
+              allowedButtons: problem.allowedToolbarButtons || [],
+            }]
+          : [],
       image: problem.image || '',
       imageCredits: problem.imageCredits || '',
       hints: (problem.hints || []).map(h => ({ ...h, formulaRefs: h.formulaRefs || [] })),
+      subjectType: problem.subjectType || 'academic',
     });
     setEditingId(problem.id);
     setIsAdding(true);
+  };
+
+  const answerFieldRefs = useRef<Record<string, MathInputRef>>({});
+
+  const addAnswerField = () => {
+    setFormData(prev => ({
+      ...prev,
+      answerFields: [
+        ...prev.answerFields,
+        {
+          id: `af-${Date.now()}`,
+          label: `Champ ${prev.answerFields.length + 1}`,
+          latex: '',
+          mathJson: '',
+          type: 'exact',
+          allowedButtons: [],
+        },
+      ],
+    }));
+  };
+
+  const updateAnswerField = (id: string, updates: Partial<ProblemAnswerField>) => {
+    setFormData(prev => ({
+      ...prev,
+      answerFields: prev.answerFields.map(f => (f.id === id ? { ...f, ...updates } : f)),
+    }));
+  };
+
+  const removeAnswerField = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      answerFields: prev.answerFields.filter(f => f.id !== id),
+    }));
   };
 
   const addHint = () => {
@@ -732,6 +847,17 @@ function ProblemsManager({
                 <option value="Facile">Facile</option>
                 <option value="Moyen">Moyen</option>
                 <option value="Difficile">Difficile</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Type de contenu</label>
+              <select
+                value={formData.subjectType}
+                onChange={(e) => setFormData(prev => ({ ...prev, subjectType: e.target.value as SubjectType }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+              >
+                <option value="academic">Programme scolaire</option>
+                <option value="exotic">Olympiades & hors programme</option>
               </select>
             </div>
             <div>
@@ -867,7 +993,94 @@ function ProblemsManager({
                 Cette solution sera affichée avec une confirmation avant révélation.
               </p>
             </div>
+
+            {/* Answer Fields Section */}
+            <div className="md:col-span-2 border-t border-gray-200 pt-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="block text-sm font-medium text-gray-700">
+                  Champs de réponse
+                  <span className="text-gray-400 font-normal ml-1">(optionnel)</span>
+                </label>
+                <Button type="button" variant="outline" size="sm" onClick={addAnswerField}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Ajouter un champ
+                </Button>
+              </div>
+
+              {formData.answerFields.length === 0 && (
+                <p className="text-sm text-gray-500">
+                  Aucun champ de réponse. Ajoute-en un ou laisse vide pour permettre une validation manuelle.
+                </p>
+              )}
+
+              {formData.answerFields.map((field, index) => (
+                <div key={field.id} className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={field.label}
+                      onChange={(e) => updateAnswerField(field.id, { label: e.target.value })}
+                      placeholder={`Label du champ ${index + 1}`}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeAnswerField(field.id)}
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  <MathInput
+                    ref={(el) => { if (el) answerFieldRefs.current[field.id] = el; }}
+                    value={field.latex}
+                    onChange={(latex, mathJson) => updateAnswerField(field.id, { latex, mathJson })}
+                    placeholder="Réponse attendue en LaTeX..."
+                  />
+
+                  <MathToolbar
+                    onInsert={(latex) => answerFieldRefs.current[field.id]?.insert(latex)}
+                    allowedButtons={field.allowedButtons}
+                    className="bg-gray-50 rounded-lg p-3 border border-gray-100"
+                  />
+
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs text-gray-600">Vérification :</label>
+                    <select
+                      value={field.type}
+                      onChange={(e) => updateAnswerField(field.id, { type: e.target.value as 'exact' | 'numeric' | 'symbolic' })}
+                      className="text-xs border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    >
+                      <option value="exact">Exacte (LaTeX)</option>
+                      <option value="numeric">Numérique (centième)</option>
+                      <option value="symbolic">Symbolique</option>
+                    </select>
+                  </div>
+
+                  <ToolbarButtonSelector
+                    selected={field.allowedButtons || []}
+                    onChange={(selected) => updateAnswerField(field.id, { allowedButtons: selected })}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+          {formError && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4" />
+              {formError}
+            </div>
+          )}
+
+          {formData.answerFields.length > 0 && (
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800 flex items-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              {formData.answerFields.length} champ(s) de réponse prêt(s) à être enregistré(s)
+            </div>
+          )}
+
           <div className="flex gap-2 mt-4">
             <Button onClick={handleSubmit} className="bg-orange-600 hover:bg-orange-700">
               <Save className="w-4 h-4 mr-2" />
@@ -1207,6 +1420,787 @@ function FormulasManager({
   );
 }
 
+// === GESTION DE LA TIMELINE ===
+function TimelineManager({
+  events,
+  courses,
+  problems,
+  onAdd,
+  onUpdate,
+  onRemove,
+}: {
+  events: TimelineEvent[];
+  courses: Course[];
+  problems: Problem[];
+  onAdd: (event: Omit<TimelineEvent, 'id'>) => void;
+  onUpdate: (id: string, updates: Partial<TimelineEvent>) => void;
+  onRemove: (id: string) => void;
+}) {
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; title: string } | null>(null);
+
+  const colorOptions = [
+    { value: 'blue', label: 'Bleu' },
+    { value: 'purple', label: 'Violet' },
+    { value: 'green', label: 'Vert' },
+    { value: 'orange', label: 'Orange' },
+    { value: 'pink', label: 'Rose' },
+    { value: 'cyan', label: 'Cyan' },
+    { value: 'red', label: 'Rouge' },
+    { value: 'amber', label: 'Ambre' },
+  ];
+
+  const iconOptions = [
+    { value: 'BookOpen', label: 'Cours', icon: BookOpen },
+    { value: 'Puzzle', label: 'Problème', icon: Puzzle },
+    { value: 'Calculator', label: 'Calcul', icon: Calculator },
+    { value: 'TrendingUp', label: 'Progression', icon: TrendingUp },
+    { value: 'Target', label: 'Objectif', icon: Target },
+    { value: 'Clock', label: 'Temps', icon: Clock },
+    { value: 'Calendar', label: 'Calendrier', icon: Calendar },
+    { value: 'Lightbulb', label: 'Idée', icon: Lightbulb },
+    { value: 'Music', label: 'Musique', icon: Music },
+    { value: 'Triangle', label: 'Triangle', icon: Triangle },
+    { value: 'Edit3', label: 'Écriture', icon: Edit3 },
+    { value: 'Grid3x3', label: 'Grille', icon: Grid3x3 },
+    { value: 'Hash', label: 'Nombre', icon: Hash },
+    { value: 'Layers', label: 'Couches', icon: Layers },
+    { value: 'Activity', label: 'Activité', icon: Activity },
+    { value: 'Cpu', label: 'Informatique', icon: Cpu },
+    { value: 'Globe', label: 'Globe', icon: Globe },
+    { value: 'Infinity', label: 'Infini', icon: Infinity },
+    { value: 'Users', label: 'Groupe', icon: Users },
+    { value: 'GitBranch', label: 'Branche', icon: GitBranch },
+    { value: 'Award', label: 'Prix', icon: Award },
+    { value: 'BrainCircuit', label: 'IA', icon: BrainCircuit },
+    { value: 'User', label: 'Personne', icon: User },
+    { value: 'History', label: 'Histoire', icon: History },
+  ];
+
+  const [formData, setFormData] = useState<{
+    date: string;
+    displayDate: string;
+    title: string;
+    description: string;
+    category: string;
+    color: TimelineEvent['color'];
+    linkType: TimelineEvent['linkType'];
+    linkId: string;
+    linkUrl: string;
+    icon: string;
+    image: string;
+    mathematician: string;
+    period: string;
+    bubbleSize: TimelineEvent['bubbleSize'];
+  }>({
+    date: new Date().toISOString().split('T')[0],
+    displayDate: '',
+    title: '',
+    description: '',
+    category: 'Analyse',
+    color: 'blue',
+    linkType: 'course',
+    linkId: '',
+    linkUrl: '',
+    icon: 'BookOpen',
+    image: '',
+    mathematician: '',
+    period: 'XXe siècle',
+    bubbleSize: 'medium',
+  });
+
+  const periodOptions = [
+    'Antiquité',
+    'Moyen Âge',
+    'Renaissance',
+    'XVIIe siècle',
+    'XVIIIe siècle',
+    'XIXe siècle',
+    'XXe siècle',
+    'XXIe siècle',
+  ];
+
+  const resetForm = () => {
+    setFormData({
+      date: '1500-01-01',
+      displayDate: '',
+      title: '',
+      description: '',
+      category: 'Analyse',
+      color: 'blue',
+      linkType: 'course',
+      linkId: '',
+      linkUrl: '',
+      icon: 'BookOpen',
+      image: '',
+      mathematician: '',
+      period: 'XXe siècle',
+      bubbleSize: 'medium',
+    });
+  };
+
+  const handleSubmit = () => {
+    if (formData.title && formData.description && formData.date) {
+      const eventData: Omit<TimelineEvent, 'id'> = {
+        date: formData.date,
+        displayDate: formData.displayDate || undefined,
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        color: formData.color,
+        linkType: formData.linkType,
+        icon: formData.icon,
+        image: formData.image || undefined,
+        mathematician: formData.mathematician || undefined,
+        period: formData.period || undefined,
+        bubbleSize: formData.bubbleSize || 'medium',
+        ...(formData.linkType === 'external' 
+          ? { linkUrl: formData.linkUrl }
+          : { linkId: formData.linkId }
+        ),
+      };
+
+      if (editingId) {
+        onUpdate(editingId, eventData);
+        setEditingId(null);
+      } else {
+        onAdd(eventData);
+      }
+      resetForm();
+      setIsAdding(false);
+    }
+  };
+
+  const startEdit = (event: TimelineEvent) => {
+    setFormData({
+      date: event.date,
+      displayDate: event.displayDate || '',
+      title: event.title,
+      description: event.description,
+      category: event.category,
+      color: event.color,
+      linkType: event.linkType,
+      linkId: event.linkId || '',
+      linkUrl: event.linkUrl || '',
+      icon: event.icon || 'BookOpen',
+      image: event.image || '',
+      mathematician: event.mathematician || '',
+      period: event.period || 'XXe siècle',
+      bubbleSize: event.bubbleSize || 'medium',
+    });
+    setEditingId(event.id);
+    setIsAdding(true);
+  };
+
+  // Trier les événements par date (plus récent d'abord)
+  const sortedEvents = [...events].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Add/Edit Form */}
+      {(isAdding || editingId) && (
+        <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+          <h3 className="font-bold text-gray-800 mb-4">
+            {editingId ? 'Modifier l\'événement' : 'Ajouter un nouvel événement'}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+              <div className="flex gap-2">
+                <Input
+                  type="number"
+                  value={formData.date.startsWith('-') ? formData.date.slice(1, 5) : formData.date.slice(0, 4)}
+                  onChange={(e) => {
+                    const year = parseInt(e.target.value) || 0;
+                    const isBC = formData.date.startsWith('-');
+                    const month = formData.date.split('-')[1] || '01';
+                    const day = formData.date.split('-')[2] || '01';
+                    const newDate = isBC 
+                      ? `-${String(year).padStart(4, '0')}-${month}-${day}`
+                      : `${String(year).padStart(4, '0')}-${month}-${day}`;
+                    setFormData(prev => ({ ...prev, date: newDate }));
+                  }}
+                  placeholder="Année"
+                  className="flex-1"
+                />
+                <select
+                  value={formData.date.startsWith('-') ? 'bc' : 'ad'}
+                  onChange={(e) => {
+                    const isBC = e.target.value === 'bc';
+                    const year = parseInt(formData.date.replace(/^-/, '').slice(0, 4)) || 1;
+                    const month = formData.date.split('-')[1] || '01';
+                    const day = formData.date.split('-')[2] || '01';
+                    const newDate = isBC 
+                      ? `-${String(year).padStart(4, '0')}-${month}-${day}`
+                      : `${String(year).padStart(4, '0')}-${month}-${day}`;
+                    setFormData(prev => ({ ...prev, date: newDate }));
+                  }}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                >
+                  <option value="ad">ap. J.-C.</option>
+                  <option value="bc">av. J.-C.</option>
+                </select>
+              </div>
+              <div className="flex gap-2 mt-2">
+                <select
+                  value={formData.date.split('-')[1] || '01'}
+                  onChange={(e) => {
+                    const month = e.target.value;
+                    const isBC = formData.date.startsWith('-');
+                    const year = formData.date.replace(/^-/, '').slice(0, 4);
+                    const day = formData.date.split('-')[2] || '01';
+                    const newDate = isBC 
+                      ? `-${year}-${month}-${day}`
+                      : `${year}-${month}-${day}`;
+                    setFormData(prev => ({ ...prev, date: newDate }));
+                  }}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-lg text-sm"
+                >
+                  <option value="01">Janvier</option>
+                  <option value="02">Février</option>
+                  <option value="03">Mars</option>
+                  <option value="04">Avril</option>
+                  <option value="05">Mai</option>
+                  <option value="06">Juin</option>
+                  <option value="07">Juillet</option>
+                  <option value="08">Août</option>
+                  <option value="09">Septembre</option>
+                  <option value="10">Octobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Décembre</option>
+                </select>
+                <Input
+                  type="number"
+                  min="1"
+                  max="31"
+                  value={parseInt(formData.date.split('-')[2] || '1')}
+                  onChange={(e) => {
+                    const day = String(parseInt(e.target.value) || 1).padStart(2, '0');
+                    const isBC = formData.date.startsWith('-');
+                    const year = formData.date.replace(/^-/, '').slice(0, 4);
+                    const month = formData.date.split('-')[1] || '01';
+                    const newDate = isBC 
+                      ? `-${year}-${month}-${day}`
+                      : `${year}-${month}-${day}`;
+                    setFormData(prev => ({ ...prev, date: newDate }));
+                  }}
+                  placeholder="Jour"
+                  className="w-20"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
+              <Input
+                value={formData.title}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Titre de l'événement"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie *</label>
+              <Input
+                value={formData.category}
+                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                placeholder="ex: Analyse"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Couleur</label>
+              <select
+                value={formData.color}
+                onChange={(e) => setFormData(prev => ({ ...prev, color: e.target.value as TimelineEvent['color'] }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              >
+                {colorOptions.map(color => (
+                  <option key={color.value} value={color.value}>
+                    {color.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Icône</label>
+              <select
+                value={formData.icon}
+                onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              >
+                {iconOptions.map(icon => (
+                  <option key={icon.value} value={icon.value}>
+                    {icon.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Type de lien</label>
+              <select
+                value={formData.linkType}
+                onChange={(e) => setFormData(prev => ({ ...prev, linkType: e.target.value as TimelineEvent['linkType'] }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              >
+                <option value="course">Cours</option>
+                <option value="problem">Problème</option>
+                <option value="formula">Formule</option>
+                <option value="external">Lien externe</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Date affichée (optionnel)</label>
+              <Input
+                value={formData.displayDate}
+                onChange={(e) => setFormData(prev => ({ ...prev, displayDate: e.target.value }))}
+                placeholder="ex: 300 av. J.-C."
+              />
+              <p className="text-xs text-gray-500 mt-1">Format libre pour les dates historiques</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mathématicien</label>
+              <Input
+                value={formData.mathematician}
+                onChange={(e) => setFormData(prev => ({ ...prev, mathematician: e.target.value }))}
+                placeholder="ex: Euclide"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Période historique</label>
+              <select
+                value={formData.period}
+                onChange={(e) => setFormData(prev => ({ ...prev, period: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              >
+                {periodOptions.map(period => (
+                  <option key={period} value={period}>{period}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Taille de la bulle</label>
+              <select
+                value={formData.bubbleSize}
+                onChange={(e) => setFormData(prev => ({ ...prev, bubbleSize: e.target.value as 'small' | 'medium' | 'large' }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              >
+                <option value="small">Petite</option>
+                <option value="medium">Moyenne</option>
+                <option value="large">Grande</option>
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">URL de l&apos;image</label>
+              <Input
+                value={formData.image}
+                onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                placeholder="https://example.com/image.jpg"
+              />
+              {formData.image && (
+                <img src={formData.image} alt="Preview" className="mt-2 h-20 rounded-lg object-cover" />
+              )}
+            </div>
+            
+            {formData.linkType === 'course' && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Cours lié</label>
+                <select
+                  value={formData.linkId}
+                  onChange={(e) => setFormData(prev => ({ ...prev, linkId: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                >
+                  <option value="">Sélectionner un cours...</option>
+                  {courses.map(course => (
+                    <option key={course.id} value={course.id}>
+                      {course.title} ({course.level})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            
+            {formData.linkType === 'problem' && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Problème lié</label>
+                <select
+                  value={formData.linkId}
+                  onChange={(e) => setFormData(prev => ({ ...prev, linkId: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                >
+                  <option value="">Sélectionner un problème...</option>
+                  {problems.map(problem => (
+                    <option key={problem.id} value={problem.id}>
+                      {problem.title} ({problem.level})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            
+            {formData.linkType === 'external' && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">URL externe</label>
+                <Input
+                  type="url"
+                  value={formData.linkUrl}
+                  onChange={(e) => setFormData(prev => ({ ...prev, linkUrl: e.target.value }))}
+                  placeholder="https://example.com"
+                />
+              </div>
+            )}
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Description de l'événement..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                rows={3}
+              />
+            </div>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <Button onClick={handleSubmit} className="bg-pink-600 hover:bg-pink-700">
+              <Save className="w-4 h-4 mr-2" />
+              {editingId ? 'Enregistrer' : 'Ajouter'}
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setIsAdding(false);
+                setEditingId(null);
+                resetForm();
+              }}
+            >
+              <X className="w-4 h-4 mr-2" />
+              Annuler
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Add Button */}
+      {!isAdding && !editingId && (
+        <Button onClick={() => setIsAdding(true)} className="bg-pink-600 hover:bg-pink-700">
+          <Plus className="w-4 h-4 mr-2" />
+          Ajouter un événement
+        </Button>
+      )}
+
+      {/* Events List */}
+      <div className="space-y-3">
+        {sortedEvents.map(event => {
+          const IconComponent = iconOptions.find(i => i.value === event.icon)?.icon || Clock;
+          const linkedItem = event.linkType === 'course' 
+            ? courses.find(c => c.id === event.linkId)
+            : problems.find(p => p.id === event.linkId);
+          
+          return (
+            <div key={event.id} className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start gap-4">
+                {/* Image thumbnail */}
+                {event.image && (
+                  <img src={event.image} alt={event.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span 
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: 
+                        event.color === 'blue' ? '#3b82f6' :
+                        event.color === 'purple' ? '#a855f7' :
+                        event.color === 'green' ? '#22c55e' :
+                        event.color === 'orange' ? '#f97316' :
+                        event.color === 'pink' ? '#ec4899' :
+                        event.color === 'cyan' ? '#06b6d4' :
+                        event.color === 'red' ? '#ef4444' :
+                        '#f59e0b'
+                      }}
+                    />
+                    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">
+                      {event.category}
+                    </span>
+                    {event.period && (
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
+                        {event.period}
+                      </span>
+                    )}
+                    <span className="text-xs text-gray-400">
+                      {event.displayDate || new Date(event.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <IconComponent className="w-4 h-4 text-gray-400" />
+                    <h4 className="font-medium text-gray-800">{event.title}</h4>
+                  </div>
+                  {event.mathematician && (
+                    <p className="text-xs text-purple-600 mt-0.5">{event.mathematician}</p>
+                  )}
+                  <p className="text-sm text-gray-600 mt-1 line-clamp-1">{event.description}</p>
+                  
+                  {/* Link info */}
+                  <div className="flex items-center gap-2 mt-2">
+                    {event.linkType === 'course' && linkedItem && (
+                      <span className="text-xs flex items-center gap-1 text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                        <BookOpen className="w-3 h-3" />
+                        Cours: {linkedItem.title}
+                      </span>
+                    )}
+                    {event.linkType === 'problem' && linkedItem && (
+                      <span className="text-xs flex items-center gap-1 text-orange-600 bg-orange-50 px-2 py-0.5 rounded">
+                        <Puzzle className="w-3 h-3" />
+                        Problème: {linkedItem.title}
+                      </span>
+                    )}
+                    {event.linkType === 'external' && event.linkUrl && (
+                      <span className="text-xs flex items-center gap-1 text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
+                        <ExternalLink className="w-3 h-3" />
+                        Lien externe
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={() => startEdit(event)}
+                    className="p-2 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setDeleteConfirm({ id: event.id, title: event.title })}
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Dialog de confirmation de suppression */}
+      <Dialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertTriangle className="w-5 h-5" />
+              Confirmer la suppression
+            </DialogTitle>
+            <DialogDescription>
+              Êtes-vous sûr de vouloir supprimer l'événement <strong>"{deleteConfirm?.title}"</strong> ?
+              <br />
+              Cette action est irréversible.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-row gap-2 justify-end mt-4">
+            <Button variant="outline" onClick={() => setDeleteConfirm(null)}>
+              Annuler
+            </Button>
+            <Button 
+              variant="destructive"
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={() => {
+                if (deleteConfirm) {
+                  onRemove(deleteConfirm.id);
+                  setDeleteConfirm(null);
+                }
+              }}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Supprimer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+// === GESTIONNAIRE DES CONTENUS D'ARÈNE ===
+function ArenaContentsManager({
+  arenaContents,
+  courses,
+  problems,
+  formulas,
+  onAdd,
+  onRemove,
+}: {
+  arenaContents: ArenaContent[];
+  courses: Course[];
+  problems: Problem[];
+  formulas: Formula[];
+  onAdd: (content: Omit<ArenaContent, 'id'>) => void;
+  onUpdate: (id: string, updates: Partial<ArenaContent>) => void;
+  onRemove: (id: string) => void;
+}) {
+  const [selectedWorld, setSelectedWorld] = useState<WorldId>('algebra');
+  const [selectedArena, setSelectedArena] = useState(1);
+  const [contentType, setContentType] = useState<ArenaContent['contentType']>('course');
+  const [selectedContentId, setSelectedContentId] = useState('');
+  const [isBonus, setIsBonus] = useState(false);
+  const [isOlympiad, setIsOlympiad] = useState(false);
+
+  const items = contentType === 'course' ? courses : contentType === 'problem' ? problems : formulas;
+  const filtered = arenaContents.filter((ac) => ac.worldId === selectedWorld && ac.arenaNumber === selectedArena);
+
+  const getItemLabel = (item: Course | Problem | Formula) => {
+    if ('title' in item) return item.title;
+    return item.name;
+  };
+
+  const handleAdd = () => {
+    if (!selectedContentId) return;
+    onAdd({
+      worldId: selectedWorld,
+      arenaNumber: selectedArena,
+      contentType,
+      contentId: selectedContentId,
+      isBonus,
+      isOlympiad,
+    });
+    setSelectedContentId('');
+    setIsBonus(false);
+    setIsOlympiad(false);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-gray-800 mb-4">Ajouter un contenu à une arène</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Monde</label>
+            <select
+              value={selectedWorld}
+              onChange={(e) => setSelectedWorld(e.target.value as WorldId)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            >
+              {WORLDS.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Arène</label>
+            <select
+              value={selectedArena}
+              onChange={(e) => setSelectedArena(Number(e.target.value))}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            >
+              {Array.from({ length: 15 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  Arène {n}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <select
+              value={contentType}
+              onChange={(e) => {
+                setContentType(e.target.value as ArenaContent['contentType']);
+                setSelectedContentId('');
+              }}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            >
+              <option value="course">Cours</option>
+              <option value="problem">Problème</option>
+              <option value="formula">Formule</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contenu</label>
+            <select
+              value={selectedContentId}
+              onChange={(e) => setSelectedContentId(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            >
+              <option value="">Sélectionner...</option>
+              {items.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {getItemLabel(item)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4 mt-4">
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={isBonus}
+              onChange={(e) => setIsBonus(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            Hors programme (bonus)
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={isOlympiad}
+              onChange={(e) => setIsOlympiad(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            Olympiade
+          </label>
+          <Button onClick={handleAdd} disabled={!selectedContentId} className="ml-auto">
+            Ajouter
+          </Button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-gray-800 mb-4">Contenus configurés</h3>
+        {filtered.length === 0 ? (
+          <p className="text-gray-500">
+            Aucun contenu pour {WORLDS.find((w) => w.id === selectedWorld)?.name} – Arène {selectedArena}.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {filtered.map((ac) => {
+              const item =
+                ac.contentType === 'course'
+                  ? courses.find((c) => c.id === ac.contentId)
+                  : ac.contentType === 'problem'
+                  ? problems.find((p) => p.id === ac.contentId)
+                  : formulas.find((f) => f.id === ac.contentId);
+              return (
+                <div key={ac.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-gray-800">{item ? getItemLabel(item) : ac.contentId}</span>
+                    <span className="text-xs uppercase font-bold text-gray-500">{ac.contentType}</span>
+                    {ac.isBonus && (
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">Hors programme</span>
+                    )}
+                    {ac.isOlympiad && (
+                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Olympiade</span>
+                    )}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onRemove(ac.id)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // === PAGE PRINCIPALE ADMIN ===
 export function AdminPage(props: AdminPageProps) {
   const { isAdmin, onLogin, onLogout } = props;
@@ -1237,10 +2231,10 @@ export function AdminPage(props: AdminPageProps) {
 
       {/* Tabs */}
       <Tabs defaultValue="stats" className="w-full">
-        <TabsList className="grid grid-cols-4 w-full">
+        <TabsList className="grid grid-cols-6 w-full">
           <TabsTrigger value="stats" className="flex items-center gap-1">
             <BarChart3 className="w-4 h-4" />
-            <span className="hidden sm:inline">Statistiques</span>
+            <span className="hidden sm:inline">Stats</span>
           </TabsTrigger>
           <TabsTrigger value="courses" className="flex items-center gap-1">
             <BookOpen className="w-4 h-4" />
@@ -1253,6 +2247,14 @@ export function AdminPage(props: AdminPageProps) {
           <TabsTrigger value="formulas" className="flex items-center gap-1">
             <Calculator className="w-4 h-4" />
             <span className="hidden sm:inline">Formules</span>
+          </TabsTrigger>
+          <TabsTrigger value="timeline" className="flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            <span className="hidden sm:inline">Timeline</span>
+          </TabsTrigger>
+          <TabsTrigger value="arenas" className="flex items-center gap-1">
+            <Grid3x3 className="w-4 h-4" />
+            <span className="hidden sm:inline">Arènes</span>
           </TabsTrigger>
         </TabsList>
 
@@ -1290,6 +2292,29 @@ export function AdminPage(props: AdminPageProps) {
             onAdd={props.onAddFormula}
             onUpdate={props.onUpdateFormula}
             onRemove={props.onRemoveFormula}
+          />
+        </TabsContent>
+
+        <TabsContent value="timeline" className="mt-6">
+          <TimelineManager 
+            events={props.timelineEvents}
+            courses={props.courses}
+            problems={props.problems}
+            onAdd={props.onAddTimelineEvent}
+            onUpdate={props.onUpdateTimelineEvent}
+            onRemove={props.onRemoveTimelineEvent}
+          />
+        </TabsContent>
+
+        <TabsContent value="arenas" className="mt-6">
+          <ArenaContentsManager
+            arenaContents={props.arenaContents}
+            courses={props.courses}
+            problems={props.problems}
+            formulas={props.formulas}
+            onAdd={props.onAddArenaContent}
+            onUpdate={props.onUpdateArenaContent}
+            onRemove={props.onRemoveArenaContent}
           />
         </TabsContent>
       </Tabs>
