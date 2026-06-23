@@ -88,6 +88,7 @@ export const WORLDS: World[] = [
     gradient: 'from-blue-400 to-blue-600',
     categories: ['algèbre', 'équations', 'polynômes', 'matrices', 'nombres complexes', 'complexes', 'groupe', 'anneau', 'corps', 'linéaire'],
     arenas: generateArenas('algebra', 'Algèbre'),
+    minLevel: '5e',
   },
   {
     id: 'analysis',
@@ -115,6 +116,7 @@ export const WORLDS: World[] = [
     gradient: 'from-cyan-400 to-cyan-600',
     categories: ['arithmétique', 'calcul', 'fractions', 'puissances', 'racines', 'opérations'],
     arenas: generateArenas('arithmetic', 'Arithmétique'),
+    minLevel: '6e',
   },
   {
     id: 'combinatorics',
@@ -128,6 +130,7 @@ export const WORLDS: World[] = [
     gradient: 'from-purple-400 to-purple-600',
     categories: ['combinatoire', 'dénombrement', 'permutations', 'arrangements', 'binomial', 'graphes'],
     arenas: generateArenas('combinatorics', 'Combinatoire'),
+    minLevel: 'Term',
   },
   {
     id: 'geometry',
@@ -141,6 +144,7 @@ export const WORLDS: World[] = [
     gradient: 'from-emerald-400 to-emerald-600',
     categories: ['géométrie', 'trigonométrie', 'coniques', 'vecteurs', 'espace', 'cercle', 'triangle', 'droite', 'plan'],
     arenas: generateArenas('geometry', 'Géométrie'),
+    minLevel: '6e',
   },
   {
     id: 'logic',
@@ -168,6 +172,7 @@ export const WORLDS: World[] = [
     gradient: 'from-amber-400 to-amber-600',
     categories: ['mathématiques appliquées', 'modélisation', 'équations différentielles', 'numérique', 'simulation'],
     arenas: generateArenas('applied-mathematics', 'Math appliquées'),
+    minLevel: '6e',
   },
   {
     id: 'financial-mathematics',
@@ -195,7 +200,7 @@ export const WORLDS: World[] = [
     gradient: 'from-indigo-400 to-indigo-600',
     categories: ['optimisation', 'programmation linéaire', 'convexité', 'minimisation', 'maximisation', 'gradient'],
     arenas: generateArenas('optimization', 'Optimisation'),
-    minLevel: 'Prépa',
+    minLevel: 'Term',
   },
   {
     id: 'probability',
@@ -209,6 +214,7 @@ export const WORLDS: World[] = [
     gradient: 'from-violet-400 to-violet-600',
     categories: ['probabilités', 'variables aléatoires', 'loi', 'bernoulli', 'marche aléatoire', 'espérance'],
     arenas: generateArenas('probability', 'Probabilités'),
+    minLevel: '5e',
   },
   {
     id: 'statistics',
@@ -222,6 +228,7 @@ export const WORLDS: World[] = [
     gradient: 'from-pink-400 to-pink-600',
     categories: ['statistiques', 'estimation', 'tests', 'régression', 'description', 'échantillon'],
     arenas: generateArenas('statistics', 'Statistique'),
+    minLevel: '6e',
   },
   {
     id: 'information-theory',
@@ -263,7 +270,7 @@ export const WORLDS: World[] = [
     gradient: 'from-rose-400 to-rose-600',
     categories: ['théorie des graphes', 'graphes', 'arbres', 'chemins', 'coloration', 'flots'],
     arenas: generateArenas('graph-theory', 'Graphes'),
-    minLevel: '2nde',
+    minLevel: 'Term',
   },
   {
     id: 'number-theory',
@@ -291,7 +298,7 @@ export const WORLDS: World[] = [
     gradient: 'from-lime-400 to-lime-600',
     categories: ['topologie', 'espaces', 'ouverts', 'fermés', 'compacité', 'connexité', 'homéomorphisme'],
     arenas: generateArenas('topology', 'Topologie'),
-    minLevel: 'Licence',
+    minLevel: 'Prépa',
   },
 ];
 
@@ -303,7 +310,7 @@ export const STARTING_ARENA_BY_LEVEL: Record<Level, number> = {
   '2nde': 5,
   '1re': 6,
   'Term': 7,
-  'Prépa': 9,
+  'Prépa': 10,
   'Licence': 11,
   'Master': 13,
   'Expert': 15,

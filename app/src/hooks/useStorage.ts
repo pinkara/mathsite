@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { User } from '@supabase/supabase-js';
 import type { Course, Problem, Formula, Book, MonthlyStats, TimelineEvent, UserProfile, Level, WorldId, ArenaContent } from '@/types';
-import { getPlayerLevel } from '@/types';
+import { getPlayerLevel, LEVELS } from '@/types';
 import { getProblemWorldXp } from '@/lib/xpCalculator';
 import { getCurrentArenaNumber, getAuraForHighestArena, getChestCurrencyReward, ARENA_COUNT, getStartingArena, WORLDS, getArenaBadgeId, getArenaContents } from '@/lib/worldsConfig';
 import { openCardPack, ALL_CARDS } from '@/lib/mathematiciansParser';
@@ -1452,13 +1452,13 @@ function migrateProfileData(raw: any): UserProfile {
   if (typeof raw?.currentArena === 'number') {
     for (const world of WORLDS) {
       const calculated = defaults.currentArena[world.id] ?? 0;
-      currentArena[world.id] = calculated > 0 ? Math.max(raw.currentArena, calculated) : calculated;
+      currentArena[world.id] = calculated === 0 ? 0 : Math.max(raw.currentArena, calculated);
     }
   } else if (raw?.currentArena && typeof raw.currentArena === 'object') {
     for (const world of WORLDS) {
       const calculated = defaults.currentArena[world.id] ?? 0;
       const existing = raw.currentArena[world.id] ?? 0;
-      currentArena[world.id] = existing > 0 ? Math.max(existing, calculated) : calculated;
+      currentArena[world.id] = calculated === 0 ? 0 : (existing > calculated ? existing : calculated);
     }
   } else {
     currentArena = defaults.currentArena;
@@ -1588,17 +1588,19 @@ function mergeProfiles(local: UserProfile, cloud: UserProfile): UserProfile {
   let highestArena = 1;
   for (const world of WORLDS) {
     const wxp = worldXp[world.id] ?? 0;
+    const startingArena = getStartingArena(level, world.id);
+    if (startingArena === 0) {
+      currentArena[world.id] = 0;
+      continue;
+    }
+
     if (wxp > 0) {
       const arena = getCurrentArenaNumber(world.id, wxp);
       currentArena[world.id] = arena;
       if (arena > highestArena) highestArena = arena;
     } else {
-      // Fallback sur le niveau utilisateur si aucun XP n'a été enregistré
-      const arena = getStartingArena(level, world.id);
-      if (arena > 0) {
-        currentArena[world.id] = arena;
-        if (arena > highestArena) highestArena = arena;
-      }
+      currentArena[world.id] = startingArena;
+      if (startingArena > highestArena) highestArena = startingArena;
     }
   }
 
@@ -1810,9 +1812,51 @@ export function useUserProfile(
     };
   }, [profile, user, isSupabaseReady]);
 
+  function applyLevelProgress(level: Level, currentArena: Partial<Record<WorldId, number>>, previousLevel: Level) {
+    const nextCurrentArena: Partial<Record<WorldId, number>> = {};
+    const nextWorldXp: Partial<Record<WorldId, number>> = {};
+    let highestArena = 1;
+
+    const newLevelIndex = LEVELS.findIndex((l) => l.name === level);
+    const previousLevelIndex = LEVELS.findIndex((l) => l.name === previousLevel);
+    const preserveExisting = newLevelIndex >= previousLevelIndex;
+
+    for (const world of WORLDS) {
+      const startingArena = getStartingArena(level, world.id);
+      if (startingArena === 0) {
+        nextCurrentArena[world.id] = 0;
+        nextWorldXp[world.id] = 0;
+        continue;
+      }
+
+      const existingArena = currentArena[world.id] ?? 0;
+      const arenaNumber = preserveExisting
+        ? Math.max(startingArena, existingArena)
+        : startingArena;
+      nextCurrentArena[world.id] = arenaNumber;
+
+      const arena = world.arenas[Math.max(0, arenaNumber - 1)];
+      nextWorldXp[world.id] = arena?.xpThreshold ?? 0;
+
+      if (arenaNumber > highestArena) highestArena = arenaNumber;
+    }
+
+    return {
+      level,
+      currentArena: nextCurrentArena,
+      worldXp: nextWorldXp,
+      highestArena,
+      aura: getAuraForHighestArena(highestArena).id,
+    } as const;
+  }
+
   const updateProfile = useCallback((updates: Partial<UserProfile>) => {
     setProfile(prev => {
       if (!prev) return prev;
+      if (updates.level && updates.level !== prev.level) {
+        const levelProgress = applyLevelProgress(updates.level, prev.currentArena, prev.level);
+        return { ...prev, ...updates, ...levelProgress };
+      }
       return { ...prev, ...updates };
     });
   }, []);
@@ -1822,15 +1866,7 @@ export function useUserProfile(
   }, [updateProfile]);
 
   const setLevel = useCallback((level: Level) => {
-    const startingArena = getStartingArena(level);
-    const currentArena: Partial<Record<WorldId, number>> = {};
-    const worldXp: Partial<Record<WorldId, number>> = {};
-    for (const world of WORLDS) {
-      currentArena[world.id] = startingArena;
-      const arena = world.arenas[startingArena - 1];
-      worldXp[world.id] = arena?.xpThreshold ?? 0;
-    }
-    updateProfile({ level, currentArena, worldXp });
+    updateProfile({ level });
   }, [updateProfile]);
 
   const addXp = useCallback((amount: number, _source: 'lesson' | 'problem' | 'question' | 'streak' | 'chest' = 'question') => {
