@@ -16,18 +16,11 @@ function extractPreview(content: string, maxLength: number, mode: 'mixed' | 'for
     const trimmed = content.trim();
     if (!trimmed) return '';
 
-    if (trimmed.startsWith('$$')) {
-      const preview = trimmed.slice(0, maxLength);
-      return preview.endsWith('$$') ? preview : `${preview}$$`;
-    }
-
     if (trimmed.startsWith('$')) {
-      const preview = trimmed.slice(0, maxLength);
-      return preview.endsWith('$') ? preview : `${preview}$`;
+      return trimmed;
     }
 
-    const formula = trimmed.slice(0, Math.max(maxLength - 2, 0));
-    return `$${formula}$`;
+    return `$${trimmed}$`;
   }
 
   // Mixed mode: strip HTML, collapse whitespace, keep LaTeX delimiters
