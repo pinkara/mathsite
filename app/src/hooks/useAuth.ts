@@ -55,7 +55,8 @@ export function useAuth(): AuthState & {
       return;
     }
 
-    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const redirectTo = `${window.location.origin}${baseUrl}`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo },
