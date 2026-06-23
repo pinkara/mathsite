@@ -34,6 +34,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import type { TimelineEvent, TimelinePeriod, Course, Problem, Formula } from '@/types';
+import { ContentRenderer } from '@/components/ContentRenderer';
 
 interface TimelinePageProps {
   events: TimelineEvent[];
@@ -212,9 +213,9 @@ function DetailModal({
             </div>
           )}
 
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
-            {event.description}
-          </p>
+          <div className="text-gray-700 text-lg leading-relaxed mb-6">
+            <ContentRenderer content={event.description} className="prose prose-blue max-w-none" />
+          </div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <button

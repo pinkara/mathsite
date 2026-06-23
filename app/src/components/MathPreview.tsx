@@ -15,9 +15,19 @@ function extractPreview(content: string, maxLength: number, mode: 'mixed' | 'for
   if (mode === 'formula') {
     const trimmed = content.trim();
     if (!trimmed) return '';
-    // Wrap in inline math if not already delimited
-    if (trimmed.startsWith('$')) return trimmed.slice(0, maxLength);
-    return `$${trimmed.slice(0, maxLength - 2)}$`;
+
+    if (trimmed.startsWith('$$')) {
+      const preview = trimmed.slice(0, maxLength);
+      return preview.endsWith('$$') ? preview : `${preview}$$`;
+    }
+
+    if (trimmed.startsWith('$')) {
+      const preview = trimmed.slice(0, maxLength);
+      return preview.endsWith('$') ? preview : `${preview}$`;
+    }
+
+    const formula = trimmed.slice(0, Math.max(maxLength - 2, 0));
+    return `$${formula}$`;
   }
 
   // Mixed mode: strip HTML, collapse whitespace, keep LaTeX delimiters
