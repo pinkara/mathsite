@@ -282,11 +282,12 @@ export function TimelinePage({ events, periods = [], courses: _courses, problems
         event.description.toLowerCase().includes(query) ||
         event.mathematician?.toLowerCase().includes(query) ||
         event.category.toLowerCase().includes(query);
-      const matchesPeriod = !activePeriod || event.period === activePeriod;
+      const eventPeriod = event.period || getPeriodFromYear(getYear(event.date), periods)?.name || null;
+      const matchesPeriod = !activePeriod || eventPeriod === activePeriod;
       const matchesCategory = !activeCategory || event.category === activeCategory;
       return matchesSearch && matchesPeriod && matchesCategory;
     });
-  }, [events, searchQuery, activePeriod, activeCategory]);
+  }, [events, searchQuery, activePeriod, activeCategory, periods]);
 
   const groupedEvents = useMemo(() => {
     const groups: { period: TimelinePeriod | null; events: TimelineEvent[] }[] = [];
