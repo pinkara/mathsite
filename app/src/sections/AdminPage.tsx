@@ -1512,6 +1512,9 @@ function TimelineManager({
 
   const periodOptions = [
     'Antiquité',
+    'Âge du cuivre',
+    'Âge du bronze',
+    'Âge du fer',
     'Moyen Âge',
     'Renaissance',
     'XVIIe siècle',
