@@ -1593,10 +1593,14 @@ function TimelineManager({
     setIsAdding(true);
   };
 
+  const getEventYear = (date: string) => {
+    const rawYear = date.replace(/^-/, '').split('-')[0] || '0';
+    const year = parseInt(rawYear, 10) || 0;
+    return date.startsWith('-') ? -year : year;
+  };
+
   // Trier les événements par date (plus récent d'abord)
-  const sortedEvents = [...events].sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const sortedEvents = [...events].sort((a, b) => getEventYear(b.date) - getEventYear(a.date));
 
   return (
     <div className="space-y-6">
@@ -1612,15 +1616,18 @@ function TimelineManager({
               <div className="flex gap-2">
                 <Input
                   type="number"
-                  value={formData.date.startsWith('-') ? formData.date.slice(1, 5) : formData.date.slice(0, 4)}
+                  min="0"
+                  max="100000"
+                  value={formData.date.replace(/^-/, '').split('-')[0]}
                   onChange={(e) => {
-                    const year = parseInt(e.target.value) || 0;
+                    const year = Math.min(Math.max(parseInt(e.target.value, 10) || 0, 0), 100000);
                     const isBC = formData.date.startsWith('-');
                     const month = formData.date.split('-')[1] || '01';
                     const day = formData.date.split('-')[2] || '01';
+                    const yearString = String(year).padStart(4, '0');
                     const newDate = isBC 
-                      ? `-${String(year).padStart(4, '0')}-${month}-${day}`
-                      : `${String(year).padStart(4, '0')}-${month}-${day}`;
+                      ? `-${yearString}-${month}-${day}`
+                      : `${yearString}-${month}-${day}`;
                     setFormData(prev => ({ ...prev, date: newDate }));
                   }}
                   placeholder="Année"
@@ -1630,12 +1637,13 @@ function TimelineManager({
                   value={formData.date.startsWith('-') ? 'bc' : 'ad'}
                   onChange={(e) => {
                     const isBC = e.target.value === 'bc';
-                    const year = parseInt(formData.date.replace(/^-/, '').slice(0, 4)) || 1;
+                    const year = parseInt(formData.date.replace(/^-/, '').split('-')[0]) || 1;
                     const month = formData.date.split('-')[1] || '01';
                     const day = formData.date.split('-')[2] || '01';
+                    const yearString = String(Math.min(Math.max(year, 0), 100000)).padStart(4, '0');
                     const newDate = isBC 
-                      ? `-${String(year).padStart(4, '0')}-${month}-${day}`
-                      : `${String(year).padStart(4, '0')}-${month}-${day}`;
+                      ? `-${yearString}-${month}-${day}`
+                      : `${yearString}-${month}-${day}`;
                     setFormData(prev => ({ ...prev, date: newDate }));
                   }}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
@@ -1650,7 +1658,7 @@ function TimelineManager({
                   onChange={(e) => {
                     const month = e.target.value;
                     const isBC = formData.date.startsWith('-');
-                    const year = formData.date.replace(/^-/, '').slice(0, 4);
+                    const year = formData.date.replace(/^-/, '').split('-')[0] || '0';
                     const day = formData.date.split('-')[2] || '01';
                     const newDate = isBC 
                       ? `-${year}-${month}-${day}`
@@ -1678,9 +1686,9 @@ function TimelineManager({
                   max="31"
                   value={parseInt(formData.date.split('-')[2] || '1')}
                   onChange={(e) => {
-                    const day = String(parseInt(e.target.value) || 1).padStart(2, '0');
+                    const day = String(parseInt(e.target.value, 10) || 1).padStart(2, '0');
                     const isBC = formData.date.startsWith('-');
-                    const year = formData.date.replace(/^-/, '').slice(0, 4);
+                    const year = formData.date.replace(/^-/, '').split('-')[0] || '0';
                     const month = formData.date.split('-')[1] || '01';
                     const newDate = isBC 
                       ? `-${year}-${month}-${day}`

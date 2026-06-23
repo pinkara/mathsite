@@ -79,8 +79,9 @@ function saveToStorage<T>(key: string, data: T): void {
 
 // === UTILITAIRES POUR LES DATES DE LA TIMELINE ===
 function getTimelineYear(dateStr: string): number {
-  if (dateStr.startsWith('-')) return -parseInt(dateStr.slice(1, 5));
-  return parseInt(dateStr.slice(0, 4));
+  const rawYear = dateStr.replace(/^-/, '').split('-')[0] || '0';
+  const year = parseInt(rawYear, 10) || 0;
+  return dateStr.startsWith('-') ? -year : year;
 }
 
 function compareTimelineDates(a: string, b: string): number {
