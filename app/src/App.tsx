@@ -361,14 +361,18 @@ function App() {
       case 'timeline':
         // Périodes historiques prédéfinies
         const historicalPeriods = [
-          { id: 'antiquity', name: 'Antiquité', startYear: -2000, endYear: 476, color: '#f59e0b', description: 'Des premières civilisations à la chute de l\'Empire romain' },
-          { id: 'middle-ages', name: 'Moyen Âge', startYear: 476, endYear: 1492, color: '#8b5cf6', description: 'De la chute de Rome à la découverte de l\'Amérique' },
-          { id: 'renaissance', name: 'Renaissance', startYear: 1492, endYear: 1600, color: '#ec4899', description: 'Renouveau des arts et des sciences' },
-          { id: '17th', name: 'XVIIe siècle', startYear: 1600, endYear: 1700, color: '#3b82f6', description: 'L\'âge classique des mathématiques' },
-          { id: '18th', name: 'XVIIIe siècle', startYear: 1700, endYear: 1800, color: '#10b981', description: 'Le siècle des Lumières' },
-          { id: '19th', name: 'XIXe siècle', startYear: 1800, endYear: 1900, color: '#8b5cf6', description: 'L\'âge d\'or des mathématiques modernes' },
-          { id: '20th', name: 'XXe siècle', startYear: 1900, endYear: 2000, color: '#ef4444', description: 'Les fondements et la crise des mathématiques' },
-          { id: '21st', name: 'XXIe siècle', startYear: 2000, endYear: 2100, color: '#06b6d4', description: 'L\'ère numérique et l\'informatique' },
+          { id: 'stone-age', name: 'Âge de pierre', startYear: -10000, endYear: -5500, color: '#78716c', description: 'L\'âge de pierre, les premières technologies préhistoriques' },
+          { id: 'copper-age', name: 'Âge du cuivre', startYear: -5500, endYear: -3300, color: '#f59e0b', description: 'Première métallurgie du cuivre et premières civilisations' },
+          { id: 'bronze-age', name: 'Âge du bronze', startYear: -3300, endYear: -1200, color: '#d97706', description: 'Développement des premiers États et de la métallurgie du bronze' },
+          { id: 'iron-age', name: 'Âge du fer', startYear: -1200, endYear: 476, color: '#475569', description: 'Expansion des sociétés antiques et transition vers le Moyen Âge' },
+          { id: 'antiquity', name: 'Antiquité', startYear: 476, endYear: 1492, color: '#f59e0b', description: 'Des premières civilisations à la chute de l\'Empire romain' },
+          { id: 'middle-ages', name: 'Moyen Âge', startYear: 1492, endYear: 1600, color: '#8b5cf6', description: 'De la chute de Rome à la découverte de l\'Amérique' },
+          { id: 'renaissance', name: 'Renaissance', startYear: 1600, endYear: 1700, color: '#ec4899', description: 'Renouveau des arts et des sciences' },
+          { id: '17th', name: 'XVIIe siècle', startYear: 1700, endYear: 1800, color: '#3b82f6', description: 'L\'âge classique des mathématiques' },
+          { id: '18th', name: 'XVIIIe siècle', startYear: 1800, endYear: 1900, color: '#10b981', description: 'Le siècle des Lumières' },
+          { id: '19th', name: 'XIXe siècle', startYear: 1900, endYear: 2000, color: '#8b5cf6', description: 'L\'âge d\'or des mathématiques modernes' },
+          { id: '20th', name: 'XXe siècle', startYear: 2000, endYear: 2100, color: '#ef4444', description: 'Les fondements et la crise des mathématiques' },
+          { id: '21st', name: 'XXIe siècle', startYear: 2100, endYear: 2200, color: '#06b6d4', description: 'L\'ère numérique et l\'informatique' },
         ];
         
         return (

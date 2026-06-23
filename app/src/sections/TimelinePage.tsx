@@ -94,7 +94,12 @@ const formatYear = (year: number): string => {
 };
 
 const getPeriodFromYear = (year: number, periods: TimelinePeriod[]): TimelinePeriod | undefined => {
-  return periods.find(p => year >= p.startYear && year < p.endYear);
+  return periods.reduce<TimelinePeriod | undefined>((best, period) => {
+    if (year >= period.startYear && year < period.endYear) {
+      return !best || period.startYear > best.startYear ? period : best;
+    }
+    return best;
+  }, undefined);
 };
 
 function EventIcon({ name, className }: { name?: string; className?: string }) {
