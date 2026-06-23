@@ -84,8 +84,7 @@ const colorMap: Record<string, string> = {
 };
 
 const getYear = (dateStr: string): number => {
-  const [yearPart] = dateStr.split('-');
-  return parseInt(yearPart, 10);
+  return parseInt(dateStr, 10);
 };
 
 const formatYear = (year: number): string => {
