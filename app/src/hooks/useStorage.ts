@@ -740,7 +740,7 @@ export function useTimeline() {
             title: 'L\'os d\'Ishango et les premiers comptages',
             description: 'Une des premières preuves de comptage utilisant des entailles sur un os, montrant l\'émergence d\'une pensée numérique préhistorique.',
             category: 'Histoire',
-            color: 'gray',
+            color: 'amber',
             linkType: 'external',
             linkUrl: 'https://fr.wikipedia.org/wiki/Os_d%27Ishango',
             icon: 'BookOpen',
