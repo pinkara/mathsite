@@ -1511,10 +1511,11 @@ function TimelineManager({
   });
 
   const periodOptions = [
-    'Antiquité',
+    'Âge du pierre',
     'Âge du cuivre',
     'Âge du bronze',
     'Âge du fer',
+    'Antiquité',
     'Moyen Âge',
     'Renaissance',
     'XVIIe siècle',
