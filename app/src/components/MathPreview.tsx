@@ -40,7 +40,6 @@ export function MathPreview({
   const ref = useRef<HTMLSpanElement>(null);
   const [ready, setReady] = useState(false);
   const preview = extractPreview(content, maxLength, mode);
-  const lastPreview = useRef(preview);
 
   useEffect(() => {
     let tries = 0;
@@ -63,10 +62,6 @@ export function MathPreview({
       }
     };
 
-    if (lastPreview.current !== preview) {
-      lastPreview.current = preview;
-    }
-
     setReady(false);
     tryTypeset();
 
@@ -75,8 +70,7 @@ export function MathPreview({
         clearTimeout(timeoutId);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [preview]);
 
   if (!preview) return null;
 

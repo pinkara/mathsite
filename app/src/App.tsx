@@ -20,6 +20,7 @@ import { WelcomePage } from '@/sections/WelcomePage';
 import { WelcomeModal } from '@/components/WelcomeModal';
 import { useRouter } from '@/hooks/useRouter';
 import { useAuth } from '@/hooks/useAuth';
+import { useMathJaxEffect } from '@/hooks/useMathJax';
 import { 
   useCourses, 
   useProblems, 
@@ -224,6 +225,7 @@ function App() {
   // Load MathJax globally for all pages
   useMathJax();
   useMathJaxVisibilityRefresh();
+  useMathJaxEffect([navigationKey]);
   
   // Écouter les changements de hash (pour les boutons IDE dans ContentRenderer)
   useEffect(() => {
