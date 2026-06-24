@@ -1,0 +1,177 @@
+Algèbre
+
+## Arène 1 (6ème) – Initiation au calcul littéral
+*   **Cours 1** : Introduction aux lettres et aux variables (représenter un nombre inconnu)
+*   **Cours 2** : Tester des égalités et résoudre des équations par tâtonnement
+
+---
+
+## Arène 2 (5ème) – Calcul littéral
+*   **Cours 1** : Simplification d'expressions littérales (\(x \times 3 = 3x\))
+*   **Cours 2** : La distributivité simple \(k(a+b) = ka + kb\)
+*   **Cours 3** : Résolution d'équations simples du type \(ax + b = c\)
+
+---
+
+## Arène 3 (4ème) – Équations et nombres rationnels
+*   **Cours 1** : Règles de transformation des égalités
+*   **Cours 2** : Résolution d'équations du premier degré (avec parenthèses et fractions)
+*   **Cours 3** : Opérations algébriques sur les nombres rationnels
+
+---
+
+## Arène 4 (3ème) – Identités et factorisation
+*   **Cours 1** : Les 3 identités remarquables (développement)
+*   **Cours 2** : Factorisation avec les identités remarquables
+*   **Cours 3** : Équations-produit et équations-quotient
+
+---
+
+## Arène 5 (Seconde) – Arithmétique et polynômes
+*   **Cours 1** : Arithmétique dans \(\mathbb{Z}\) (divisibilité, nombres premiers, PGCD)
+*   **Cours 2** : Polynômes du second degré (forme canonique, factorisation)
+
+---
+
+## Arène 6 (Première Spé) – Second degré
+*   **Cours 1** : Discriminant \(\Delta\), racines d'un trinôme
+*   **Cours 2** : Signe du trinôme et résolution d'inéquations polynomiales
+
+---
+
+## Arène 7 (Terminale Spé) – Algèbre vectorielle dans l'espace
+*   **Cours 1** : Vecteurs de l'espace (combinaisons linéaires, colinéarité, coplanarité)
+*   **Cours 2** : Produit scalaire (en tant que forme bilinéaire symétrique) et orthogonalité
+
+---
+
+## Arène 8 (Terminale Expertes) – Complexes et arithmétique avancée
+*   **Cours 1** : Nombres complexes (forme algébrique, conjugué, module)
+*   **Cours 2** : Équations du second degré dans \(\mathbb{C}\) (\(\Delta < 0\))
+*   **Cours 3** : Congruences et divisibilité dans \(\mathbb{Z}\) (arithmétique modulaire)
+*   **Cours 4** : Théorèmes de Bézout et Gauss (applications arithmétiques)
+
+---
+
+## Arène 9 (Prépa 1A – MPSI) – Fondements de l'algèbre pure
+*   **Cours 1** : Nombres complexes (forme trigonométrique, exponentielle complexe)
+*   **Cours 2** : Arithmétique dans \(\mathbb{Z}\) (PGCD, PPCM, théorème de Bézout)
+*   **Cours 3** : Polynômes à une indéterminée (division euclidienne, racines)
+*   **Cours 4** : Fractions rationnelles (décomposition en éléments simples)
+*   **Cours 5** : Structures algébriques (groupes, anneaux, corps – définitions et exemples)
+*   **Cours 6** : Espaces vectoriels (définition, sous-espaces, bases, dimension)
+*   **Cours 7** : Applications linéaires (noyau, image, rang, théorème du rang)
+*   **Cours 8** : Matrices et calcul matriciel (addition, multiplication, inverse)
+*   **Cours 9** : Systèmes linéaires et méthode du pivot de Gauss
+
+---
+
+## Arène 10 (Prépa 2A – MP) – Réduction et espaces euclidiens
+*   **Cours 1** : Déterminants (propriétés et calculs)
+*   **Cours 2** : Valeurs propres, vecteurs propres, polynôme caractéristique
+*   **Cours 3** : Diagonalisation des matrices et endomorphismes
+*   **Cours 4** : Trigonalisation
+*   **Cours 5** : Espaces euclidiens (produit scalaire, norme, orthogonalité)
+*   **Cours 6** : Orthonormalisation de Gram-Schmidt
+*   **Cours 7** : Matrices orthogonales, matrices symétriques et théorème spectral
+*   **Cours 8** : Formes quadratiques (introduction)
+
+---
+
+## Arène 11 (Licence 1 & 2) – Algèbre générale et bilinéaire
+*   **Cours 1** : Groupes (sous-groupes, morphismes, groupes cycliques)
+*   **Cours 2** : Théorème de Lagrange
+*   **Cours 3** : Anneaux et Corps (intègres, corps commutatifs)
+*   **Cours 4** : Arithmétique des polynômes (PGCD, Bézout, décomposition)
+*   **Cours 5** : Actions de groupes (orbites, stabilisateurs)
+*   **Cours 6** : Dualité : formes linéaires, hyperplans, orthogonalité
+*   **Cours 7** : Formes bilinéaires symétriques et antisymétriques
+*   **Cours 8** : Formes quadratiques (réduction de Gauss, théorème de Sylvester)
+*   **Cours 9** : Espaces hermitiens (produit scalaire complexe)
+*   **Cours 10** : Réduction de Jordan et décomposition de Dunford
+
+---
+
+## Arène 12 (Licence 3) – Modules et Théorie de Galois
+*   **Cours 1** : Modules (définitions, sous-modules, quotients)
+*   **Cours 2** : Modules libres et de type fini
+*   **Cours 3** : Modules sur un anneau principal (théorème de structure)
+*   **Cours 4** : Extensions de corps et degré d'une extension
+*   **Cours 5** : Corps finis (construction et groupe multiplicatif)
+*   **Cours 6** : Groupe de Galois (définition et propriétés)
+*   **Cours 7** : Correspondance fondamentale de Galois
+*   **Cours 8** : Introduction à l'algèbre commutative (idéaux premiers, maximaux, anneaux quotients)
+
+---
+
+## Arène 13 (Master 1) – Algèbre commutative et homologique
+*   **Cours 1** : Anneaux commutatifs (idéaux, localisation)
+*   **Cours 2** : Anneaux noethériens et théorème de Hilbert
+*   **Cours 3** : Produit tensoriel de modules
+*   **Cours 4** : Algèbre extérieure et déterminant
+*   **Cours 5** : Suites exactes de modules
+*   **Cours 6** : Représentations des groupes finis (caractères, tables)
+*   **Cours 7** : Théorèmes de Maschke et Burnside
+*   **Cours 8** : Introduction aux algèbres de Lie
+*   **Cours 9** : Complexes de chaînes et homologie
+*   **Cours 10** : Foncteurs Ext et Tor (introduction)
+
+---
+
+## Arène 14 (Master 2) – Algèbre avancée
+*   **Cours 1** : Catégories et foncteurs
+*   **Cours 2** : Algèbre homologique avancée (catégories dérivées, faisceaux)
+*   **Cours 3** : Dimension de Krull en algèbre commutative
+*   **Cours 4** : Arithmétique des corps de nombres (anneaux d'entiers)
+*   **Cours 5** : Théorie des nombres algébriques (idéaux fractionnaires, groupe des classes)
+*   **Cours 6** : Introduction aux variétés algébriques
+*   **Cours 7** : Schémas (introduction)
+*   **Cours 8** : Faisceaux et préfaisceaux
+*   **Cours 9** : Représentations des groupes de Lie
+*   **Cours 10** : Algèbres de Kac-Moody (introduction)
+
+---
+
+## Arène 15 (Expert / Recherche) – Géométrie algébrique moderne
+*   **Cours 1** : Schémas (approfondissement)
+*   **Cours 2** : Cohomologie des faisceaux
+*   **Cours 3** : Géométrie arithmétique (schémas arithmétiques)
+*   **Cours 4** : Représentations \(p\)-adiques
+*   **Cours 5** : Théorie de Hodge (aspects algébriques)
+*   **Cours 6** : Algèbres non commutatives (Weyl, algèbres quantiques)
+*   **Cours 7** : Théorie des nombres transcendants
+*   **Cours 8** : Correspondance de Langlands (introduction algébrique)
+
+---
+
+## Arènes 16 à 20 – Recherche et problèmes ouverts
+
+| Arène | Niveau | Cours |
+| :---: | :--- | :--- |
+| **16** | Post-Master / Thèse | **Cours 1** : Catégories dérivées<br>**Cours 2** : Faisceaux pervers<br>**Cours 3** : Dualité de Grothendieck<br>**Cours 4** : Cohomologie de Galois<br>**Cours 5** : Motifs et cohomologie motivique |
+| **17** | Thèse – 1ère année | **Cours 1** : Géométrie arithmétique approfondie<br>**Cours 2** : Représentations galoisiennes<br>**Cours 3** : Formes modulaires et formes automorphes<br>**Cours 4** : Théorie du corps de classes<br>**Cours 5** : Fonctions \(L\) (aspects algébriques) |
+| **18** | Thèse – 2ème/3ème année | **Cours 1** : Algèbres de Kac-Moody (approfondi)<br>**Cours 2** : Groupes quantiques<br>**Cours 3** : Théorie des champs conformes (approche algébrique)<br>**Cours 4** : Algèbres d'opérateurs et von Neumann<br>**Cours 5** : Superalgèbres et supersymétrie |
+| **19** | Post-doctorat | **Cours 1** : Cohomologie étale<br>**Cours 2** : Théorie de Hodge \(p\)-adique<br>**Cours 3** : Correspondance de Langlands géométrique<br>**Cours 4** : Théorie des motifs (approfondi)<br>**Cours 5** : Stacks algébriques |
+| **20** | Chercheur Confirmé | **Cours 1** : Hypothèse de Riemann généralisée (aspects algébriques)<br>**Cours 2** : Programme de Langlands<br>**Cours 3** : Géométrie algébrique non commutative<br>**Cours 4** : Théorie des nombres transcendants avancée<br>**Cours 5** : Problèmes ouverts en algèbre |
+
+---
+
+## Récapitulatif des arènes 1 à 20
+
+| Arène | Niveau | Nb de cours |
+| :---: | :--- | :---: |
+| 1 | 6ème | 2 |
+| 2 | 5ème | 3 |
+| 3 | 4ème | 3 |
+| 4 | 3ème | 3 |
+| 5 | Seconde | 2 |
+| 6 | 1ère Spé | 2 |
+| 7 | Tle Spé | 2 |
+| 8 | Tle Expertes | 4 |
+| 9 | Prépa 1A (MPSI) | 9 |
+| 10 | Prépa 2A (MP) | 8 |
+| 11 | Licence 1 & 2 | 10 |
+| 12 | Licence 3 | 8 |
+| 13 | Master 1 | 10 |
+| 14 | Master 2 | 10 |
+| 15 | Expert / Recherche | 8 |

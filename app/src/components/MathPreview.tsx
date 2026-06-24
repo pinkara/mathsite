@@ -40,10 +40,12 @@ export function MathPreview({
   const ref = useRef<HTMLSpanElement>(null);
   const [ready, setReady] = useState(false);
   const preview = extractPreview(content, maxLength, mode);
+  const lastPreview = useRef(preview);
 
   useEffect(() => {
     let tries = 0;
     const maxTries = 15;
+    let timeoutId: number | undefined;
 
     const tryTypeset = () => {
       const mj = (window as any).MathJax;
@@ -55,15 +57,26 @@ export function MathPreview({
       }
       if (tries < maxTries) {
         tries += 1;
-        setTimeout(tryTypeset, 400);
+        timeoutId = window.setTimeout(tryTypeset, 400);
       } else {
         setReady(true);
       }
     };
 
+    if (lastPreview.current !== preview) {
+      lastPreview.current = preview;
+    }
+
     setReady(false);
     tryTypeset();
-  }, [preview]);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   if (!preview) return null;
 

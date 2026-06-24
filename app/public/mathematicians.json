@@ -1,0 +1,3522 @@
+[
+  {
+    "id": "ahm-s",
+    "name": "Ahmès",
+    "rarity": "common"
+  },
+  {
+    "id": "antiphon-le-sophiste",
+    "name": "Antiphon le Sophiste",
+    "rarity": "common"
+  },
+  {
+    "id": "apollonios-de-perga",
+    "name": "Apollonios de Perga",
+    "rarity": "common"
+  },
+  {
+    "id": "archim-de",
+    "name": "Archimède",
+    "rarity": "rare"
+  },
+  {
+    "id": "archytas-de-tarente",
+    "name": "Archytas de Tarente",
+    "rarity": "common"
+  },
+  {
+    "id": "aristarque-de-samos",
+    "name": "Aristarque de Samos",
+    "rarity": "common"
+  },
+  {
+    "id": "aristote",
+    "name": "Aristote",
+    "rarity": "common"
+  },
+  {
+    "id": "autolycos-de-pitane",
+    "name": "Autolycos de Pitane",
+    "rarity": "rare"
+  },
+  {
+    "id": "d-mocrite-d-abd-re",
+    "name": "Démocrite d'Abdère",
+    "rarity": "common"
+  },
+  {
+    "id": "dinostrate",
+    "name": "Dinostrate",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "diocl-s",
+    "name": "Dioclès",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ratosth-ne",
+    "name": "Ératosthène",
+    "rarity": "epic"
+  },
+  {
+    "id": "euclide",
+    "name": "Euclide",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "eudoxe-de-cnide",
+    "name": "Eudoxe de Cnide",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hipparque-de-nic-e",
+    "name": "Hipparque de Nicée",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hippase-de-m-taponte",
+    "name": "Hippase de Métaponte",
+    "rarity": "common"
+  },
+  {
+    "id": "hippias-d-lis",
+    "name": "Hippias d'Élis",
+    "rarity": "common"
+  },
+  {
+    "id": "hippocrate-de-chios",
+    "name": "Hippocrate de Chios",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "m-nechme",
+    "name": "Ménechme",
+    "rarity": "common"
+  },
+  {
+    "id": "nicom-de",
+    "name": "Nicomède",
+    "rarity": "common"
+  },
+  {
+    "id": "nopide-de-chios",
+    "name": "Œnopide de Chios",
+    "rarity": "rare"
+  },
+  {
+    "id": "philolaos-de-crotone",
+    "name": "Philolaos de Crotone",
+    "rarity": "common"
+  },
+  {
+    "id": "pythagore-de-samos",
+    "name": "Pythagore de Samos",
+    "rarity": "epic"
+  },
+  {
+    "id": "thal-s-de-milet",
+    "name": "Thalès de Milet",
+    "rarity": "rare"
+  },
+  {
+    "id": "th-t-te-d-ath-nes",
+    "name": "Théétète d'Athènes",
+    "rarity": "common"
+  },
+  {
+    "id": "th-odore-de-cyr-ne",
+    "name": "Théodore de Cyrène",
+    "rarity": "common"
+  },
+  {
+    "id": "z-nodore",
+    "name": "Zénodore",
+    "rarity": "common"
+  },
+  {
+    "id": "z-non-d-l-e",
+    "name": "Zénon d'Élée",
+    "rarity": "common"
+  },
+  {
+    "id": "h-ron-d-alexandrie",
+    "name": "Héron d'Alexandrie",
+    "rarity": "epic"
+  },
+  {
+    "id": "m-n-laos-d-alexandrie",
+    "name": "Ménélaos d'Alexandrie",
+    "rarity": "common"
+  },
+  {
+    "id": "ptol-m-e",
+    "name": "Ptolémée",
+    "rarity": "rare"
+  },
+  {
+    "id": "zhang-heng",
+    "name": "Zhang Heng",
+    "rarity": "common"
+  },
+  {
+    "id": "diophante-d-alexandrie",
+    "name": "Diophante d'Alexandrie",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hypatie-d-alexandrie",
+    "name": "Hypatie d'Alexandrie",
+    "rarity": "rare"
+  },
+  {
+    "id": "liu-hui",
+    "name": "Liu Hui",
+    "rarity": "rare"
+  },
+  {
+    "id": "nicomaque-de-gerasa",
+    "name": "Nicomaque de Gerasa",
+    "rarity": "common"
+  },
+  {
+    "id": "pappus-d-alexandrie",
+    "name": "Pappus d'Alexandrie",
+    "rarity": "common"
+  },
+  {
+    "id": "sun-zi",
+    "name": "Sun Zi",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "th-on-d-alexandrie",
+    "name": "Théon d'Alexandrie",
+    "rarity": "common"
+  },
+  {
+    "id": "anth-mius-de-tralles",
+    "name": "Anthémius de Tralles",
+    "rarity": "common"
+  },
+  {
+    "id": "ryabhata",
+    "name": "Âryabhata",
+    "rarity": "epic"
+  },
+  {
+    "id": "anicius-bo-ce",
+    "name": "Anicius Boèce",
+    "rarity": "rare"
+  },
+  {
+    "id": "zu-chongzhi",
+    "name": "Zu Chongzhi",
+    "rarity": "common"
+  },
+  {
+    "id": "brahmagupta",
+    "name": "Brahmagupta",
+    "rarity": "common"
+  },
+  {
+    "id": "varahamihira",
+    "name": "Varahamihira",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "bh-skara-i",
+    "name": "Bhāskara I",
+    "rarity": "common"
+  },
+  {
+    "id": "abu-ja-far-muhammad-ibn-musa-al-khwarizmi",
+    "name": "Abu Ja'far Muhammad Ibn Musa Al-Khwarizmi",
+    "rarity": "common"
+  },
+  {
+    "id": "abalphat-d-ispahan",
+    "name": "Abalphat d'Ispahan",
+    "rarity": "common"
+  },
+  {
+    "id": "muhammad-abo-l-waf",
+    "name": "Muhammad Aboûl-Wafâ",
+    "rarity": "common"
+  },
+  {
+    "id": "al-biruni",
+    "name": "Al-Biruni",
+    "rarity": "common"
+  },
+  {
+    "id": "al-hasan-al-haytham-dit-alhazen",
+    "name": "Al Hasan al-Haytham dit « Alhazen »",
+    "rarity": "common"
+  },
+  {
+    "id": "gerbert-d-aurillac",
+    "name": "Gerbert d'Aurillac,",
+    "rarity": "rare"
+  },
+  {
+    "id": "abu-al-hassan-thabit-ibn-qurra",
+    "name": "Abu al Hassan Thabit ibn Qurra,",
+    "rarity": "common"
+  },
+  {
+    "id": "abu-l-hasan-al-uqlidisi",
+    "name": "Abu'l-Hasan al-Uqlidisi",
+    "rarity": "epic"
+  },
+  {
+    "id": "al-zarqali",
+    "name": "Al-Zarqali",
+    "rarity": "common"
+  },
+  {
+    "id": "abraham-ibn-ezra",
+    "name": "Abraham ibn Ezra",
+    "rarity": "rare"
+  },
+  {
+    "id": "omar-khayyam",
+    "name": "Omar Khayyam",
+    "rarity": "common"
+  },
+  {
+    "id": "bh-skara-ii",
+    "name": "Bhāskara II",
+    "rarity": "rare"
+  },
+  {
+    "id": "l-onard-de-pise-dit-fibonacci",
+    "name": "Léonard de Pise dit Fibonacci",
+    "rarity": "rare"
+  },
+  {
+    "id": "thomas-bradwardine",
+    "name": "Thomas Bradwardine",
+    "rarity": "common"
+  },
+  {
+    "id": "johannes-campanus",
+    "name": "Johannes Campanus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ch-in-chiu-shao",
+    "name": "Ch'in Chiu-Shao",
+    "rarity": "common"
+  },
+  {
+    "id": "john-d-hollywood",
+    "name": "John d'Hollywood",
+    "rarity": "rare"
+  },
+  {
+    "id": "ramon-llull",
+    "name": "Ramon Llull",
+    "rarity": "rare"
+  },
+  {
+    "id": "qin-jiushao",
+    "name": "Qin Jiushao",
+    "rarity": "common"
+  },
+  {
+    "id": "alexandre-de-villedieu",
+    "name": "Alexandre de Villedieu",
+    "rarity": "common"
+  },
+  {
+    "id": "zhu-shijie",
+    "name": "Zhu Shijie",
+    "rarity": "common"
+  },
+  {
+    "id": "jordanus-nemorarius",
+    "name": "Jordanus Nemorarius",
+    "rarity": "rare"
+  },
+  {
+    "id": "ghiyath-al-kashi",
+    "name": "Ghiyath al-Kashi",
+    "rarity": "common"
+  },
+  {
+    "id": "nicolas-d-oresme",
+    "name": "Nicolas d'Oresme",
+    "rarity": "rare"
+  },
+  {
+    "id": "leone-battista-alberti",
+    "name": "Leone Battista Alberti",
+    "rarity": "epic"
+  },
+  {
+    "id": "petrus-apianus",
+    "name": "Petrus Apianus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "charles-de-bovelles",
+    "name": "Charles de Bovelles",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "nicolas-chuquet",
+    "name": "Nicolas Chuquet",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "nicolas-de-cuse",
+    "name": "Nicolas de Cuse",
+    "rarity": "common"
+  },
+  {
+    "id": "albrecht-d-rer",
+    "name": "Albrecht Dürer",
+    "rarity": "common"
+  },
+  {
+    "id": "scipione-del-ferro",
+    "name": "Scipione del Ferro",
+    "rarity": "common"
+  },
+  {
+    "id": "oronce-fine",
+    "name": "Oronce Fine",
+    "rarity": "rare"
+  },
+  {
+    "id": "piero-della-francesca",
+    "name": "Piero della Francesca",
+    "rarity": "rare"
+  },
+  {
+    "id": "estienne-de-la-roche",
+    "name": "Estienne de La Roche",
+    "rarity": "common"
+  },
+  {
+    "id": "gaspard-lax-de-sarenina",
+    "name": "Gaspard Lax de Sarenina",
+    "rarity": "epic"
+  },
+  {
+    "id": "john-mair",
+    "name": "John Mair",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "luca-pacioli",
+    "name": "Luca Pacioli",
+    "rarity": "common"
+  },
+  {
+    "id": "georg-von-purbach",
+    "name": "Georg von Purbach",
+    "rarity": "rare"
+  },
+  {
+    "id": "johannes-m-ller-regiomontanus",
+    "name": "Johannes Müller « Regiomontanus »",
+    "rarity": "rare"
+  },
+  {
+    "id": "nilakantha-somayaji",
+    "name": "Nilakantha Somayaji",
+    "rarity": "common"
+  },
+  {
+    "id": "adam-ries",
+    "name": "Adam Ries",
+    "rarity": "common"
+  },
+  {
+    "id": "michael-stifel",
+    "name": "Michael Stifel",
+    "rarity": "common"
+  },
+  {
+    "id": "niccolo-fontana-tartaglia",
+    "name": "Niccolo Fontana Tartaglia",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johannes-werner",
+    "name": "Johannes Werner",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johannes-widmann",
+    "name": "Johannes Widmann",
+    "rarity": "rare"
+  },
+  {
+    "id": "fran-ois-d-aguilon",
+    "name": "François d'Aguilon",
+    "rarity": "rare"
+  },
+  {
+    "id": "jacques-aleaume",
+    "name": "Jacques Aleaume",
+    "rarity": "common"
+  },
+  {
+    "id": "alexander-anderson",
+    "name": "Alexander Anderson",
+    "rarity": "epic"
+  },
+  {
+    "id": "claude-gaspard-bachet-de-m-ziriac",
+    "name": "Claude-Gaspard Bachet de Méziriac",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-de-beaugrand",
+    "name": "Jean de Beaugrand",
+    "rarity": "common"
+  },
+  {
+    "id": "rapha-l-bombelli",
+    "name": "Raphaël Bombelli",
+    "rarity": "common"
+  },
+  {
+    "id": "maurice-bressieu",
+    "name": "Maurice Bressieu",
+    "rarity": "epic"
+  },
+  {
+    "id": "henry-briggs",
+    "name": "Henry Briggs",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jost-b-rgi",
+    "name": "Jost Bürgi",
+    "rarity": "common"
+  },
+  {
+    "id": "j-r-me-cardan",
+    "name": "Jérôme Cardan",
+    "rarity": "common"
+  },
+  {
+    "id": "pietro-antonio-cataldi",
+    "name": "Pietro Antonio Cataldi",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "bonaventura-cavalieri",
+    "name": "Bonaventura Cavalieri",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ludolph-van-ceulen",
+    "name": "Ludolph van Ceulen",
+    "rarity": "common"
+  },
+  {
+    "id": "christophorus-clavius",
+    "name": "Christophorus Clavius",
+    "rarity": "legendary"
+  },
+  {
+    "id": "girard-desargues",
+    "name": "Girard Desargues",
+    "rarity": "legendary"
+  },
+  {
+    "id": "ren-descartes",
+    "name": "René Descartes",
+    "rarity": "rare"
+  },
+  {
+    "id": "ludovico-ferrari",
+    "name": "Ludovico Ferrari",
+    "rarity": "common"
+  },
+  {
+    "id": "thomas-fincke",
+    "name": "Thomas Fincke",
+    "rarity": "rare"
+  },
+  {
+    "id": "marin-ghetaldi",
+    "name": "Marin Ghetaldi",
+    "rarity": "epic"
+  },
+  {
+    "id": "albert-girard",
+    "name": "Albert Girard",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "paul-guldin",
+    "name": "Paul Guldin",
+    "rarity": "common"
+  },
+  {
+    "id": "suzanne-habert",
+    "name": "Suzanne Habert",
+    "rarity": "common"
+  },
+  {
+    "id": "thomas-harriot",
+    "name": "Thomas Harriot",
+    "rarity": "epic"
+  },
+  {
+    "id": "johannes-kepler",
+    "name": "Johannes Kepler",
+    "rarity": "common"
+  },
+  {
+    "id": "georg-joachim-rheticus",
+    "name": "Georg Joachim Rheticus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "marin-mersenne",
+    "name": "Marin Mersenne",
+    "rarity": "rare"
+  },
+  {
+    "id": "john-napier",
+    "name": "John Napier",
+    "rarity": "rare"
+  },
+  {
+    "id": "william-oughtred",
+    "name": "William Oughtred",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jacques-peletier-du-mans",
+    "name": "Jacques Peletier du Mans",
+    "rarity": "rare"
+  },
+  {
+    "id": "robert-recorde",
+    "name": "Robert Recorde",
+    "rarity": "common"
+  },
+  {
+    "id": "adrien-romain",
+    "name": "Adrien Romain",
+    "rarity": "common"
+  },
+  {
+    "id": "christoff-rudolff",
+    "name": "Christoff Rudolff",
+    "rarity": "common"
+  },
+  {
+    "id": "gr-goire-de-saint-vincent",
+    "name": "Grégoire de Saint-Vincent",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "willebrord-van-roijen-snell",
+    "name": "Willebrord van Roijen Snell",
+    "rarity": "common"
+  },
+  {
+    "id": "john-speidell",
+    "name": "John Speidell",
+    "rarity": "common"
+  },
+  {
+    "id": "simon-stevin",
+    "name": "Simon Stevin",
+    "rarity": "common"
+  },
+  {
+    "id": "fran-ois-vi-te",
+    "name": "François Viète",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "isaac-barrow",
+    "name": "Isaac Barrow",
+    "rarity": "common"
+  },
+  {
+    "id": "florimond-de-beaune",
+    "name": "Florimond de Beaune",
+    "rarity": "common"
+  },
+  {
+    "id": "jacques-bernoulli",
+    "name": "Jacques Bernoulli",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jean-bernoulli",
+    "name": "Jean Bernoulli",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "nicolas-bernoulli",
+    "name": "Nicolas Bernoulli",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-bouguer",
+    "name": "Pierre Bouguer",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "william-brouncker",
+    "name": "William Brouncker",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jean-dominique-cassini",
+    "name": "Jean Dominique Cassini",
+    "rarity": "common"
+  },
+  {
+    "id": "giovanni-ceva",
+    "name": "Giovanni Ceva",
+    "rarity": "common"
+  },
+  {
+    "id": "tommaso-ceva",
+    "name": "Tommaso Ceva",
+    "rarity": "common"
+  },
+  {
+    "id": "roger-cotes",
+    "name": "Roger Cotes",
+    "rarity": "rare"
+  },
+  {
+    "id": "john-craig",
+    "name": "John Craig",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "marie-crous",
+    "name": "Marie Crous",
+    "rarity": "common"
+  },
+  {
+    "id": "john-theophilus-desaguliers",
+    "name": "John Theophilus Desaguliers",
+    "rarity": "common"
+  },
+  {
+    "id": "humphry-ditton",
+    "name": "Humphry Ditton",
+    "rarity": "common"
+  },
+  {
+    "id": "giulio-fagnano-dei-toschi",
+    "name": "Giulio Fagnano dei Toschi",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-de-fermat",
+    "name": "Pierre de Fermat",
+    "rarity": "common"
+  },
+  {
+    "id": "christian-goldbach",
+    "name": "Christian Goldbach",
+    "rarity": "common"
+  },
+  {
+    "id": "james-gregory",
+    "name": "James Gregory",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "charles-de-la-faille",
+    "name": "Charles de La Faille",
+    "rarity": "common"
+  },
+  {
+    "id": "antoine-de-lalouv-re",
+    "name": "Antoine de Lalouvère",
+    "rarity": "rare"
+  },
+  {
+    "id": "guillaume-fran-ois-antoine-marquis-de-l-h-pital",
+    "name": "Guillaume François Antoine, marquis de L'Hôpital",
+    "rarity": "common"
+  },
+  {
+    "id": "marie-charlotte-de-romilley-de-la-chesnelaye-marquise-de-l-h-pital",
+    "name": "Marie-Charlotte de Romilley de La Chesnelaye, marquise de L'Hôpital",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johann-hudde",
+    "name": "Johann Hudde",
+    "rarity": "rare"
+  },
+  {
+    "id": "christian-huygens",
+    "name": "Christian Huygens",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "william-jones",
+    "name": "William Jones",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "philippe-de-la-hire",
+    "name": "Philippe de La Hire",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "gottfried-wilhelm-leibniz",
+    "name": "Gottfried Wilhelm Leibniz",
+    "rarity": "common"
+  },
+  {
+    "id": "colin-maclaurin",
+    "name": "Colin Maclaurin",
+    "rarity": "epic"
+  },
+  {
+    "id": "georg-mohr",
+    "name": "Georg Mohr",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "abraham-de-moivre",
+    "name": "Abraham de Moivre",
+    "rarity": "common"
+  },
+  {
+    "id": "isaac-newton",
+    "name": "Isaac Newton",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "fran-ois-nicole",
+    "name": "François Nicole",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jacques-ozanam",
+    "name": "Jacques Ozanam",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "blaise-pascal",
+    "name": "Blaise Pascal",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-pell",
+    "name": "John Pell",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "claude-perrault",
+    "name": "Claude Perrault",
+    "rarity": "epic"
+  },
+  {
+    "id": "johann-heinrich-rahn",
+    "name": "Johann Heinrich Rahn",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jacopo-riccati",
+    "name": "Jacopo Riccati",
+    "rarity": "common"
+  },
+  {
+    "id": "gilles-personne-de-roberval",
+    "name": "Gilles Personne de Roberval,",
+    "rarity": "rare"
+  },
+  {
+    "id": "michel-rolle",
+    "name": "Michel Rolle",
+    "rarity": "common"
+  },
+  {
+    "id": "giovanni-girolamo-saccheri",
+    "name": "Giovanni Girolamo Saccheri",
+    "rarity": "common"
+  },
+  {
+    "id": "frans-van-schooten",
+    "name": "Frans van Schooten",
+    "rarity": "rare"
+  },
+  {
+    "id": "seki-kowa",
+    "name": "Seki Kowa",
+    "rarity": "common"
+  },
+  {
+    "id": "robert-simson",
+    "name": "Robert Simson",
+    "rarity": "common"
+  },
+  {
+    "id": "ren-fran-ois-walter-de-sluse",
+    "name": "René François Walter de Sluse",
+    "rarity": "common"
+  },
+  {
+    "id": "james-stirling",
+    "name": "James Stirling",
+    "rarity": "common"
+  },
+  {
+    "id": "ehrenfried-walther-von-tschirnhaus",
+    "name": "Ehrenfried Walther von Tschirnhaus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "pierre-varignon",
+    "name": "Pierre Varignon",
+    "rarity": "common"
+  },
+  {
+    "id": "vincenzo-viviani",
+    "name": "Vincenzo Viviani",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-wallis",
+    "name": "John Wallis",
+    "rarity": "rare"
+  },
+  {
+    "id": "christopher-wren",
+    "name": "Christopher Wren",
+    "rarity": "common"
+  },
+  {
+    "id": "thomas-abbt",
+    "name": "Thomas Abbt",
+    "rarity": "common"
+  },
+  {
+    "id": "maria-gaetana-agnesi",
+    "name": "Maria Gaetana Agnesi",
+    "rarity": "rare"
+  },
+  {
+    "id": "jean-le-rond-d-alembert",
+    "name": "Jean le Rond d'Alembert",
+    "rarity": "common"
+  },
+  {
+    "id": "andr-marie-amp-re",
+    "name": "André-Marie Ampère",
+    "rarity": "common"
+  },
+  {
+    "id": "louis-fran-ois-antoine-arbogast",
+    "name": "Louis François Antoine Arbogast",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-robert-argand",
+    "name": "Jean-Robert Argand",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "george-atwood",
+    "name": "George Atwood",
+    "rarity": "epic"
+  },
+  {
+    "id": "charles-babbage",
+    "name": "Charles Babbage",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "thomas-bayes",
+    "name": "Thomas Bayes",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "daniel-bernoulli",
+    "name": "Daniel Bernoulli",
+    "rarity": "common"
+  },
+  {
+    "id": "friedrich-wilhelm-bessel",
+    "name": "Friedrich Wilhelm Bessel",
+    "rarity": "common"
+  },
+  {
+    "id": "tienne-b-zout",
+    "name": "Étienne Bézout",
+    "rarity": "rare"
+  },
+  {
+    "id": "jacques-philippe-marie-binet",
+    "name": "Jacques Philippe Marie Binet",
+    "rarity": "rare"
+  },
+  {
+    "id": "farkas-wolfgang-bolyai",
+    "name": "Farkas Wolfgang Bolyai",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "bernard-bolzano",
+    "name": "Bernard Bolzano",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-charles-de-borda",
+    "name": "Jean-Charles de Borda",
+    "rarity": "common"
+  },
+  {
+    "id": "ru-er-josip-bo-kovi",
+    "name": "Ruđer Josip Bošković",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "charles-julien-brianchon",
+    "name": "Charles Julien Brianchon",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "augustin-louis-cauchy",
+    "name": "Augustin Louis Cauchy",
+    "rarity": "common"
+  },
+  {
+    "id": "michel-chasles",
+    "name": "Michel Chasles",
+    "rarity": "common"
+  },
+  {
+    "id": "milie-du-ch-telet",
+    "name": "Émilie du Châtelet",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "condorcet",
+    "name": "Condorcet",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "gabriel-cramer",
+    "name": "Gabriel Cramer",
+    "rarity": "common"
+  },
+  {
+    "id": "august-leopold-crelle",
+    "name": "August Leopold Crelle",
+    "rarity": "rare"
+  },
+  {
+    "id": "germinal-pierre-dandelin",
+    "name": "Germinal Pierre Dandelin",
+    "rarity": "common"
+  },
+  {
+    "id": "william-emerson",
+    "name": "William Emerson",
+    "rarity": "legendary"
+  },
+  {
+    "id": "leonhard-euler",
+    "name": "Leonhard Euler",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-baptiste-joseph-fourier",
+    "name": "Jean Baptiste Joseph Fourier",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "joseph-diaz-gergonne",
+    "name": "Joseph Diaz Gergonne",
+    "rarity": "common"
+  },
+  {
+    "id": "sophie-germain",
+    "name": "Sophie Germain",
+    "rarity": "common"
+  },
+  {
+    "id": "george-green",
+    "name": "George Green",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-paul-de-gua-de-malves",
+    "name": "Jean-Paul de Gua de Malves",
+    "rarity": "common"
+  },
+  {
+    "id": "christoph-gudermann",
+    "name": "Christoph Gudermann",
+    "rarity": "rare"
+  },
+  {
+    "id": "peter-andreas-hansen",
+    "name": "Peter Andreas Hansen",
+    "rarity": "common"
+  },
+  {
+    "id": "caroline-herschel",
+    "name": "Caroline Herschel",
+    "rarity": "common"
+  },
+  {
+    "id": "james-ivory",
+    "name": "James Ivory",
+    "rarity": "common"
+  },
+  {
+    "id": "abraham-gotthelf-k-stner",
+    "name": "Abraham Gotthelf Kästner",
+    "rarity": "common"
+  },
+  {
+    "id": "christian-kramp",
+    "name": "Christian Kramp",
+    "rarity": "common"
+  },
+  {
+    "id": "joseph-louis-de-lagrange",
+    "name": "Joseph-Louis de Lagrange",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johann-heinrich-lambert",
+    "name": "Johann Heinrich Lambert",
+    "rarity": "rare"
+  },
+  {
+    "id": "pierre-simon-de-laplace",
+    "name": "Pierre-Simon de Laplace",
+    "rarity": "common"
+  },
+  {
+    "id": "adrien-marie-legendre",
+    "name": "Adrien-Marie Legendre",
+    "rarity": "epic"
+  },
+  {
+    "id": "nicola-ivanovitch-lobatchevsky",
+    "name": "Nicolaï Ivanovitch Lobatchevsky",
+    "rarity": "common"
+  },
+  {
+    "id": "tienne-louis-malus",
+    "name": "Étienne Louis Malus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "lorenzo-mascheroni",
+    "name": "Lorenzo Mascheroni",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "august-ferdinand-m-bius",
+    "name": "August Ferdinand Möbius",
+    "rarity": "common"
+  },
+  {
+    "id": "gaspard-monge",
+    "name": "Gaspard Monge",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "marc-antoine-parseval",
+    "name": "Marc-Antoine Parseval",
+    "rarity": "common"
+  },
+  {
+    "id": "marie-anne-victoire-de-pr-montval-n-e-pigeon-d-osangis",
+    "name": "Marie-Anne-Victoire de Prémontval, née Pigeon d'Osangis",
+    "rarity": "common"
+  },
+  {
+    "id": "louis-poinsot",
+    "name": "Louis Poinsot",
+    "rarity": "rare"
+  },
+  {
+    "id": "sim-on-denis-poisson",
+    "name": "Siméon Denis Poisson",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-victor-poncelet",
+    "name": "Jean-Victor Poncelet",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "olinde-rodrigues",
+    "name": "Olinde Rodrigues",
+    "rarity": "epic"
+  },
+  {
+    "id": "paolo-ruffini",
+    "name": "Paolo Ruffini",
+    "rarity": "rare"
+  },
+  {
+    "id": "thomas-simpson",
+    "name": "Thomas Simpson",
+    "rarity": "common"
+  },
+  {
+    "id": "karl-georg-christian-von-staudt",
+    "name": "Karl Georg Christian von Staudt",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jakob-steiner",
+    "name": "Jakob Steiner",
+    "rarity": "common"
+  },
+  {
+    "id": "matthew-stewart",
+    "name": "Matthew Stewart",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "alexandre-th-ophile-vandermonde",
+    "name": "Alexandre-Théophile Vandermonde",
+    "rarity": "common"
+  },
+  {
+    "id": "jurij-vega",
+    "name": "Jurij Vega",
+    "rarity": "common"
+  },
+  {
+    "id": "edward-waring",
+    "name": "Edward Waring",
+    "rarity": "common"
+  },
+  {
+    "id": "caspar-wessel",
+    "name": "Caspar Wessel",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-wilson",
+    "name": "John Wilson",
+    "rarity": "common"
+  },
+  {
+    "id": "josef-wronski",
+    "name": "Josef Wronski",
+    "rarity": "common"
+  },
+  {
+    "id": "yoriyuki-arima",
+    "name": "Yoriyuki Arima",
+    "rarity": "common"
+  },
+  {
+    "id": "a",
+    "name": "A",
+    "rarity": "common"
+  },
+  {
+    "id": "adrien-pouliot",
+    "name": "Adrien Pouliot",
+    "rarity": "common"
+  },
+  {
+    "id": "niels-henrik-abel",
+    "name": "Niels Henrik Abel",
+    "rarity": "common"
+  },
+  {
+    "id": "wilhelm-ackermann",
+    "name": "Wilhelm Ackermann",
+    "rarity": "common"
+  },
+  {
+    "id": "john-couch-adams",
+    "name": "John Couch Adams",
+    "rarity": "epic"
+  },
+  {
+    "id": "joseph-alphonse-adh-mar",
+    "name": "Joseph-Alphonse Adhémar",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "pavel-sergeevich-alexandrov",
+    "name": "Pavel Sergeevich Alexandrov",
+    "rarity": "common"
+  },
+  {
+    "id": "paul-appell",
+    "name": "Paul Appell",
+    "rarity": "common"
+  },
+  {
+    "id": "emil-artin",
+    "name": "Emil Artin",
+    "rarity": "common"
+  },
+  {
+    "id": "cesare-arzel",
+    "name": "Cesare Arzelà",
+    "rarity": "common"
+  },
+  {
+    "id": "giulio-ascoli",
+    "name": "Giulio Ascoli",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "b",
+    "name": "B",
+    "rarity": "common"
+  },
+  {
+    "id": "louis-bachelier",
+    "name": "Louis Bachelier",
+    "rarity": "epic"
+  },
+  {
+    "id": "paul-bachmann",
+    "name": "Paul Bachmann",
+    "rarity": "rare"
+  },
+  {
+    "id": "albert-victor-b-cklund",
+    "name": "Albert Victor Bäcklund",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "stefan-banach",
+    "name": "Stefan Banach",
+    "rarity": "common"
+  },
+  {
+    "id": "charlotte-barnum",
+    "name": "Charlotte Barnum",
+    "rarity": "rare"
+  },
+  {
+    "id": "eric-temple-bell",
+    "name": "Eric Temple Bell",
+    "rarity": "common"
+  },
+  {
+    "id": "giusto-bellavitis",
+    "name": "Giusto Bellavitis",
+    "rarity": "rare"
+  },
+  {
+    "id": "eugenio-beltrami",
+    "name": "Eugenio Beltrami",
+    "rarity": "common"
+  },
+  {
+    "id": "felix-bernstein",
+    "name": "Felix Bernstein",
+    "rarity": "epic"
+  },
+  {
+    "id": "sergue-natanovitch-bernstein",
+    "name": "Sergueï Natanovitch Bernstein",
+    "rarity": "common"
+  },
+  {
+    "id": "joseph-louis-francois-bertrand",
+    "name": "Joseph Louis Francois Bertrand",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "arne-beurling",
+    "name": "Arne Beurling",
+    "rarity": "common"
+  },
+  {
+    "id": "luigi-bianchi",
+    "name": "Luigi Bianchi",
+    "rarity": "common"
+  },
+  {
+    "id": "ludwig-bieberbach",
+    "name": "Ludwig Bieberbach",
+    "rarity": "common"
+  },
+  {
+    "id": "gertrude-blanch",
+    "name": "Gertrude Blanch",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "harald-bohr",
+    "name": "Harald Bohr",
+    "rarity": "common"
+  },
+  {
+    "id": "j-nos-bolyai",
+    "name": "János Bolyai",
+    "rarity": "common"
+  },
+  {
+    "id": "carlo-emilio-bonferroni",
+    "name": "Carlo Emilio Bonferroni",
+    "rarity": "common"
+  },
+  {
+    "id": "george-boole",
+    "name": "George Boole",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "mile-borel",
+    "name": "Émile Borel",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ladislaus-bortkiewicz",
+    "name": "Ladislaus Bortkiewicz",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "pierre-boutroux",
+    "name": "Pierre Boutroux",
+    "rarity": "common"
+  },
+  {
+    "id": "luitzen-egbertus-jan-brouwer",
+    "name": "Luitzen Egbertus Jan Brouwer",
+    "rarity": "common"
+  },
+  {
+    "id": "viggo-brun",
+    "name": "Viggo Brun",
+    "rarity": "common"
+  },
+  {
+    "id": "boris-yakovlevich-bukreev",
+    "name": "Boris Yakovlevich Bukreev",
+    "rarity": "common"
+  },
+  {
+    "id": "cesare-burali-forti",
+    "name": "Cesare Burali-Forti",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "william-burnside",
+    "name": "William Burnside",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "c",
+    "name": "C",
+    "rarity": "rare"
+  },
+  {
+    "id": "georg-ferdinand-cantor",
+    "name": "Georg Ferdinand Cantor",
+    "rarity": "common"
+  },
+  {
+    "id": "constantin-carath-odory",
+    "name": "Constantin Carathéodory",
+    "rarity": "common"
+  },
+  {
+    "id": "robert-daniel-carmichael",
+    "name": "Robert Daniel Carmichael",
+    "rarity": "common"
+  },
+  {
+    "id": "lie-cartan",
+    "name": "Élie Cartan",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "guido-castelnuovo",
+    "name": "Guido Castelnuovo",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "eug-ne-charles-catalan",
+    "name": "Eugène Charles Catalan",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "arthur-cayley",
+    "name": "Arthur Cayley",
+    "rarity": "common"
+  },
+  {
+    "id": "eduard-ech",
+    "name": "Eduard Čech",
+    "rarity": "rare"
+  },
+  {
+    "id": "ernesto-ces-ro",
+    "name": "Ernesto Cesàro",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "elwin-bruno-christoffel",
+    "name": "Elwin Bruno Christoffel",
+    "rarity": "common"
+  },
+  {
+    "id": "alexis-claude-clairaut",
+    "name": "Alexis Claude Clairaut",
+    "rarity": "common"
+  },
+  {
+    "id": "william-kingdon-clifford",
+    "name": "William Kingdon Clifford",
+    "rarity": "common"
+  },
+  {
+    "id": "james-cockle",
+    "name": "James Cockle",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "harald-cram-r",
+    "name": "Harald Cramér",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "luigi-cremona",
+    "name": "Luigi Cremona",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "d",
+    "name": "D",
+    "rarity": "common"
+  },
+  {
+    "id": "gaston-darboux",
+    "name": "Gaston Darboux",
+    "rarity": "epic"
+  },
+  {
+    "id": "julius-wilhelm-richard-dedekind",
+    "name": "Julius Wilhelm Richard Dedekind",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "max-dehn",
+    "name": "Max Dehn",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "henri-auguste-delannoy",
+    "name": "Henri Auguste Delannoy",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-eug-ne-delaunay",
+    "name": "Charles-Eugène Delaunay",
+    "rarity": "common"
+  },
+  {
+    "id": "augustus-de-morgan",
+    "name": "Augustus De Morgan",
+    "rarity": "common"
+  },
+  {
+    "id": "leonard-eugene-dickson",
+    "name": "Leonard Eugene Dickson",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "samuel-dickstein",
+    "name": "Samuel Dickstein",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johann-peter-gustav-lejeune-dirichlet",
+    "name": "Johann Peter Gustav Lejeune Dirichlet",
+    "rarity": "epic"
+  },
+  {
+    "id": "jesse-douglas",
+    "name": "Jesse Douglas",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-marie-duhamel",
+    "name": "Jean-Marie Duhamel",
+    "rarity": "epic"
+  },
+  {
+    "id": "henri-dulac",
+    "name": "Henri Dulac",
+    "rarity": "common"
+  },
+  {
+    "id": "e",
+    "name": "E",
+    "rarity": "common"
+  },
+  {
+    "id": "albert-einstein",
+    "name": "Albert Einstein",
+    "rarity": "common"
+  },
+  {
+    "id": "ferdinand-eisenstein",
+    "name": "Ferdinand Eisenstein",
+    "rarity": "common"
+  },
+  {
+    "id": "federigo-enriques",
+    "name": "Federigo Enriques",
+    "rarity": "epic"
+  },
+  {
+    "id": "ernest-esclangon",
+    "name": "Ernest Esclangon",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "f",
+    "name": "F",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-fatou",
+    "name": "Pierre Fatou",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "lip-t-fej-r",
+    "name": "Lipót Fejér",
+    "rarity": "common"
+  },
+  {
+    "id": "abraham-adolf-fraenkel",
+    "name": "Abraham Adolf Fraenkel",
+    "rarity": "common"
+  },
+  {
+    "id": "maurice-ren-fr-chet",
+    "name": "Maurice René Fréchet",
+    "rarity": "common"
+  },
+  {
+    "id": "ivar-fredholm",
+    "name": "Ivar Fredholm",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "friedrich-ludwig-gottlob-frege",
+    "name": "Friedrich Ludwig Gottlob Frege",
+    "rarity": "common"
+  },
+  {
+    "id": "georg-ferdinand-frobenius",
+    "name": "Georg Ferdinand Frobenius",
+    "rarity": "common"
+  },
+  {
+    "id": "g",
+    "name": "G",
+    "rarity": "rare"
+  },
+  {
+    "id": "variste-galois",
+    "name": "Évariste Galois",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "carl-friedrich-gauss",
+    "name": "Carl Friedrich Gauss",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hilda-geiringer-von-mises",
+    "name": "Hilda Geiringer von Mises",
+    "rarity": "common"
+  },
+  {
+    "id": "william-gosset-dit-student",
+    "name": "William Gosset, dit « Student »",
+    "rarity": "rare"
+  },
+  {
+    "id": "j-rgen-pedersen-gram",
+    "name": "Jørgen Pedersen Gram",
+    "rarity": "rare"
+  },
+  {
+    "id": "hermann-g-nther-grassmann",
+    "name": "Hermann Günther Grassmann",
+    "rarity": "common"
+  },
+  {
+    "id": "h",
+    "name": "H",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jacques-hadamard",
+    "name": "Jacques Hadamard",
+    "rarity": "common"
+  },
+  {
+    "id": "william-rowan-hamilton",
+    "name": "William Rowan Hamilton",
+    "rarity": "rare"
+  },
+  {
+    "id": "godfrey-harold-hardy",
+    "name": "Godfrey Harold Hardy",
+    "rarity": "common"
+  },
+  {
+    "id": "carl-gustav-axel-harnack",
+    "name": "Carl Gustav Axel Harnack",
+    "rarity": "common"
+  },
+  {
+    "id": "felix-hausdorff",
+    "name": "Felix Hausdorff",
+    "rarity": "epic"
+  },
+  {
+    "id": "oliver-heaviside",
+    "name": "Oliver Heaviside",
+    "rarity": "rare"
+  },
+  {
+    "id": "thomas-heath",
+    "name": "Thomas Heath",
+    "rarity": "common"
+  },
+  {
+    "id": "eduard-heine",
+    "name": "Eduard Heine",
+    "rarity": "common"
+  },
+  {
+    "id": "kurt-hensel",
+    "name": "Kurt Hensel",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-hermite",
+    "name": "Charles Hermite",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "david-hilbert",
+    "name": "David Hilbert",
+    "rarity": "common"
+  },
+  {
+    "id": "george-william-hill",
+    "name": "George William Hill",
+    "rarity": "common"
+  },
+  {
+    "id": "v-clav-hlavat",
+    "name": "Václav Hlavatý",
+    "rarity": "common"
+  },
+  {
+    "id": "otto-h-lder",
+    "name": "Otto Hölder",
+    "rarity": "epic"
+  },
+  {
+    "id": "heinz-hopf",
+    "name": "Heinz Hopf",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "adolf-hurwitz",
+    "name": "Adolf Hurwitz",
+    "rarity": "common"
+  },
+  {
+    "id": "j",
+    "name": "J",
+    "rarity": "common"
+  },
+  {
+    "id": "carl-gustav-jakob-jacobi",
+    "name": "Carl Gustav Jakob Jacobi",
+    "rarity": "rare"
+  },
+  {
+    "id": "zygmunt-janiszewski",
+    "name": "Zygmunt Janiszewski",
+    "rarity": "common"
+  },
+  {
+    "id": "camille-jordan",
+    "name": "Camille Jordan",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "gaston-maurice-julia",
+    "name": "Gaston Maurice Julia",
+    "rarity": "rare"
+  },
+  {
+    "id": "k",
+    "name": "K",
+    "rarity": "rare"
+  },
+  {
+    "id": "alfred-kempe",
+    "name": "Alfred Kempe",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "aleksandr-yakovlevich-khinchin",
+    "name": "Aleksandr Yakovlevich Khinchin",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "felix-klein",
+    "name": "Felix Klein",
+    "rarity": "rare"
+  },
+  {
+    "id": "helge-von-koch",
+    "name": "Helge von Koch",
+    "rarity": "legendary"
+  },
+  {
+    "id": "sofia-vasilyevna-kovalevskaya",
+    "name": "Sofia Vasilyevna Kovalevskaya",
+    "rarity": "common"
+  },
+  {
+    "id": "cecilia-krieger",
+    "name": "Cecilia Krieger",
+    "rarity": "epic"
+  },
+  {
+    "id": "l-opold-kronecker",
+    "name": "Léopold Kronecker",
+    "rarity": "common"
+  },
+  {
+    "id": "wolfgang-krull",
+    "name": "Wolfgang Krull",
+    "rarity": "rare"
+  },
+  {
+    "id": "ernst-eduard-kummer",
+    "name": "Ernst Eduard Kummer",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "martin-wilhelm-kutta",
+    "name": "Martin Wilhelm Kutta",
+    "rarity": "rare"
+  },
+  {
+    "id": "l",
+    "name": "L",
+    "rarity": "rare"
+  },
+  {
+    "id": "edmond-laguerre",
+    "name": "Edmond Laguerre",
+    "rarity": "epic"
+  },
+  {
+    "id": "ivo-lah",
+    "name": "Ivo Lah",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "edmund-landau",
+    "name": "Edmund Landau",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "emanuel-lasker",
+    "name": "Emanuel Lasker",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "henri-l-on-lebesgue",
+    "name": "Henri-Léon Lebesgue",
+    "rarity": "rare"
+  },
+  {
+    "id": "solomon-lefschetz",
+    "name": "Solomon Lefschetz",
+    "rarity": "common"
+  },
+  {
+    "id": "john-lennard-jones",
+    "name": "John Lennard-Jones",
+    "rarity": "common"
+  },
+  {
+    "id": "stanislaw-lesniewski",
+    "name": "Stanislaw Lesniewski",
+    "rarity": "common"
+  },
+  {
+    "id": "tullio-levi-civita",
+    "name": "Tullio Levi-Civita",
+    "rarity": "rare"
+  },
+  {
+    "id": "paul-pierre-l-vy",
+    "name": "Paul Pierre Lévy",
+    "rarity": "common"
+  },
+  {
+    "id": "sophus-lie",
+    "name": "Sophus Lie",
+    "rarity": "rare"
+  },
+  {
+    "id": "ernst-leonard-lindel-f",
+    "name": "Ernst Leonard Lindelöf",
+    "rarity": "common"
+  },
+  {
+    "id": "ferdinand-von-lindemann",
+    "name": "Ferdinand von Lindemann",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "joseph-liouville",
+    "name": "Joseph Liouville",
+    "rarity": "common"
+  },
+  {
+    "id": "rudolf-lipschitz",
+    "name": "Rudolf Lipschitz",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jules-antoine-lissajous",
+    "name": "Jules Antoine Lissajous",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "johann-benedict-listing",
+    "name": "Johann Benedict Listing",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-edensor-littlewood",
+    "name": "John Edensor Littlewood",
+    "rarity": "common"
+  },
+  {
+    "id": "leopold-l-wenheim",
+    "name": "Leopold Löwenheim",
+    "rarity": "common"
+  },
+  {
+    "id": "alfred-loewy",
+    "name": "Alfred Loewy",
+    "rarity": "common"
+  },
+  {
+    "id": "douard-lucas",
+    "name": "Édouard Lucas",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jan-lukasiewicz",
+    "name": "Jan Lukasiewicz",
+    "rarity": "common"
+  },
+  {
+    "id": "nikolai-luzin",
+    "name": "Nikolai Luzin",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "aleksandr-mikhailovich-lyapunov",
+    "name": "Aleksandr Mikhailovich Lyapunov",
+    "rarity": "rare"
+  },
+  {
+    "id": "m",
+    "name": "M",
+    "rarity": "common"
+  },
+  {
+    "id": "alexander-macaulay",
+    "name": "Alexander MacAulay",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hans-carl-friedrich-von-mangoldt",
+    "name": "Hans Carl Friedrich von Mangoldt",
+    "rarity": "common"
+  },
+  {
+    "id": "andrei-andreevich-markov",
+    "name": "Andrei Andreevich Markov",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-m-ray",
+    "name": "Charles Méray",
+    "rarity": "common"
+  },
+  {
+    "id": "james-mercer",
+    "name": "James Mercer",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "franz-mertens",
+    "name": "Franz Mertens",
+    "rarity": "common"
+  },
+  {
+    "id": "hermann-minkowski",
+    "name": "Hermann Minkowski",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "richard-von-mises",
+    "name": "Richard von Mises",
+    "rarity": "common"
+  },
+  {
+    "id": "g-sta-mittag-leffler",
+    "name": "Gösta Mittag-Leffler",
+    "rarity": "common"
+  },
+  {
+    "id": "theodor-molien",
+    "name": "Theodor Molien",
+    "rarity": "common"
+  },
+  {
+    "id": "frank-morley",
+    "name": "Frank Morley",
+    "rarity": "common"
+  },
+  {
+    "id": "marston-morse",
+    "name": "Marston Morse",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "thomas-muir",
+    "name": "Thomas Muir",
+    "rarity": "common"
+  },
+  {
+    "id": "n",
+    "name": "N",
+    "rarity": "common"
+  },
+  {
+    "id": "rolf-nevanlinna",
+    "name": "Rolf Nevanlinna",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "simon-newcomb",
+    "name": "Simon Newcomb",
+    "rarity": "common"
+  },
+  {
+    "id": "jakob-nielsen",
+    "name": "Jakob Nielsen",
+    "rarity": "common"
+  },
+  {
+    "id": "emmy-noether",
+    "name": "Emmy Noether",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "o",
+    "name": "O",
+    "rarity": "common"
+  },
+  {
+    "id": "mikhail-vasilievich-ostrogradsky",
+    "name": "Mikhail Vasilievich Ostrogradsky",
+    "rarity": "common"
+  },
+  {
+    "id": "alexander-markovich-ostrowski",
+    "name": "Alexander Markovich Ostrowski",
+    "rarity": "common"
+  },
+  {
+    "id": "p",
+    "name": "P",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "henri-pad",
+    "name": "Henri Padé",
+    "rarity": "common"
+  },
+  {
+    "id": "paul-painlev",
+    "name": "Paul Painlevé",
+    "rarity": "common"
+  },
+  {
+    "id": "moritz-pasch",
+    "name": "Moritz Pasch",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "giuseppe-peano",
+    "name": "Giuseppe Peano",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "julius-petersen",
+    "name": "Julius Petersen",
+    "rarity": "common"
+  },
+  {
+    "id": "benjamin-peirce",
+    "name": "Benjamin Peirce",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-sanders-peirce",
+    "name": "Charles Sanders Peirce",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "charles-mile-picard",
+    "name": "Charles Émile Picard",
+    "rarity": "common"
+  },
+  {
+    "id": "georg-alexander-pick",
+    "name": "Georg Alexander Pick",
+    "rarity": "common"
+  },
+  {
+    "id": "michel-plancherel",
+    "name": "Michel Plancherel",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "josip-plemelj",
+    "name": "Josip Plemelj",
+    "rarity": "common"
+  },
+  {
+    "id": "julius-pl-cker",
+    "name": "Julius Plücker",
+    "rarity": "common"
+  },
+  {
+    "id": "alphonse-de-polignac",
+    "name": "Alphonse de Polignac",
+    "rarity": "legendary"
+  },
+  {
+    "id": "jules-henri-poincar",
+    "name": "Jules-Henri Poincaré",
+    "rarity": "common"
+  },
+  {
+    "id": "pelageya-polubarinova-kochina",
+    "name": "Pelageya Polubarinova-Kochina",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "george-p-lya",
+    "name": "George Pólya",
+    "rarity": "rare"
+  },
+  {
+    "id": "emil-post",
+    "name": "Emil Post",
+    "rarity": "common"
+  },
+  {
+    "id": "victor-alexandre-puiseux",
+    "name": "Victor Alexandre Puiseux",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "r",
+    "name": "R",
+    "rarity": "common"
+  },
+  {
+    "id": "johann-radon",
+    "name": "Johann Radon",
+    "rarity": "common"
+  },
+  {
+    "id": "srinivasa-ramanujan",
+    "name": "Srinivasa Ramanujan",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "kurt-reidemeister",
+    "name": "Kurt Reidemeister",
+    "rarity": "common"
+  },
+  {
+    "id": "gregorio-ricci-curbastro",
+    "name": "Gregorio Ricci-Curbastro",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jules-richard",
+    "name": "Jules Richard",
+    "rarity": "epic"
+  },
+  {
+    "id": "lewis-fry-richardson",
+    "name": "Lewis Fry Richardson",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "bernhard-riemann",
+    "name": "Bernhard Riemann",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "frigyes-riesz",
+    "name": "Frigyes Riesz",
+    "rarity": "common"
+  },
+  {
+    "id": "gustav-roch",
+    "name": "Gustav Roch",
+    "rarity": "common"
+  },
+  {
+    "id": "w-w-rouse-ball",
+    "name": "W. W. Rouse Ball",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "edward-john-routh",
+    "name": "Edward John Routh",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "carl-runge",
+    "name": "Carl Runge",
+    "rarity": "rare"
+  },
+  {
+    "id": "bertrand-russell",
+    "name": "Bertrand Russell",
+    "rarity": "epic"
+  },
+  {
+    "id": "s",
+    "name": "S",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "stanislaw-saks",
+    "name": "Stanislaw Saks",
+    "rarity": "common"
+  },
+  {
+    "id": "rapha-l-salem",
+    "name": "Raphaël Salem",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-fr-d-ric-sarrus",
+    "name": "Pierre-Frédéric Sarrus",
+    "rarity": "rare"
+  },
+  {
+    "id": "juliusz-schauder",
+    "name": "Juliusz Schauder",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "arthur-moritz-sch-nflies",
+    "name": "Arthur Moritz Schönflies",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "issai-schur",
+    "name": "Issai Schur",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "herrmann-amandus-schwarz",
+    "name": "Herrmann Amandus Schwarz",
+    "rarity": "common"
+  },
+  {
+    "id": "francesco-severi",
+    "name": "Francesco Severi",
+    "rarity": "common"
+  },
+  {
+    "id": "waclaw-sierpinski",
+    "name": "Waclaw Sierpinski",
+    "rarity": "common"
+  },
+  {
+    "id": "henry-john-stephen-smith",
+    "name": "Henry John Stephen Smith",
+    "rarity": "common"
+  },
+  {
+    "id": "yulian-vasilievich-sokhotski",
+    "name": "Yulian Vasilievich Sokhotski",
+    "rarity": "common"
+  },
+  {
+    "id": "mary-fairfax-somerville",
+    "name": "Mary Fairfax Somerville",
+    "rarity": "common"
+  },
+  {
+    "id": "william-spottiswoode",
+    "name": "William Spottiswoode",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "vladimir-steklov",
+    "name": "Vladimir Steklov",
+    "rarity": "epic"
+  },
+  {
+    "id": "hugo-steinhaus",
+    "name": "Hugo Steinhaus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ernst-steinitz",
+    "name": "Ernst Steinitz",
+    "rarity": "common"
+  },
+  {
+    "id": "thomas-joannes-stieltjes",
+    "name": "Thomas Joannes Stieltjes",
+    "rarity": "rare"
+  },
+  {
+    "id": "george-gabriel-stokes",
+    "name": "George Gabriel Stokes",
+    "rarity": "rare"
+  },
+  {
+    "id": "dirk-jan-struik",
+    "name": "Dirk Jan Struik",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-fran-ois-sturm",
+    "name": "Charles-François Sturm",
+    "rarity": "common"
+  },
+  {
+    "id": "peter-ludwig-mejdell-sylow",
+    "name": "Peter Ludwig Mejdell Sylow",
+    "rarity": "common"
+  },
+  {
+    "id": "james-sylvester",
+    "name": "James Sylvester",
+    "rarity": "common"
+  },
+  {
+    "id": "g-bor-szeg",
+    "name": "Gábor Szegö",
+    "rarity": "common"
+  },
+  {
+    "id": "t",
+    "name": "T",
+    "rarity": "common"
+  },
+  {
+    "id": "teiji-takagi",
+    "name": "Teiji Takagi",
+    "rarity": "common"
+  },
+  {
+    "id": "gaston-tarry",
+    "name": "Gaston Tarry",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "leonardo-torres-quevedo",
+    "name": "Leonardo Torres Quevedo",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "pafnouti-lvovitch-tchebychev",
+    "name": "Pafnouti Lvovitch Tchebychev",
+    "rarity": "common"
+  },
+  {
+    "id": "chiungtze-tsen",
+    "name": "Chiungtze Tsen",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "u",
+    "name": "U",
+    "rarity": "common"
+  },
+  {
+    "id": "pavel-samuilovich-urysohn",
+    "name": "Pavel Samuilovich Urysohn",
+    "rarity": "common"
+  },
+  {
+    "id": "v",
+    "name": "V",
+    "rarity": "rare"
+  },
+  {
+    "id": "john-venn",
+    "name": "John Venn",
+    "rarity": "common"
+  },
+  {
+    "id": "leopold-vietoris",
+    "name": "Leopold Vietoris",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ivan-matveevich-vinogradov",
+    "name": "Ivan Matveevich Vinogradov",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "giuseppe-vitali",
+    "name": "Giuseppe Vitali",
+    "rarity": "epic"
+  },
+  {
+    "id": "vito-volterra",
+    "name": "Vito Volterra",
+    "rarity": "common"
+  },
+  {
+    "id": "w",
+    "name": "W",
+    "rarity": "rare"
+  },
+  {
+    "id": "tadeusz-wa-ewski",
+    "name": "Tadeusz Ważewski",
+    "rarity": "common"
+  },
+  {
+    "id": "heinrich-weber",
+    "name": "Heinrich Weber",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "joseph-henry-maclagan-wedderburn",
+    "name": "Joseph Henry Maclagan Wedderburn",
+    "rarity": "rare"
+  },
+  {
+    "id": "karl-weierstrass",
+    "name": "Karl Weierstrass",
+    "rarity": "common"
+  },
+  {
+    "id": "hermann-klaus-hugo-weyl",
+    "name": "Hermann Klaus Hugo Weyl",
+    "rarity": "epic"
+  },
+  {
+    "id": "arthur-wieferich",
+    "name": "Arthur Wieferich",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "norbert-wiener",
+    "name": "Norbert Wiener",
+    "rarity": "rare"
+  },
+  {
+    "id": "joseph-wolstenholme",
+    "name": "Joseph Wolstenholme",
+    "rarity": "rare"
+  },
+  {
+    "id": "z",
+    "name": "Z",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "stanis-aw-zaremba",
+    "name": "Stanisław Zaremba",
+    "rarity": "common"
+  },
+  {
+    "id": "ernst-friedrich-ferdinand-zermelo",
+    "name": "Ernst Friedrich Ferdinand Zermelo",
+    "rarity": "common"
+  },
+  {
+    "id": "yegor-ivanovich-zolotarev",
+    "name": "Yegor Ivanovich Zolotarev",
+    "rarity": "rare"
+  },
+  {
+    "id": "sur-les-autres-projets-wikimedia",
+    "name": "Sur les autres projets Wikimedia :",
+    "rarity": "common"
+  },
+  {
+    "id": "lars-valerian-ahlfors",
+    "name": "Lars Valerian Ahlfors",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "vladimir-arnold",
+    "name": "Vladimir Arnold",
+    "rarity": "rare"
+  },
+  {
+    "id": "alexandre-alexandrov",
+    "name": "Alexandre Alexandrov",
+    "rarity": "common"
+  },
+  {
+    "id": "richard-friederich-arens",
+    "name": "Richard Friederich Arens",
+    "rarity": "common"
+  },
+  {
+    "id": "cahit-arf",
+    "name": "Cahit Arf",
+    "rarity": "common"
+  },
+  {
+    "id": "michael-francis-atiyah",
+    "name": "Michael Francis Atiyah",
+    "rarity": "rare"
+  },
+  {
+    "id": "artur-vila",
+    "name": "Artur Ávila",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "dally-timoth-e-parfait-aziegbo",
+    "name": "Dally Timothée Parfait Aziegbo",
+    "rarity": "rare"
+  },
+  {
+    "id": "alan-baker",
+    "name": "Alan Baker",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "yehoshua-bar-hillel",
+    "name": "Yehoshua Bar-Hillel",
+    "rarity": "rare"
+  },
+  {
+    "id": "grigory-barenblatt",
+    "name": "Grigory Barenblatt",
+    "rarity": "common"
+  },
+  {
+    "id": "jon-barwise",
+    "name": "Jon Barwise",
+    "rarity": "common"
+  },
+  {
+    "id": "marcel-bayard",
+    "name": "Marcel Bayard",
+    "rarity": "rare"
+  },
+  {
+    "id": "danilo-blanu-a",
+    "name": "Danilo Blanuša",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "lenore-blum",
+    "name": "Lenore Blum",
+    "rarity": "epic"
+  },
+  {
+    "id": "enrico-bombieri",
+    "name": "Enrico Bombieri",
+    "rarity": "rare"
+  },
+  {
+    "id": "richard-ewen-borcherds",
+    "name": "Richard Ewen Borcherds",
+    "rarity": "rare"
+  },
+  {
+    "id": "armand-borel",
+    "name": "Armand Borel",
+    "rarity": "common"
+  },
+  {
+    "id": "karol-borsuk",
+    "name": "Karol Borsuk",
+    "rarity": "rare"
+  },
+  {
+    "id": "satyendranath-bose",
+    "name": "Satyendranath Bose",
+    "rarity": "common"
+  },
+  {
+    "id": "nicolas-bourbaki",
+    "name": "Nicolas Bourbaki",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-bourgain",
+    "name": "Jean Bourgain",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "carl-benjamin-boyer",
+    "name": "Carl Benjamin Boyer",
+    "rarity": "common"
+  },
+  {
+    "id": "richard-brauer",
+    "name": "Richard Brauer",
+    "rarity": "rare"
+  },
+  {
+    "id": "ha-m-brezis",
+    "name": "Haïm Brezis",
+    "rarity": "common"
+  },
+  {
+    "id": "henri-cartan",
+    "name": "Henri Cartan",
+    "rarity": "common"
+  },
+  {
+    "id": "leonard-carlitz",
+    "name": "Leonard Carlitz",
+    "rarity": "common"
+  },
+  {
+    "id": "mary-cartwright",
+    "name": "Mary Cartwright",
+    "rarity": "common"
+  },
+  {
+    "id": "gregory-j-chaitin",
+    "name": "Gregory J. Chaitin",
+    "rarity": "common"
+  },
+  {
+    "id": "chen-jingrun",
+    "name": "Chen Jingrun",
+    "rarity": "common"
+  },
+  {
+    "id": "shiing-shen-chern",
+    "name": "Shiing-Shen Chern",
+    "rarity": "common"
+  },
+  {
+    "id": "sarvadaman-chowla",
+    "name": "Sarvadaman Chowla",
+    "rarity": "rare"
+  },
+  {
+    "id": "fan-chung",
+    "name": "Fan Chung",
+    "rarity": "common"
+  },
+  {
+    "id": "david-et-gregory-chudnovsky",
+    "name": "David et Gregory Chudnovsky",
+    "rarity": "common"
+  },
+  {
+    "id": "alonzo-church",
+    "name": "Alonzo Church",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-coates",
+    "name": "John Coates",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "paul-cohen",
+    "name": "Paul Cohen",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "lothar-collatz",
+    "name": "Lothar Collatz",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "alain-connes",
+    "name": "Alain Connes",
+    "rarity": "common"
+  },
+  {
+    "id": "john-h-conway",
+    "name": "John H. Conway",
+    "rarity": "common"
+  },
+  {
+    "id": "h-s-m-coxeter",
+    "name": "H.S.M. Coxeter",
+    "rarity": "common"
+  },
+  {
+    "id": "david-van-dantzig",
+    "name": "David van Dantzig",
+    "rarity": "common"
+  },
+  {
+    "id": "george-dantzig",
+    "name": "George Dantzig",
+    "rarity": "rare"
+  },
+  {
+    "id": "giuseppe-da-prato",
+    "name": "Giuseppe Da Prato",
+    "rarity": "common"
+  },
+  {
+    "id": "ingrid-daubechies",
+    "name": "Ingrid Daubechies",
+    "rarity": "epic"
+  },
+  {
+    "id": "martin-davis",
+    "name": "Martin Davis",
+    "rarity": "common"
+  },
+  {
+    "id": "huguette-delavault",
+    "name": "Huguette Delavault",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-deligne",
+    "name": "Pierre Deligne",
+    "rarity": "rare"
+  },
+  {
+    "id": "jean-alexandre-dieudonn",
+    "name": "Jean Alexandre Dieudonné",
+    "rarity": "rare"
+  },
+  {
+    "id": "simon-donaldson",
+    "name": "Simon Donaldson",
+    "rarity": "common"
+  },
+  {
+    "id": "adrien-douady",
+    "name": "Adrien Douady",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "vladimir-drinfeld",
+    "name": "Vladimir Drinfeld",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "eugene-dynkin",
+    "name": "Eugene Dynkin",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "freeman-john-dyson",
+    "name": "Freeman John Dyson",
+    "rarity": "rare"
+  },
+  {
+    "id": "charles-ehresmann",
+    "name": "Charles Ehresmann",
+    "rarity": "legendary"
+  },
+  {
+    "id": "samuel-eilenberg",
+    "name": "Samuel Eilenberg",
+    "rarity": "common"
+  },
+  {
+    "id": "nicole-el-karoui",
+    "name": "Nicole El Karoui",
+    "rarity": "rare"
+  },
+  {
+    "id": "paul-erd-s",
+    "name": "Paul Erdős",
+    "rarity": "common"
+  },
+  {
+    "id": "machgielis-euwe",
+    "name": "Machgielis Euwe",
+    "rarity": "rare"
+  },
+  {
+    "id": "gerd-faltings",
+    "name": "Gerd Faltings",
+    "rarity": "common"
+  },
+  {
+    "id": "robert-fano",
+    "name": "Robert Fano",
+    "rarity": "common"
+  },
+  {
+    "id": "charles-fefferman",
+    "name": "Charles Fefferman",
+    "rarity": "common"
+  },
+  {
+    "id": "william-feller",
+    "name": "William Feller",
+    "rarity": "common"
+  },
+  {
+    "id": "john-charles-fields",
+    "name": "John Charles Fields",
+    "rarity": "common"
+  },
+  {
+    "id": "bruno-de-finetti",
+    "name": "Bruno de Finetti",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "ronald-fisher",
+    "name": "Ronald Fisher",
+    "rarity": "common"
+  },
+  {
+    "id": "franco-flandoli",
+    "name": "Franco Flandoli",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "irmgard-fl-gge-lotz",
+    "name": "Irmgard Flügge-Lotz",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "jean-marc-fontaine",
+    "name": "Jean-Marc Fontaine",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "michael-freedman",
+    "name": "Michael Freedman",
+    "rarity": "epic"
+  },
+  {
+    "id": "hans-freudenthal",
+    "name": "Hans Freudenthal",
+    "rarity": "common"
+  },
+  {
+    "id": "gerhard-gentzen",
+    "name": "Gerhard Gentzen",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "kurt-g-del",
+    "name": "Kurt Gödel",
+    "rarity": "common"
+  },
+  {
+    "id": "roger-godement",
+    "name": "Roger Godement",
+    "rarity": "common"
+  },
+  {
+    "id": "solomon-golomb",
+    "name": "Solomon Golomb",
+    "rarity": "common"
+  },
+  {
+    "id": "fausto-gozzi",
+    "name": "Fausto Gozzi",
+    "rarity": "common"
+  },
+  {
+    "id": "william-timothy-gowers",
+    "name": "William Timothy Gowers",
+    "rarity": "common"
+  },
+  {
+    "id": "alexandre-grothendieck",
+    "name": "Alexandre Grothendieck",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "paul-halmos",
+    "name": "Paul Halmos",
+    "rarity": "common"
+  },
+  {
+    "id": "richard-hamming",
+    "name": "Richard Hamming",
+    "rarity": "epic"
+  },
+  {
+    "id": "heisuke-hironaka",
+    "name": "Heisuke Hironaka",
+    "rarity": "common"
+  },
+  {
+    "id": "eberhard-hopf",
+    "name": "Eberhard Hopf",
+    "rarity": "common"
+  },
+  {
+    "id": "lars-h-rmander",
+    "name": "Lars Hörmander",
+    "rarity": "rare"
+  },
+  {
+    "id": "david-a-huffman",
+    "name": "David A. Huffman",
+    "rarity": "epic"
+  },
+  {
+    "id": "witold-hurewicz",
+    "name": "Witold Hurewicz",
+    "rarity": "common"
+  },
+  {
+    "id": "i",
+    "name": "I",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "kenkichi-iwasawa",
+    "name": "Kenkichi Iwasawa",
+    "rarity": "common"
+  },
+  {
+    "id": "nathan-jacobson",
+    "name": "Nathan Jacobson",
+    "rarity": "common"
+  },
+  {
+    "id": "vaughan-jones",
+    "name": "Vaughan Jones",
+    "rarity": "common"
+  },
+  {
+    "id": "mark-kac",
+    "name": "Mark Kac",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "erich-k-hler",
+    "name": "Erich Kähler",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "leonid-kantorovitch",
+    "name": "Leonid Kantorovitch",
+    "rarity": "common"
+  },
+  {
+    "id": "roy-kerr",
+    "name": "Roy Kerr",
+    "rarity": "common"
+  },
+  {
+    "id": "stephen-cole-kleene",
+    "name": "Stephen Cole Kleene",
+    "rarity": "common"
+  },
+  {
+    "id": "donald-knuth",
+    "name": "Donald Knuth",
+    "rarity": "rare"
+  },
+  {
+    "id": "kunihiko-kodaira",
+    "name": "Kunihiko Kodaira",
+    "rarity": "common"
+  },
+  {
+    "id": "maxime-kontsevitch",
+    "name": "Maxime Kontsevitch",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "andre-kolmogorov",
+    "name": "Andreï Kolmogorov",
+    "rarity": "common"
+  },
+  {
+    "id": "laurent-lafforgue",
+    "name": "Laurent Lafforgue",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "robert-langlands",
+    "name": "Robert Langlands",
+    "rarity": "epic"
+  },
+  {
+    "id": "mikha-l-lavrentiev",
+    "name": "Mikhaïl Lavrentiev",
+    "rarity": "common"
+  },
+  {
+    "id": "peter-lax",
+    "name": "Peter Lax",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "derrick-henry-lehmer",
+    "name": "Derrick Henry Lehmer",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "norman-levinson",
+    "name": "Norman Levinson",
+    "rarity": "common"
+  },
+  {
+    "id": "yuri-linnik",
+    "name": "Yuri Linnik",
+    "rarity": "common"
+  },
+  {
+    "id": "jacques-louis-lions",
+    "name": "Jacques-Louis Lions",
+    "rarity": "common"
+  },
+  {
+    "id": "pierre-louis-lions",
+    "name": "Pierre-Louis Lions",
+    "rarity": "common"
+  },
+  {
+    "id": "fran-ois-le-lionnais",
+    "name": "François Le Lionnais",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "l-szl-lov-sz",
+    "name": "László Lovász",
+    "rarity": "common"
+  },
+  {
+    "id": "sheila-scott-macintyre",
+    "name": "Sheila Scott Macintyre",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "saunders-maclane",
+    "name": "Saunders MacLane",
+    "rarity": "common"
+  },
+  {
+    "id": "jessie-macwilliams",
+    "name": "Jessie MacWilliams",
+    "rarity": "rare"
+  },
+  {
+    "id": "benoit-mandelbrot",
+    "name": "Benoit Mandelbrot",
+    "rarity": "common"
+  },
+  {
+    "id": "gregori-margulis",
+    "name": "Gregori Margulis",
+    "rarity": "common"
+  },
+  {
+    "id": "edward-marczewski",
+    "name": "Edward Marczewski",
+    "rarity": "epic"
+  },
+  {
+    "id": "yuri-matiyasevich",
+    "name": "Yuri Matiyasevich",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "curtis-t-mcmullen",
+    "name": "Curtis T. McMullen",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "karl-menger",
+    "name": "Karl Menger",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "nicholas-metropolis",
+    "name": "Nicholas Metropolis",
+    "rarity": "common"
+  },
+  {
+    "id": "paul-andr-meyer",
+    "name": "Paul-André Meyer",
+    "rarity": "epic"
+  },
+  {
+    "id": "john-milnor",
+    "name": "John Milnor",
+    "rarity": "common"
+  },
+  {
+    "id": "shigefumi-mori",
+    "name": "Shigefumi Mori",
+    "rarity": "common"
+  },
+  {
+    "id": "j-rgen-k-moser-allemagne",
+    "name": "Jürgen K. Moser Allemagne",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "david-mumford",
+    "name": "David Mumford",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-forbes-nash",
+    "name": "John Forbes Nash",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "john-von-neumann",
+    "name": "John von Neumann",
+    "rarity": "common"
+  },
+  {
+    "id": "ivan-niven",
+    "name": "Ivan Niven",
+    "rarity": "rare"
+  },
+  {
+    "id": "piotr-novikov",
+    "name": "Piotr Novikov",
+    "rarity": "epic"
+  },
+  {
+    "id": "sergue-novikov",
+    "name": "Sergueï Novikov",
+    "rarity": "rare"
+  },
+  {
+    "id": "kristen-nygaard",
+    "name": "Kristen Nygaard",
+    "rarity": "common"
+  },
+  {
+    "id": "piergiorgio-odifreddi",
+    "name": "Piergiorgio Odifreddi",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "w-adys-aw-orlicz",
+    "name": "Władysław Orlicz",
+    "rarity": "common"
+  },
+  {
+    "id": "andre-okounkov",
+    "name": "Andreï Okounkov",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "roger-penrose",
+    "name": "Roger Penrose",
+    "rarity": "rare"
+  },
+  {
+    "id": "grigori-perelman",
+    "name": "Grigori Perelman",
+    "rarity": "rare"
+  },
+  {
+    "id": "subbayya-sivasankaranarayana-pillai",
+    "name": "Subbayya Sivasankaranarayana Pillai",
+    "rarity": "rare"
+  },
+  {
+    "id": "charles-pisot",
+    "name": "Charles Pisot",
+    "rarity": "common"
+  },
+  {
+    "id": "simon-plouffe",
+    "name": "Simon Plouffe",
+    "rarity": "common"
+  },
+  {
+    "id": "lev-pontriaguine",
+    "name": "Lev Pontriaguine",
+    "rarity": "common"
+  },
+  {
+    "id": "q",
+    "name": "Q",
+    "rarity": "rare"
+  },
+  {
+    "id": "daniel-quillen",
+    "name": "Daniel Quillen",
+    "rarity": "rare"
+  },
+  {
+    "id": "richard-rado",
+    "name": "Richard Rado",
+    "rarity": "common"
+  },
+  {
+    "id": "tibor-rad",
+    "name": "Tibor Radó",
+    "rarity": "common"
+  },
+  {
+    "id": "chidambaram-padmanabhan-ramanujam",
+    "name": "Chidambaram Padmanabhan Ramanujam",
+    "rarity": "common"
+  },
+  {
+    "id": "frank-ramsey",
+    "name": "Frank Ramsey",
+    "rarity": "rare"
+  },
+  {
+    "id": "marian-rejewski",
+    "name": "Marian Rejewski",
+    "rarity": "common"
+  },
+  {
+    "id": "georges-de-rham",
+    "name": "Georges de Rham",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "abraham-robinson",
+    "name": "Abraham Robinson",
+    "rarity": "epic"
+  },
+  {
+    "id": "julia-robinson",
+    "name": "Julia Robinson",
+    "rarity": "common"
+  },
+  {
+    "id": "vladimir-rokhlin",
+    "name": "Vladimir Rokhlin",
+    "rarity": "common"
+  },
+  {
+    "id": "gian-carlo-rota",
+    "name": "Gian-Carlo Rota",
+    "rarity": "common"
+  },
+  {
+    "id": "klaus-roth",
+    "name": "Klaus Roth",
+    "rarity": "common"
+  },
+  {
+    "id": "laurent-schwartz",
+    "name": "Laurent Schwartz",
+    "rarity": "rare"
+  },
+  {
+    "id": "atle-selberg",
+    "name": "Atle Selberg",
+    "rarity": "common"
+  },
+  {
+    "id": "reinhard-selten",
+    "name": "Reinhard Selten",
+    "rarity": "common"
+  },
+  {
+    "id": "jean-pierre-serre",
+    "name": "Jean-Pierre Serre",
+    "rarity": "epic"
+  },
+  {
+    "id": "claude-shannon",
+    "name": "Claude Shannon",
+    "rarity": "common"
+  },
+  {
+    "id": "saharon-shelah",
+    "name": "Saharon Shelah",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "goro-shimura",
+    "name": "Goro Shimura",
+    "rarity": "common"
+  },
+  {
+    "id": "peter-shor",
+    "name": "Peter Shor",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "stephen-smale",
+    "name": "Stephen Smale",
+    "rarity": "rare"
+  },
+  {
+    "id": "sergue-sobolev",
+    "name": "Sergueï Sobolev",
+    "rarity": "common"
+  },
+  {
+    "id": "robert-sorgenfrey",
+    "name": "Robert Sorgenfrey",
+    "rarity": "common"
+  },
+  {
+    "id": "emanuel-sperner",
+    "name": "Emanuel Sperner",
+    "rarity": "common"
+  },
+  {
+    "id": "tsuneo-tamagawa",
+    "name": "Tsuneo Tamagawa",
+    "rarity": "rare"
+  },
+  {
+    "id": "yutaka-taniyama",
+    "name": "Yutaka Taniyama",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "terence-tao",
+    "name": "Terence Tao",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "alfred-tarski",
+    "name": "Alfred Tarski",
+    "rarity": "common"
+  },
+  {
+    "id": "john-tate",
+    "name": "John Tate",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "oswald-teichm-ller",
+    "name": "Oswald Teichmüller",
+    "rarity": "epic"
+  },
+  {
+    "id": "ren-thom",
+    "name": "René Thom",
+    "rarity": "legendary"
+  },
+  {
+    "id": "john-griggs-thompson",
+    "name": "John Griggs Thompson",
+    "rarity": "common"
+  },
+  {
+    "id": "axel-thue",
+    "name": "Axel Thue",
+    "rarity": "common"
+  },
+  {
+    "id": "peter-thullen",
+    "name": "Peter Thullen",
+    "rarity": "common"
+  },
+  {
+    "id": "william-thurston",
+    "name": "William Thurston",
+    "rarity": "common"
+  },
+  {
+    "id": "andre-nikola-evitch-tikhonov",
+    "name": "Andreï Nikolaïevitch Tikhonov",
+    "rarity": "rare"
+  },
+  {
+    "id": "jacques-tits",
+    "name": "Jacques Tits",
+    "rarity": "common"
+  },
+  {
+    "id": "otto-toeplitz",
+    "name": "Otto Toeplitz",
+    "rarity": "common"
+  },
+  {
+    "id": "alan-turing",
+    "name": "Alan Turing",
+    "rarity": "common"
+  },
+  {
+    "id": "stanislaw-ulam",
+    "name": "Stanislaw Ulam",
+    "rarity": "common"
+  },
+  {
+    "id": "georges-valiron",
+    "name": "Georges Valiron",
+    "rarity": "common"
+  },
+  {
+    "id": "ivan-vidav",
+    "name": "Ivan Vidav",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "vladimir-vo-evodski",
+    "name": "Vladimir Voïevodski",
+    "rarity": "rare"
+  },
+  {
+    "id": "c-dric-villani",
+    "name": "Cédric Villani",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "bartel-leendert-van-der-waerden",
+    "name": "Bartel Leendert van der Waerden",
+    "rarity": "rare"
+  },
+  {
+    "id": "andr-weil",
+    "name": "André Weil",
+    "rarity": "epic"
+  },
+  {
+    "id": "wendelin-werner",
+    "name": "Wendelin Werner",
+    "rarity": "common"
+  },
+  {
+    "id": "hassler-whitney",
+    "name": "Hassler Whitney",
+    "rarity": "common"
+  },
+  {
+    "id": "andrew-wiles",
+    "name": "Andrew Wiles",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "james-h-wilkinson",
+    "name": "James H. Wilkinson",
+    "rarity": "common"
+  },
+  {
+    "id": "edward-witten",
+    "name": "Edward Witten",
+    "rarity": "common"
+  },
+  {
+    "id": "y",
+    "name": "Y",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "shing-tung-yau",
+    "name": "Shing-Tung Yau",
+    "rarity": "rare"
+  },
+  {
+    "id": "jean-christophe-yoccoz",
+    "name": "Jean-Christophe Yoccoz",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "nobuo-yoneda",
+    "name": "Nobuo Yoneda",
+    "rarity": "common"
+  },
+  {
+    "id": "grace-chisholm-young",
+    "name": "Grace Chisholm Young",
+    "rarity": "common"
+  },
+  {
+    "id": "jerzy-zabczyk",
+    "name": "Jerzy Zabczyk",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "lotfi-zadeh",
+    "name": "Lotfi Zadeh",
+    "rarity": "common"
+  },
+  {
+    "id": "kazimierz-zarankiewicz",
+    "name": "Kazimierz Zarankiewicz",
+    "rarity": "legendary"
+  },
+  {
+    "id": "grigore-moisil",
+    "name": "Grigore Moisil",
+    "rarity": "common"
+  },
+  {
+    "id": "hans-zassenhaus",
+    "name": "Hans Zassenhaus",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "efim-zelmanov",
+    "name": "Efim Zelmanov",
+    "rarity": "common"
+  },
+  {
+    "id": "g-nter-m-ziegler",
+    "name": "Günter M. Ziegler",
+    "rarity": "common"
+  },
+  {
+    "id": "max-zorn",
+    "name": "Max Zorn",
+    "rarity": "legendary"
+  },
+  {
+    "id": "herbert-samuel-zuckerman",
+    "name": "Herbert Samuel Zuckerman",
+    "rarity": "common"
+  },
+  {
+    "id": "antoni-zygmund",
+    "name": "Antoni Zygmund",
+    "rarity": "uncommon"
+  }
+]
