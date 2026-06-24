@@ -74,7 +74,6 @@ export function WorldsMapPage({ profile, onSelectArena }: WorldsMapPageProps) {
     combinatorics: false,
     geometry: false,
     logic: false,
-    'applied-mathematics': false,
     'financial-mathematics': false,
     optimization: false,
     probability: false,

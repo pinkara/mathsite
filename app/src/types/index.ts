@@ -152,7 +152,6 @@ export type WorldId =
   | 'combinatorics'
   | 'geometry'
   | 'logic'
-  | 'applied-mathematics'
   | 'financial-mathematics'
   | 'optimization'
   | 'probability'
@@ -170,7 +169,6 @@ export const WORLD_IDS: WorldId[] = [
   'combinatorics',
   'geometry',
   'logic',
-  'applied-mathematics',
   'financial-mathematics',
   'optimization',
   'probability',
