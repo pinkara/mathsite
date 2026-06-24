@@ -183,7 +183,7 @@ function getUrlParams() {
 // === MAIN APP ===
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const { state, router } = useRouter();
+  const { state, router, navigationKey } = useRouter();
   const showSupabaseWarning = !isSupabaseConfigured();
   
   // Load MathJax globally for all pages
@@ -514,7 +514,7 @@ function App() {
       
       <main className="flex-1">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8" key={navigationKey}>
             {/* Main Content */}
             <div className={cn(
               'flex-1',

@@ -12,7 +12,7 @@ export function InlineFormula({ tex, className = '' }: InlineFormulaProps) {
     if (containerRef.current && (window as any).MathJax?.typesetPromise) {
       (window as any).MathJax.typesetPromise([containerRef.current]);
     }
-  }, [tex]);
+  });
 
   const formattedTex = tex.trim().startsWith('$') ? tex : `$${tex}$`;
 
@@ -31,7 +31,7 @@ export function TitleWithFormula({ text, className = '' }: { text: string; class
     if (containerRef.current && (window as any).MathJax?.typesetPromise) {
       (window as any).MathJax.typesetPromise([containerRef.current]);
     }
-  }, [text]);
+  });
 
   // Check if text contains LaTeX
   const hasLatex = text.includes('$');

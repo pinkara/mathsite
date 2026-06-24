@@ -49,7 +49,7 @@ export function MathRenderer({ content, className = '' }: MathRendererProps) {
       }
     };
     tryTypeset();
-  }, [content]);
+  });
 
   return (
     <div 
