@@ -44,28 +44,6 @@ const subjects: SubjectSite[] = [
     url: 'https://pinkara.github.io/PhysiChem/',
     status: 'available'
   },
-  {
-    id: 'es',
-    name: 'ScientiFic',
-    fullName: 'Enseignement Scientifique',
-    description: 'Sciences et démarche scientifique pour le tronc commun.',
-    icon: <Atom className="w-8 h-8" />,
-    color: 'from-emerald-500 to-teal-600',
-    bgGradient: 'from-emerald-50 to-teal-100',
-    url: '#',
-    status: 'coming-soon'
-  },
-  {
-    id: 'nsi',
-    name: 'CodeUnivers',
-    fullName: 'NSI - Informatique',
-    description: 'Programmation Python, JavaScript et concepts informatiques.',
-    icon: <Monitor className="w-8 h-8" />,
-    color: 'from-slate-600 to-slate-800',
-    bgGradient: 'from-slate-50 to-gray-100',
-    url: '#',
-    status: 'coming-soon'
-  }
 ];
 
 export function SubjectsPortal() {
