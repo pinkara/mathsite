@@ -46,7 +46,6 @@ const subjects: SubjectSite[] = [
 
 export function SubjectsPortal() {
   const availableSubjects = subjects.filter(s => s.status === 'available');
-  const comingSoonSubjects = subjects.filter(s => s.status === 'coming-soon');
 
   const handleClick = (subject: SubjectSite) => {
     if (subject.status === 'available') {
@@ -93,23 +92,6 @@ export function SubjectsPortal() {
             </div>
           </div>
         )}
-
-        {/* Section Prochainement */}
-        <div>
-          <h2 className="text-base sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3 sm:mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-500 rounded-full"></span>
-            Prochainement
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
-            {comingSoonSubjects.map(subject => (
-              <SubjectCard 
-                key={subject.id} 
-                subject={subject} 
-                onClick={() => handleClick(subject)}
-              />
-            ))}
-          </div>
-        </div>
 
         {/* Info Section */}
         <div className="mt-6 sm:mt-12 lg:mt-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl sm:rounded-3xl p-3.5 sm:p-6 lg:p-8 text-white">
