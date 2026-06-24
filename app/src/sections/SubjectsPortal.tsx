@@ -1,8 +1,6 @@
 import { 
   Calculator, 
   FlaskConical, 
-  Atom,
-  Monitor,
   GraduationCap,
   ExternalLink,
   ArrowRight
