@@ -85,6 +85,41 @@ function useMathJax() {
   }, []);
 }
 
+function useMathJaxVisibilityRefresh() {
+  const refreshMathJax = useCallback(() => {
+    if (typeof window !== 'undefined' && (window as any).MathJax?.typesetPromise) {
+      (window as any).MathJax.typesetPromise().catch((err: Error) => {
+        if (!err.message?.includes('MathJax')) {
+          console.error('MathJax refresh error:', err);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshMathJax();
+      }
+    };
+
+    const handleFocus = () => refreshMathJax();
+    const handleResize = () => refreshMathJax();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [refreshMathJax]);
+}
+
 // === LOADING SCREEN ===
 function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -188,6 +223,7 @@ function App() {
   
   // Load MathJax globally for all pages
   useMathJax();
+  useMathJaxVisibilityRefresh();
   
   // Écouter les changements de hash (pour les boutons IDE dans ContentRenderer)
   useEffect(() => {
