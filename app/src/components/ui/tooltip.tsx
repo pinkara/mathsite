@@ -40,13 +40,46 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    let timeoutId: number | undefined;
+    const tryTypeset = () => {
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).MathJax?.typesetPromise &&
+        contentRef.current
+      ) {
+        (window as any).MathJax.typesetPromise([contentRef.current]).catch((err: Error) => {
+          if (!err.message?.includes('MathJax')) {
+            console.error('MathJax tooltip typeset error:', err);
+          }
+        });
+        return;
+      }
+
+      if (typeof window !== 'undefined') {
+        timeoutId = window.setTimeout(tryTypeset, 150);
+      }
+    };
+
+    tryTypeset();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [children]);
+
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
+        ref={contentRef}
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
+          "bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit max-w-[calc(90vw)] origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance whitespace-nowrap overflow-hidden text-ellipsis",
           className
         )}
         {...props}
