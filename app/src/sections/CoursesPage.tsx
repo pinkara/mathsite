@@ -208,9 +208,9 @@ export function CoursesPage({ courses, onNavigate, profile, arenaContents = [], 
               className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer"
               onClick={() => onNavigate('article', { type: 'course', id: course.id })}
             >
-              {/* Image - Responsive height */}
+              {/* Image - responsive aspect ratio 3:2 */}
               {course.image ? (
-                <div className="h-40 sm:h-44 md:h-48 overflow-hidden">
+                <div className="w-full aspect-[3/2] overflow-hidden">
                   <img
                     src={course.image}
                     alt={course.title}

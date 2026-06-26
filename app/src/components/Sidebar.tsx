@@ -131,7 +131,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
           >
             {/* Image du cours */}
             {dailyContent.course.image ? (
-              <div className="h-24 overflow-hidden">
+              <div className="w-full aspect-[3/2] overflow-hidden">
                 <img
                   src={dailyContent.course.image}
                   alt={dailyContent.course.title}
@@ -172,7 +172,7 @@ export function Sidebar({ courses, problems, formulas, onNavigate }: SidebarProp
           >
             {/* Image du problème */}
             {dailyContent.problem.image ? (
-              <div className="h-24 overflow-hidden">
+              <div className="w-full aspect-[3/2] overflow-hidden">
                 <img
                   src={dailyContent.problem.image}
                   alt={dailyContent.problem.title}

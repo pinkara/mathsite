@@ -152,7 +152,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
                 <SubjectTypeBadge type={dailyContent.course.subjectType} />
               </div>
               {dailyContent.course.image && (
-                <div className="h-32 md:h-40 mb-3 md:mb-4 overflow-hidden rounded-lg">
+                <div className="w-full aspect-[3/2] mb-3 md:mb-4 overflow-hidden rounded-lg">
                   <img 
                     src={dailyContent.course.image} 
                     alt={dailyContent.course.title}
@@ -195,7 +195,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
             >
               {/* Image du problème */}
               {dailyContent.problem.image ? (
-                <div className="h-32 md:h-40 overflow-hidden">
+                <div className="w-full aspect-[3/2] overflow-hidden">
                   <img 
                     src={dailyContent.problem.image} 
                     alt={dailyContent.problem.title}
@@ -266,7 +266,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
               >
                 {/* Image du cours */}
                 {course.image ? (
-                  <div className="h-32 md:h-36 overflow-hidden">
+                  <div className="w-full aspect-[3/2] overflow-hidden">
                     <img 
                       src={course.image} 
                       alt={course.title}
@@ -336,7 +336,7 @@ export function HomePage({ courses, problems, formulas, isAdmin, onNavigate }: H
               >
                 {/* Image du problème */}
                 {problem.image ? (
-                  <div className="h-32 md:h-36 overflow-hidden">
+                  <div className="w-full aspect-[3/2] overflow-hidden">
                     <img 
                       src={problem.image} 
                       alt={problem.title}

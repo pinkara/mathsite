@@ -159,7 +159,7 @@ function BookCard({
   return (
     <div className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-indigo-300 hover:shadow-lg transition-all">
       {/* Cover */}
-      <div className="h-40 sm:h-44 md:h-48 bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center relative">
+      <div className="w-full aspect-[3/2] bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center relative overflow-hidden">
         {displayCoverUrl && !displayCoverUrl.startsWith('indexeddb://') ? (
           <LocalImage
             src={displayCoverUrl}
