@@ -12,6 +12,10 @@
     "build:cards": "node scripts/fetch-mathematicians.mjs && node scripts/build-final-cards.mjs && node scripts/scan-local-card-images.mjs"
   },
   "dependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/generator": "^7.29.7",
+    "@babel/parser": "^7.29.7",
+    "@babel/traverse": "^7.29.7",
     "@cortex-js/compute-engine": "^0.62.0",
     "@hookform/resolvers": "^5.2.2",
     "@knight-lab/timelinejs": "^3.9.8",

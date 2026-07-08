@@ -3,6 +3,10 @@ module.exports = {
   darkMode: ["class"],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      sans: ['"Latin Modern Roman"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      serif: ['"Latin Modern Roman"', 'ui-serif', 'Georgia', 'serif'],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
